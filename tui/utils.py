@@ -32,7 +32,8 @@ class Paper:
     abstract: str = ""
     url     : str = ""
     pdf     : str = ""
-    doi     : str = ""            
+    doi     : str = ""
+    score   : float = 0
     github_url     : str = ""
     supplemental   : str = ""  #general comments
     date_published : str = ""  # mm-dd-yyyy
@@ -279,7 +280,7 @@ class xRxivBase(object):
             if self.params["end_date"]:
                 query_params["limit_to"] = self.params["end_date"]
 
-            query_params["numresults"] = "75"
+            query_params["numresults"] = "10"
             if self.params["sort"] == "best match":
                 query_params["sort"] = "relevance-rank"
             elif self.params["sort"] == "oldest first":
@@ -310,6 +311,7 @@ class xRxivBase(object):
                     # interval - Date format whiiich looks like dates separated by /
                     # cursor - page iteration
                     # format - JSON or XML.  Json it is!
+                    
                 #advancedsearch structure
                 # https://www.biorxiv.org/search/anomaly%20
                 # jcode%3Abiorxiv%20
@@ -359,7 +361,7 @@ class xRxivBase(object):
         limit = int(self.params["limit"]) - 1
         paper_idx = 0
         while paper_idx < totalpapers:
-            if paper_idx >= limit:
+            if paper_idx > limit:
                 return
             elif self.cursor != 0: 
                 bs4ob = await self._make_request(cursor = self.cursor)
@@ -369,7 +371,7 @@ class xRxivBase(object):
             logger.info("outer papers")
             papers = outer_papers.find_all("li", {"class":lambda x: x.endswith("search-result-highwire-citation")})
             for result in papers:
-                if paper_idx >= limit:
+                if paper_idx > limit:
                     return
                 else:
                     paper = Paper()
@@ -457,37 +459,44 @@ class xRxivBase(object):
                                     elif len(results) == 4:
                                         paper.supplemental[key]["full"] = results[2].text
                                         paper.supplemental[key]["pdf"] = results[3].text
-                    
+                            #Calculate popularity score
+                            paper.supplemental = self._calc_score(paper.supplemental)
+                            paper.score = paper.supplemental["score"]
+                        
                     #Stuff whatever you found back into a dictionary
                     self.results[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
                     del paper
                     paper_idx += 1
                     if self.progress_callback:
                         self.progress_callback(paper_idx)
-
             self.cursor += 1
 
-                    #Old code for grabbing first request paper information.  Not enough for useful search so had to pull each individual paper DOI.
-                    # else:
-                    #     #Grab title
-                    #     paper.title = result.find("span", {"class":lambda x:"title" in x}).text.strip()
-                    #     paper.id = str(idx) + "_" + paper.title
-                        
-                    #     #Grab authors
-                    #     authors = result.find_all("div", {"class":lambda x:"authors" in x}).text.strip()
-                    #     if authors != None:
-                    #         paper.authors = {str(ind) + "_" + x.text:x.text for ind, x in enumerate(authors)}
-
-                    #     #
-                    #     categories = result.find("div", attrs={"class":"tags is-inline-block"})
-                    #     if categories != None:
-                    #         paper.category = categories.text.split()
-
-                    #     comments = result.find("p", attrs={"class": lambda e: e.startswith("comments")})
-                    #     if comments != None:
-                    #         comment_= comments.find("span", attrs={"class":"has-text-grey-dark mathjax"})
-                    #         if comment_ != None:
-                    #             paper.supplemental = comment_.text
+    def _calc_score(self, views:dict) -> dict:
+        #Using a time decayed weighted average
+        months = sorted([datetime.datetime.strptime(key, "%b %Y") for key in views.keys()])
+        if not months:
+            return 0
+        composite_score = 0
+        decay_rate = 0.1
+        most_recent_mon = months[-1]
+        w1, w2, w3 = 1, 3, 5
+        for month, counts in views.items():
+            cur_month = datetime.datetime.strptime(month, "%b %Y")
+            month_diff = (most_recent_mon.year - cur_month.year) * 12 + \
+                         (most_recent_mon.month - cur_month.month)
+            decay_factor = np.exp(-decay_rate * month_diff)
+            engagement = (
+                int(counts["abstract"]) * w1 + 
+                int(counts["full"]) * w2 + 
+                int(counts["pdf"]) * w3
+            )
+        
+            composite_score += engagement * decay_factor
+        views["raw_avg"] = {cat : round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["raw_std"] = {cat : round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["months"] = len(months) - 1
+        views["score"] = round(composite_score.item(), 3)
+        return views
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
         chrome_version = np.random.randint(125, 137)
@@ -495,7 +504,6 @@ class xRxivBase(object):
             baseurl = self.query_formatted
         else:
             baseurl = self.base_url
-        #BUG - Bioarxiv bug in here
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
             'accept-language': 'en-US,en;q=0.9',

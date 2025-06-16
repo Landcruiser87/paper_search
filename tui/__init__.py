@@ -897,7 +897,7 @@ class PaperSearch(App):
             self.search_container = Container(searchbar, id="loading-container")
             self.mount(self.search_container)
             self._search_xarxiv_worker(variables, root_name, tree)
-            
+                
         except Exception as e:
             logger.error(f"Failed to save search results: {e}")
 
@@ -957,6 +957,8 @@ class PaperSearch(App):
             # Perform requests from bio/medarxiv
             json_data, no_res_message = await rxiv._query_xrxiv()
             if json_data:
+                if variables["sort"] == "popularity":
+                    json_data = dict(sorted(json_data.items(), key=lambda x: x[1].get("score")))
                 all_results.update(**json_data)
                 self.app.call_from_thread(self.notify, f"{len(json_data)} results found on {variables["source"]}")
             elif no_res_message:
