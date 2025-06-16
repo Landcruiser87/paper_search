@@ -481,9 +481,9 @@ class xRxivBase(object):
         most_recent_mon = months[-1]
         w1, w2, w3 = 1, 3, 5
         for month, counts in views.items():
-            cur_month = datetime.datetime.strptime(month, "%b %Y")
-            month_diff = (most_recent_mon.year - cur_month.year) * 12 + \
-                         (most_recent_mon.month - cur_month.month)
+            past_month = datetime.datetime.strptime(month, "%b %Y")
+            month_diff = (most_recent_mon.year - past_month.year) * 12 + \
+                         (most_recent_mon.month - past_month.month)
             decay_factor = np.exp(-decay_rate * month_diff)
             engagement = (
                 int(counts["abstract"]) * w1 + 
@@ -492,8 +492,8 @@ class xRxivBase(object):
             )
         
             composite_score += engagement * decay_factor
-        views["raw_avg"] = {cat : round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
-        views["raw_std"] = {cat : round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["raw_avg"] = {cat:round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["raw_std"] = {cat:round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
         views["months"] = len(months) - 1
         views["score"] = round(composite_score.item(), 3)
         return views

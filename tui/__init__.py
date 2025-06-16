@@ -958,7 +958,7 @@ class PaperSearch(App):
             json_data, no_res_message = await rxiv._query_xrxiv()
             if json_data:
                 if variables["sort"] == "popularity":
-                    json_data = dict(sorted(json_data.items(), key=lambda x: x[1].get("score")))
+                    json_data = dict(sorted(json_data.items(), key=lambda x: x[1].get("score"), reverse=True))
                 all_results.update(**json_data)
                 self.app.call_from_thread(self.notify, f"{len(json_data)} results found on {variables["source"]}")
             elif no_res_message:
