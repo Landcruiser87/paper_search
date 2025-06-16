@@ -532,7 +532,7 @@ class xRxivBase(object):
                 logger.debug(doi_url)
             #Page Iteration
             elif cursor > 0:
-                url = self.query_formatted + f"page={cursor}"
+                url = self.query_formatted + f"?page={cursor}"
                 response = requests.post(url, headers=headers)
                 logger.debug(url)
         except Exception as e:
