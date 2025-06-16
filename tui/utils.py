@@ -512,45 +512,66 @@ class xRxivBase(object):
             baseurl = self.query_formatted
         else:
             baseurl = self.base_url
-        headers = {
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-            'accept-language': 'en-US,en;q=0.9',
-            'cache-control': 'max-age=0',
-            'priority': 'u=0, i',
-            'referer': baseurl,
-            'sec-ch-ua': f'"Not)A;Brand";v="99", "Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'document',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'same-origin',
-            'sec-fetch-user': '?1',
-            'Upgrade-Insecure-Requests': '1',
-            'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-        }
-        if self.params["source"] == "bioRxiv":
-            headers["content-type"] = 'application/x-www-form-urlencoded'
-            headers['referer'] = baseurl[:-8]
+
+        if self.params["source"] == "medRxiv":
+            headers = {
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'en-US,en;q=0.9',
+                'cache-control': 'max-age=0',
+                'priority': 'u=0, i',
+                'referer': baseurl,
+                'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+                # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+                        
+            }
+        elif self.params["source"] == "bioRxiv":
+            headers = {
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-language': 'en-US,en;q=0.9',
+                'cache-control': 'max-age=0',
+                'priority': 'u=0, i',
+                'referer': baseurl,
+                'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                #'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+            }
         try:
             #First request
             if post:
-                response = requests.post(self.query_formatted, headers=headers) 
                 logger.debug(self.query_formatted)
+                response = requests.post(self.query_formatted, headers=headers) 
+
             #Individual paper request
             elif doi_url:
-                response = requests.get(doi_url, headers=headers)
                 logger.debug(doi_url)
+                response = requests.get(doi_url, headers=headers)
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
-                response = requests.post(url, headers=headers)
                 logger.debug(url)
+                response = requests.post(url, headers=headers)
+
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
             return None
-        
-        await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers
 
+        await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
+        
         if response.status_code != 200:
             logger.warning(f'Status code: {response.status_code}')
             logger.warning(f'Reason: {response.reason}')
