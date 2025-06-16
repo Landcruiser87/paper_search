@@ -138,7 +138,7 @@ class ArxivSearch(object):
             return False
         
     def request_papers(self) -> dict:
-        chrome_version = np.random.randint(120, 135)
+        chrome_version = np.random.randint(120, 137)
         baseurl = "https://arxiv.org/search/advanced"
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -225,6 +225,33 @@ class xRxivBase(object):
         self.cursor : int = 0
         self.progress_callback = progress_callback
 
+    def _calc_score(self, views:dict) -> dict:
+        #Using a time decayed weighted average
+        months = sorted([datetime.datetime.strptime(key, "%b %Y") for key in views.keys()])
+        if not months:
+            return 0
+        composite_score = 0
+        decay_rate = 0.1
+        most_recent_mon = months[-1]
+        w1, w2, w3 = 1, 3, 5
+        for month, counts in views.items():
+            past_month = datetime.datetime.strptime(month, "%b %Y")
+            month_diff = (most_recent_mon.year - past_month.year) * 12 + \
+                         (most_recent_mon.month - past_month.month)
+            decay_factor = np.exp(-decay_rate * month_diff)
+            engagement = (
+                int(counts["abstract"]) * w1 + 
+                int(counts["full"]) * w2 + 
+                int(counts["pdf"]) * w3
+            )
+        
+            composite_score += engagement * decay_factor
+        views["raw_avg"] = {cat:round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["raw_std"] = {cat:round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["months"] = len(months) - 1
+        views["score"] = round(composite_score.item(), 3)
+        return views
+
     def _date_format(self):
         self.params["dates"] = self.params["dates"].lower().split()
         self.params["dates"] = "_".join(self.params["dates"])
@@ -257,8 +284,8 @@ class xRxivBase(object):
                     return False
             return True
         elif self.params["dates"] == "all_dates":
-            self.params["start_date"] = self.launchdt
-            self.params["end_date"] = self.params["submitted_date"]
+            # self.params["start_date"] = self.launchdt
+            # self.params["end_date"] = self.params["submitted_date"]
             return True
     
     def _url_format(self):
@@ -268,7 +295,7 @@ class xRxivBase(object):
                 srch_field = "_".join(self.params["field"].lower().split("|"))
                 query_params["query"] = quote(f"{srch_field}:") +  self.params["query"].replace(" ", "%2B") + "%20" + quote(f"{srch_field}_flags:match-all ")
             else:
-                query_params["query"] = self.params["query"].replace(" ", "%25") + "%20"
+                query_params["query"] = self.params["query"].replace(" ", "%252B") + "%20"
 
             query_params["jcode"] = self.params["source"].lower().strip()
             if self.params["categories"]:
@@ -334,8 +361,11 @@ class xRxivBase(object):
             return None, "Error in formatting date or url"
         
         #Make first request
-        bs4ob = await self._make_request(post=True) #True means make a post request
-
+        bs4ob, er_mes = await self._make_request(post=True) 
+        if er_mes:
+            logger.error(f"{er_mes}")
+            return None, er_mes
+        
         #Isolate how many papers were found, if any self._parse_query
         paper_count = bs4ob.find("div", {"class":"highwire-search-summary"})
         if len(paper_count.text) > 0:
@@ -364,7 +394,9 @@ class xRxivBase(object):
             if paper_idx > limit:
                 return
             elif self.cursor != 0: 
-                bs4ob = await self._make_request(cursor = self.cursor)
+                bs4ob, er_mes = await self._make_request(cursor = self.cursor)
+                if er_mes:
+                    logger.error(f"{er_mes}")
                 outer_papers = bs4ob.find("ul", class_="highwire-search-results-list")
             else:
                 outer_papers = bs4ob.find("ul", class_="highwire-search-results-list")
@@ -379,7 +411,9 @@ class xRxivBase(object):
                     if title:
                         f_url = f"{self.base_url[:-8]}" + title.get("href")
                         paper.doi = f_url
-                        lil_req = await self._make_request(doi_url=f_url)
+                        lil_req, er_mes = await self._make_request(doi_url=f_url)
+                        if er_mes:
+                            logger.error(f"{er_mes}")
                         paper.title = title.text
                         paper.id = str(paper_idx) + "_" + paper.title
                         paper.pdf = paper.doi + ".full.pdf"
@@ -432,6 +466,7 @@ class xRxivBase(object):
                     #     possiblematch = re.findall(pattern, github.text)
                     #     if possiblematch:
                     #         paper.github_url = possiblematch[0]
+                    
                     proc_table = True
                     metrics = await self._make_subdata_request(paper.doi)
                     logger.debug(f"searching metric {paper_idx}")
@@ -470,33 +505,6 @@ class xRxivBase(object):
                     if self.progress_callback:
                         self.progress_callback(paper_idx)
             self.cursor += 1
-
-    def _calc_score(self, views:dict) -> dict:
-        #Using a time decayed weighted average
-        months = sorted([datetime.datetime.strptime(key, "%b %Y") for key in views.keys()])
-        if not months:
-            return 0
-        composite_score = 0
-        decay_rate = 0.1
-        most_recent_mon = months[-1]
-        w1, w2, w3 = 1, 3, 5
-        for month, counts in views.items():
-            past_month = datetime.datetime.strptime(month, "%b %Y")
-            month_diff = (most_recent_mon.year - past_month.year) * 12 + \
-                         (most_recent_mon.month - past_month.month)
-            decay_factor = np.exp(-decay_rate * month_diff)
-            engagement = (
-                int(counts["abstract"]) * w1 + 
-                int(counts["full"]) * w2 + 
-                int(counts["pdf"]) * w3
-            )
-        
-            composite_score += engagement * decay_factor
-        views["raw_avg"] = {cat:round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
-        views["raw_std"] = {cat:round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
-        views["months"] = len(months) - 1
-        views["score"] = round(composite_score.item(), 3)
-        return views
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
         chrome_version = np.random.randint(125, 137)
@@ -546,7 +554,7 @@ class xRxivBase(object):
             logger.warning(f'Reason: {response.reason}')
             return None, f"Status Code {response.status_code} Reason: {response.reason}"
         
-        return BeautifulSoup(response.content, "lxml")
+        return BeautifulSoup(response.content, "lxml"), None
 
     async def _make_subdata_request(self, doi:str) -> BeautifulSoup:
         """The purpose of this request is to grab the article.metrics for the paper. It has an eeeextra long nap because the metrics JS takes a while to render.

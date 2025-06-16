@@ -863,7 +863,7 @@ class PaperSearch(App):
             "query"     : srch_text,
             "limit"     : limit,
             "sort"      : XARXIV_SORT[sort].lower(),
-            "field"     : XARXIV_FIELDS[field].lower(),
+            "field"     : XARXIV_FIELDS[field].lower() if field !=-1 else "",
             "source"    : XARXIV_SOURCES[source],
             "categories":[getattr(categories.options[cat].prompt, '_text', None)[0] for cat in selected_cat],
             "dates"     : ARXIV_DATES[date_range],
