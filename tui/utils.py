@@ -466,7 +466,7 @@ class xRxivBase(object):
                     #     possiblematch = re.findall(pattern, github.text)
                     #     if possiblematch:
                     #         paper.github_url = possiblematch[0]
-                    
+
                     proc_table = True
                     metrics = await self._make_subdata_request(paper.doi)
                     logger.debug(f"searching metric {paper_idx}")
@@ -507,7 +507,7 @@ class xRxivBase(object):
             self.cursor += 1
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
-        chrome_version = np.random.randint(125, 137)
+        chrome_version = np.random.randint(125, 135)
         if doi_url:
             baseurl = self.query_formatted
         else:
@@ -528,7 +528,9 @@ class xRxivBase(object):
             'Upgrade-Insecure-Requests': '1',
             'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
         }
-
+        if self.params["source"] == "bioRxiv":
+            headers["content-type"] = 'application/x-www-form-urlencoded'
+            headers['referer'] = baseurl[:-8]
         try:
             #First request
             if post:
@@ -565,7 +567,7 @@ class xRxivBase(object):
         Returns:
             BeautifulSoup: BSoup object for parsing HTML
         """        
-        chrome_version = np.random.randint(125, 137)
+        chrome_version = np.random.randint(125, 135)
         baseurl = doi + ".article-metrics"
         headers = {
             'accept': 'text/html, */*; q=0.01',
