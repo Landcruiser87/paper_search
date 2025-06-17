@@ -511,10 +511,10 @@ class xRxivBase(object):
                         self.progress_callback(paper_idx)
             self.cursor += 1
     
-    async def _c_is_for_cookie(self, base_url:str, user_agent:str = ""):
+    async def _c_is_for_cookie(self, base_url:str, headers:dict = ""):
         solver = CF_Solver(
             domain=base_url,
-            user_agent=user_agent,
+            user_agent=headers["user-agent"],
             headless=False,
             slow_mo=100,
             poll_interval=1.0,
@@ -523,11 +523,11 @@ class xRxivBase(object):
         try:
             self.cookies = await solver.bypass()
             logger.info(f"cookies found\n{self.cookies}")
-            temp = {
-                'cookie-agreed': '2',
-                'has_js': '1',
-            }
-            self.cookies = {**self.cookies, **temp}
+            # temp = {
+            #     'cookie-agreed': '2',
+            #     'has_js': '1',
+            # }
+            # self.cookies = {**self.cookies, **temp}
         finally:
             await solver.close()
 
@@ -544,7 +544,7 @@ class xRxivBase(object):
             'cache-control': 'max-age=0',
             'priority': 'u=0, i',
             'referer': baseurl,
-            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v="136", "Not/A)Brand";v="24"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"Windows"',
             'sec-fetch-dest': 'document',
@@ -552,15 +552,20 @@ class xRxivBase(object):
             'sec-fetch-site': 'same-origin',
             'sec-fetch-user': '?1',
             'upgrade-insecure-requests': '1',
-            'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+            'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+            
         }
-        # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-        # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+        #Old headers
+        #Still works for medrixv
+            # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
 
+        #windows test header
+        # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+        
         #go get the cf-clearance cookie because we can't post without it.  thanks cf, ya jerks!
         if self.params["source"] == "bioRxiv":
-            ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-            await self._c_is_for_cookie(base_url = "https://www.biorxiv.org", user_agent = ua)
+            # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
+            await self._c_is_for_cookie(base_url = baseurl, headers = headers)
 
         try:
             #First request
