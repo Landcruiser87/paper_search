@@ -3,22 +3,24 @@ import datetime
 import requests
 import json
 import re
-from os import path, mkdir
 import spacy
 import numpy as np
 import pandas as pd
 import torch
 import time
 import asyncio
+from os import path, mkdir
+from support import logger
+from bypass import CF_Solver
+from bs4 import BeautifulSoup
 from urllib.parse import quote
 from dataclasses import dataclass, fields
-from sklearn.feature_extraction.text import TfidfVectorizer
 from typing import Callable, Optional
-from bs4 import BeautifulSoup
-from scipy.spatial.distance import cosine as scipy_cos
-from sklearn.metrics.pairwise import cosine_similarity as sklearn_cos
 from sentence_transformers import SentenceTransformer
-from support import logger
+from scipy.spatial.distance import cosine as scipy_cos
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity as sklearn_cos
+
 
 
 ################################# Dataclass #################################
@@ -38,6 +40,7 @@ class Paper:
     supplemental   : str = ""  #general comments
     date_published : str = ""  # mm-dd-yyyy
     conference_info: str = ""  # e.g. arxiv
+    
 
 ################################# Classes #################################
 class ArxivSearch(object):
@@ -215,6 +218,7 @@ class xRxivBase(object):
         launchdt: str,
         params: dict,
         base_url: str,
+        cookies        : str = "",
         progress_callback: Optional[Callable[[int],None]] = None
     ):
         self.server  : str = server
@@ -223,6 +227,7 @@ class xRxivBase(object):
         self.base_url : str = base_url
         self.results : dict = {}
         self.cursor : int = 0
+        self.cookies : str = ""
         self.progress_callback = progress_callback
 
     def _calc_score(self, views:dict) -> dict:
@@ -505,66 +510,82 @@ class xRxivBase(object):
                     if self.progress_callback:
                         self.progress_callback(paper_idx)
             self.cursor += 1
+    
+    async def _c_is_for_cookie(self, base_url:str, user_agent:str = ""):
+        solver = CF_Solver(
+            domain=base_url,
+            user_agent=user_agent,
+            headless=False,
+            slow_mo=100,
+            poll_interval=1.0,
+            max_wait = 90
+        )
+        try:
+            self.cookies = await solver.bypass()
+            logger.info(f"cookies found\n{self.cookies}")
+            temp = {
+                'cookie-agreed': '2',
+                'has_js': '1',
+            }
+            self.cookies = {**self.cookies, **temp}
+        finally:
+            await solver.close()
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
-        chrome_version = np.random.randint(125, 135)
+        chrome_version = np.random.randint(120, 135)
         if doi_url:
             baseurl = self.query_formatted
         else:
             baseurl = self.base_url
 
-        if self.params["source"] == "medRxiv":
-            headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': 'en-US,en;q=0.9',
-                'cache-control': 'max-age=0',
-                'priority': 'u=0, i',
-                'referer': baseurl,
-                'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-                # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
-                        
-            }
-        elif self.params["source"] == "bioRxiv":
-            headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-language': 'en-US,en;q=0.9',
-                'cache-control': 'max-age=0',
-                'priority': 'u=0, i',
-                'referer': baseurl,
-                'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
-                'sec-ch-ua-mobile': '?0',
-                'sec-ch-ua-platform': '"Windows"',
-                'sec-fetch-dest': 'document',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                #'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
-            }
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-language': 'en-US,en;q=0.9',
+            'cache-control': 'max-age=0',
+            'priority': 'u=0, i',
+            'referer': baseurl,
+            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
+            'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+        }
+        # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+        # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+
+        #go get the cf-clearance cookie because we can't post without it.  thanks cf, ya jerks!
+        if self.params["source"] == "bioRxiv":
+            ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
+            await self._c_is_for_cookie(base_url = "https://www.biorxiv.org", user_agent = ua)
+
         try:
             #First request
             if post:
                 logger.debug(self.query_formatted)
-                response = requests.post(self.query_formatted, headers=headers) 
-
+                if self.params["source"] == "medRxiv":
+                    response = requests.post(self.query_formatted, headers=headers) 
+                else:
+                    response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
+                    
             #Individual paper request
             elif doi_url:
                 logger.debug(doi_url)
-                response = requests.get(doi_url, headers=headers)
+                if self.params["source"] == "medRxiv":
+                    response = requests.get(doi_url, headers=headers)
+                else:
+                    response = requests.get(url=doi_url, headers=headers, cookies=self.cookies)
+                #TODO - update for CF
+
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
                 logger.debug(url)
                 response = requests.post(url, headers=headers)
+                #TODO - update for CF
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
