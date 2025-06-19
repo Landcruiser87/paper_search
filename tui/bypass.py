@@ -103,8 +103,9 @@ class CF_Solver:
             cookies = await self.context.cookies(self.domain)
             temp = {}
             for ck in cookies:
+                c_type = ck.get("name")
                 for cookie_type in ["cf_clearance", "__cfwaitingroom", "__cf_bm"]:
-                    if ck.get("name") == cookie_type:
+                    if cookie_type == c_type:
                         temp[cookie_type] = ck.get("value")
                         
             if temp:

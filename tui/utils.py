@@ -218,16 +218,16 @@ class xRxivBase(object):
         launchdt: str,
         params: dict,
         base_url: str,
-        cookies        : str = "",
+        cookies          : str = "",
         progress_callback: Optional[Callable[[int],None]] = None
     ):
-        self.server  : str = server
-        self.launchdt: str = launchdt
-        self.params: dict = params
-        self.base_url : str = base_url
-        self.results : dict = {}
-        self.cursor : int = 0
-        self.cookies : str = ""
+        self.server      : str = server
+        self.launchdt    : str = launchdt
+        self.params      : dict = params
+        self.base_url    : str = base_url
+        self.results     : dict = {}
+        self.cursor      : int = 0
+        self.cookies     : str = ""
         self.progress_callback = progress_callback
 
     def _calc_score(self, views:dict) -> dict:
@@ -312,7 +312,7 @@ class xRxivBase(object):
             if self.params["end_date"]:
                 query_params["limit_to"] = self.params["end_date"]
 
-            query_params["numresults"] = "10"
+            query_params["numresults"] = "75"
             if self.params["sort"] == "best match":
                 query_params["sort"] = "relevance-rank"
             elif self.params["sort"] == "oldest first":
