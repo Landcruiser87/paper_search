@@ -21,8 +21,6 @@ from scipy.spatial.distance import cosine as scipy_cos
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity as sklearn_cos
 
-
-
 ################################# Dataclass #################################
 @dataclass
 class Paper:
@@ -41,7 +39,6 @@ class Paper:
     date_published : str = ""  # mm-dd-yyyy
     conference_info: str = ""  # e.g. arxiv
     
-
 ################################# Classes #################################
 class ArxivSearch(object):
     def __init__(self, variables:dict):
@@ -214,10 +211,10 @@ class ArxivSearch(object):
 class xRxivBase(object):
     def __init__(
         self,
-        server: str,
-        launchdt: str,
-        params: dict,
-        base_url: str,
+        server           : str,
+        launchdt         : str,
+        params           : dict,
+        base_url         : str,
         cookies          : str = "",
         progress_callback: Optional[Callable[[int],None]] = None
     ):
@@ -395,6 +392,7 @@ class xRxivBase(object):
         totalpapers = self.paper_count
         limit = int(self.params["limit"]) - 1
         paper_idx = 0
+        self.results["search_params"] = self.params
         while paper_idx < totalpapers:
             if paper_idx > limit:
                 return
@@ -523,11 +521,7 @@ class xRxivBase(object):
         try:
             self.cookies = await solver.bypass()
             logger.info(f"cookies found\n{self.cookies}")
-            # temp = {
-            #     'cookie-agreed': '2',
-            #     'has_js': '1',
-            # }
-            # self.cookies = {**self.cookies, **temp}
+
         finally:
             await solver.close()
 
@@ -688,7 +682,6 @@ def is_a_date(datetext:str) -> bool:
     except Exception as e:
         logger.warning(f"date extraction error.  Check date format\n{e}")
         return False
-
 
 #FUNCTION get time
 def get_c_time():

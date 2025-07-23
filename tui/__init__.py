@@ -169,10 +169,10 @@ class PaperSearch(App):
                         with Vertical(id="xarx-radios"):
                             with RadioSet(id="xradio-arx-source", classes="header"):
                                 for source in XARXIV_SOURCES:
-                                    if source != "medRxiv": #Disabling bioRxiv/both for now
-                                        yield RadioButton(source, disabled=True)
-                                    else:
-                                        yield RadioButton(source)
+                                    # if source != "medRxiv": #Disabling bioRxiv/both for now
+                                    #     yield RadioButton(source, disabled=True)
+                                    # else:
+                                    yield RadioButton(source)
                             with RadioSet(id="xradio-arx-dates", classes="header"):
                                 for dfield in ARXIV_DATES:
                                     yield RadioButton(dfield)

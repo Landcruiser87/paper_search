@@ -1,6 +1,5 @@
 import asyncio
 import numpy as np
-import random
 import time
 from utils import logger
 from playwright.async_api import (
@@ -49,8 +48,8 @@ class CF_Solver:
             slow_mo=self.slow_mo,
             args=["--disable-blink-features=AutomationControlled", "--no-sandbox"],
         )
-        width = random.randint(1200, 1920)
-        height = random.randint(700, 1080)
+        width = np.random.randint(1200, 1920)
+        height = np.random.randint(700, 1080)
         self.context = await self.browser.new_context(
             user_agent=self.user_agent,
             viewport={"width": width, "height": height},
