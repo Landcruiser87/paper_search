@@ -949,6 +949,7 @@ class PaperSearch(App):
             )
             
         elif variables["source"] == "both":
+            #BUG - Untested code.  Check later
             variables["source"] = "medrxiv||biorxiv"
             variables["subjects"] = MEDARXIV_SUBJECTS.extend(BIOARXIV_SUBJECTS)
             rxiv = medRxiv(

@@ -608,7 +608,7 @@ class xRxivBase(object):
             if post:
                 logger.debug(self.query_formatted)
                 if self.params["source"] == "bioRxiv":
-                    turnstile_on : bool|str = True #await self._check_turnstile(req_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
+                    turnstile_on : bool|str = await self._check_turnstile(req_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
                     match turnstile_on:
                         case True:
                             await self._c_is_for_cookie(base_url = baseurl, headers = headers)
