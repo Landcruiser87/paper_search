@@ -526,29 +526,68 @@ class xRxivBase(object):
         finally:
             await solver.close()
 
-    async def check_turnstile(self, base_url:str, headers:dict = ""):
+    async def check_turnstile(self, base_url:str, oldheaders:dict = "", ch_ver:int=122)-> bool|str:
         try:
+            # accept:
+            # accept-encoding:gzip, deflate, br, zstd
+            # accept-language:en-US,en;q=0.9
+            # cache-control:max-age=0
+            # content-length:590
+            # content-type:application/x-www-form-urlencoded
+            # origin:https://www.biorxiv.org
+            # priority:u=0, i
+            # referer:https://www.biorxiv.org/search
+            # sec-ch-ua:"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
+            # sec-ch-ua-mobile:1
+            # sec-ch-ua-platform:"Android"
+            # sec-fetch-dest:"document"
+            # sec-fetch-mode:navigate
+            # sec-fetch-site:same-origin
+            # sec-fetch-user:?1
+            # upgrade-insecure-requests:1
+            # user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
+            headers = {
+                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept-encoding':"gzip,deflate,br,zstd",
+                'accept-language': 'en-US,en;q=0.9',
+                'cache-control': 'max-age=0',
+                'content-length':'590',
+                'content-type':'application/x-www-form-urlencoded',
+                'origin':f'https://www.{self.server}.org',
+                'priority': 'u=0, i',
+                'referer': oldheaders["referer"],
+                'sec-ch-ua': f'"Google Chrome";v={ch_ver}, "Chromium";v={ch_ver}, "Not/A)Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'document',
+                'sec-fetch-mode': 'navigate',
+                'sec-fetch-site': 'same-origin',
+                'sec-fetch-user': '?1',
+                'upgrade-insecure-requests': '1',
+                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{ch_ver}.0.0.0 Safari/537.36'
+            }
+
             logger.debug(f"turnstile check on {base_url}")
             response = requests.post(self.query_formatted, headers=headers)
             await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
             if response.status_code != 200:
                 logger.warning(f'Status code: {response.status_code}')
                 logger.warning(f'Reason: {response.reason}')
-                return None, f"Status Code {response.status_code} Reason: {response.reason}"
+                return None
             else:
                 soup = BeautifulSoup(response.content, "lxml")
                 turnstile = soup.find("div", _class="cf-turnstile")
                 if turnstile != None:
                     self.turnstile_on = True
                     logger.debug(f"turnstile found on {base_url}")
-                    return True, None
+                    return True
                 else:
                     logger.debug(f"turnstile not found on {base_url}")
-                    return False, None
+                    return False
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
-            return None, e
+            return e
 
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
@@ -591,16 +630,17 @@ class xRxivBase(object):
                 if self.params["source"] == "bioRxiv":
                     #Old useragent
                     # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-                    err_msg = None
-                    turnstile_on, err_msg = await self.check_turnstile(base_url=self.query_formatted, headers=headers)
-                    if err_msg != None:
-                        if turnstile_on:
-                            await self._c_is_for_cookie(base_url = baseurl, headers = headers)
-                            response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
-                        else:
-                            response = requests.post(self.query_formatted, headers=headers)
+                    turnstile_on : bool|str = await self.check_turnstile(base_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
+                    if turnstile_on:
+                        await self._c_is_for_cookie(base_url = baseurl, headers = headers)
+                        response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
+                    elif not turnstile_on:
+                        response = requests.post(self.query_formatted, headers=headers)
+                    elif isinstance(turnstile_on, str):
+                        logger.warning(f"turnstile fetch error{turnstile_on}")
                     else:
-                        logger.warning(f"turnstile fetch error{err_msg}")
+                        logger.warning(f"Something is very broken to get here")
+
                 elif self.params["source"] == "medRxiv":
                     response = requests.post(self.query_formatted, headers=headers)
 
