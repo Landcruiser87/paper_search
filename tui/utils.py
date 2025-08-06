@@ -513,7 +513,7 @@ class xRxivBase(object):
     async def _c_is_for_cookie(self, base_url:str, headers:dict = ""):
         solver = CF_Solver(
             domain=base_url,
-            user_agent=headers["user-agent"],
+            # user_agent=headers["user-agent"],
             headless=False,
             slow_mo=100,
             poll_interval=1.0,
@@ -528,28 +528,27 @@ class xRxivBase(object):
 
     async def _check_turnstile(self, req_url:str, oldheaders:dict = "", ch_ver:int=122)-> bool|str:
         try:
-            headers = {
-                'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                'accept-encoding':"gzip,deflate,br,zstd",
-                'accept-language': 'en-US,en;q=0.9',
-                'cache-control': 'max-age=0',
-                'content-type':'application/x-www-form-urlencoded',
-                'origin':f'https://www.{self.server.lower()}.org',
-                'priority': 'u=0, i',
-                'referer': oldheaders["referer"],
-                'sec-ch-ua': oldheaders["sec-ch-ua"],
-                'sec-ch-ua-mobile': '?1',
-                'sec-ch-ua-platform': '"Android"',
-                'sec-fetch-dest': 'iframe',
-                'sec-fetch-mode': 'navigate',
-                'sec-fetch-site': 'same-origin',
-                'sec-fetch-user': '?1',
-                'upgrade-insecure-requests': '1',
-                'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{ch_ver}.0.0.0 Mobile Safari/537.36'
-            }
-
+            # headers = {
+            #     'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            #     'accept-encoding':"gzip,deflate,br,zstd",
+            #     'accept-language': 'en-US,en;q=0.9',
+            #     'cache-control': 'max-age=0',
+            #     'content-type':'application/x-www-form-urlencoded',
+            #     'origin':f'https://www.{self.server.lower()}.org',
+            #     'priority': 'u=0,i',
+            #     'referer': oldheaders["referer"],
+            #     'sec-ch-ua': oldheaders["sec-ch-ua"],
+            #     'sec-ch-ua-mobile': '?1',
+            #     'sec-ch-ua-platform': '"Android"',
+            #     'sec-fetch-dest': 'document',
+            #     'sec-fetch-mode': 'navigate',
+            #     'sec-fetch-site': 'same-origin',
+            #     'sec-fetch-user': '?1',
+            #     'upgrade-insecure-requests': '1',
+            #     'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{ch_ver}.0.0.0 Mobile Safari/537.36'
+            # }
             logger.debug(f"turnstile check on {req_url}")
-            response = requests.get(req_url, headers=headers)
+            response = requests.post(req_url, headers=oldheaders)
             await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
             if response.status_code != 200:
                 logger.warning(f'Status code: {response.status_code}')
@@ -593,15 +592,15 @@ class xRxivBase(object):
             'sec-fetch-user': '?1',
             'upgrade-insecure-requests': '1',
             'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
-            #'user-agent':'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
+            
         }
 
         #Old headers
         #Still works for medrixv
             # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-
         #windows test header
-        # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+            # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+            # 'user-agent':  'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
         #get the cf-clearance cookie because we can't post without it.  thanks cf, ya jerks!
 
         try:
@@ -609,18 +608,14 @@ class xRxivBase(object):
             if post:
                 logger.debug(self.query_formatted)
                 if self.params["source"] == "bioRxiv":
-                    #Old useragent
-                    # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-                    turnstile_on : bool|str = await self._check_turnstile(req_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
+                    turnstile_on : bool|str = True #await self._check_turnstile(req_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
                     match turnstile_on:
                         case True:
                             await self._c_is_for_cookie(base_url = baseurl, headers = headers)
                             response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
                         case False:
                             response = requests.post(self.query_formatted, headers=headers)
-                        case isinstance(turnstile_on, requests.exceptions.ConnectionError):
-                            logger.warning(f"turnstile connection timeout error {turnstile_on} ")
-                        case isinstance(turnstile_on, requests.models.Response):
+                        case requests.models.Response():
                             logger.warning(f"{turnstile_on.status_code} {turnstile_on.reason}")
                             response = turnstile_on
                         case _:
