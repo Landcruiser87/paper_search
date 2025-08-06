@@ -526,37 +526,19 @@ class xRxivBase(object):
         finally:
             await solver.close()
 
-    async def check_turnstile(self, base_url:str, oldheaders:dict = "", ch_ver:int=122)-> bool|str:
+    async def check_turnstile(self, req_url:str, oldheaders:dict = "", ch_ver:int=122)-> bool|str:
         try:
-            # accept:
-            # accept-encoding:gzip, deflate, br, zstd
-            # accept-language:en-US,en;q=0.9
-            # cache-control:max-age=0
-            # content-length:590
-            # content-type:application/x-www-form-urlencoded
-            # origin:https://www.biorxiv.org
-            # priority:u=0, i
-            # referer:https://www.biorxiv.org/search
-            # sec-ch-ua:"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"
-            # sec-ch-ua-mobile:1
-            # sec-ch-ua-platform:"Android"
-            # sec-fetch-dest:"document"
-            # sec-fetch-mode:navigate
-            # sec-fetch-site:same-origin
-            # sec-fetch-user:?1
-            # upgrade-insecure-requests:1
-            # user-agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36
             headers = {
-                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
                 'accept-encoding':"gzip,deflate,br,zstd",
                 'accept-language': 'en-US,en;q=0.9',
                 'cache-control': 'max-age=0',
                 'content-length':'590',
                 'content-type':'application/x-www-form-urlencoded',
-                'origin':f'https://www.{self.server}.org',
+                'origin':f'https://www.{self.server.lower()}.org',
                 'priority': 'u=0, i',
                 'referer': oldheaders["referer"],
-                'sec-ch-ua': f'"Google Chrome";v={ch_ver}, "Chromium";v={ch_ver}, "Not/A)Brand";v="24"',
+                'sec-ch-ua': f'"Google Chrome";v="138", "Chromium";v="138", "Not/A)Brand";v="24"',
                 'sec-ch-ua-mobile': '?0',
                 'sec-ch-ua-platform': '"Windows"',
                 'sec-fetch-dest': 'document',
@@ -564,11 +546,43 @@ class xRxivBase(object):
                 'sec-fetch-site': 'same-origin',
                 'sec-fetch-user': '?1',
                 'upgrade-insecure-requests': '1',
-                'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{ch_ver}.0.0.0 Safari/537.36'
+                # 'user-agent' : oldheaders['user-agent'],
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36'
             }
-
-            logger.debug(f"turnstile check on {base_url}")
-            response = requests.post(self.query_formatted, headers=headers)
+            data = {
+                "txtsimple":"",
+                "limit_from[date]_replacement":"",
+                "limit_from[date]":"",
+                "limit_to[date]_replacement":"",
+                "limit_to[date]":"",
+                "jcode[]":"",
+                "biorxiv":"",
+                "author1":"",
+                "author2":"",
+                "title":"anomaly detection",
+                "title_flags":"match-all",
+                "abstract_title":"abstract_title_flags",
+                "match-all":"text_abstract_title",
+                "text_abstract_title_flags":"match-all",
+                "references":"",
+                "references_flags":"match-all",
+                "publisher":"",
+                "pubyear":"",
+                "volume":"",
+                "issue":"",
+                "firstpage":"",
+                "doi":"",
+                "isbn":"",
+                "numresults":"75",
+                "sort":"relevance-rank",
+                "format_result":"standard",
+                "jcode_option":"medrxiv biorxiv",
+                "form_build_id":"form-FljJsHLxDRwIqdwN3UikAuluUF2yoGyqXRyQ68ijCA0",
+                "form_id":"highwire_search_form",
+                "op:Search":"",
+            }
+            logger.debug(f"turnstile check on {req_url}")
+            response = requests.post(req_url, headers=headers, data=data)
             await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
             if response.status_code != 200:
                 logger.warning(f'Status code: {response.status_code}')
@@ -579,10 +593,10 @@ class xRxivBase(object):
                 turnstile = soup.find("div", _class="cf-turnstile")
                 if turnstile != None:
                     self.turnstile_on = True
-                    logger.debug(f"turnstile found on {base_url}")
+                    logger.debug(f"turnstile found on {self.server}")
                     return True
                 else:
-                    logger.debug(f"turnstile not found on {base_url}")
+                    logger.debug(f"turnstile not found on {self.server}")
                     return False
 
         except Exception as e:
@@ -591,7 +605,7 @@ class xRxivBase(object):
 
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
-        chrome_version = np.random.randint(120, 135)
+        chrome_version = np.random.randint(120, 138)
         if doi_url:
             baseurl = self.query_formatted
         else:
@@ -603,7 +617,7 @@ class xRxivBase(object):
             'cache-control': 'max-age=0',
             'priority': 'u=0, i',
             'referer': baseurl,
-            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v="136", "Not/A)Brand";v="24"',
+            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
             'sec-ch-ua-mobile': '?0',
             'sec-ch-ua-platform': '"Windows"',
             'sec-fetch-dest': 'document',
@@ -612,8 +626,8 @@ class xRxivBase(object):
             'sec-fetch-user': '?1',
             'upgrade-insecure-requests': '1',
             'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
-            
         }
+
         #Old headers
         #Still works for medrixv
             # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
@@ -630,14 +644,14 @@ class xRxivBase(object):
                 if self.params["source"] == "bioRxiv":
                     #Old useragent
                     # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-                    turnstile_on : bool|str = await self.check_turnstile(base_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
-                    if turnstile_on:
+                    turnstile_on : bool|str = await self.check_turnstile(req_url=self.query_formatted, oldheaders=headers, ch_ver=chrome_version)
+                    if turnstile_on == True:
                         await self._c_is_for_cookie(base_url = baseurl, headers = headers)
                         response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
-                    elif not turnstile_on:
+                    elif turnstile_on == False:
                         response = requests.post(self.query_formatted, headers=headers)
-                    elif isinstance(turnstile_on, str):
-                        logger.warning(f"turnstile fetch error{turnstile_on}")
+                    elif isinstance(turnstile_on, requests.exceptions.ConnectionError):
+                        logger.warning(f"turnstile connection error{turnstile_on}")
                     else:
                         logger.warning(f"Something is very broken to get here")
 
