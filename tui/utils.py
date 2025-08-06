@@ -225,6 +225,7 @@ class xRxivBase(object):
         self.results     : dict = {}
         self.cursor      : int = 0
         self.cookies     : str = ""
+        self.turnstile_on: bool = False
         self.progress_callback = progress_callback
 
     def _calc_score(self, views:dict) -> dict:
@@ -525,6 +526,31 @@ class xRxivBase(object):
         finally:
             await solver.close()
 
+    async def check_turnstile(self, base_url:str, headers:dict = ""):
+        try:
+            logger.debug(f"turnstile check on {base_url}")
+            response = requests.post(self.query_formatted, headers=headers)
+            await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
+            if response.status_code != 200:
+                logger.warning(f'Status code: {response.status_code}')
+                logger.warning(f'Reason: {response.reason}')
+                return None, f"Status Code {response.status_code} Reason: {response.reason}"
+            else:
+                soup = BeautifulSoup(response.content, "lxml")
+                turnstile = soup.find("div", _class="cf-turnstile")
+                if turnstile != None:
+                    self.turnstile_on = True
+                    logger.debug(f"turnstile found on {base_url}")
+                    return True, None
+                else:
+                    logger.debug(f"turnstile not found on {base_url}")
+                    return False, None
+
+        except Exception as e:
+            logger.warning(f"A general request error occured.  Check URL\n{e}")
+            return None, e
+
+
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
         chrome_version = np.random.randint(120, 135)
         if doi_url:
@@ -557,34 +583,43 @@ class xRxivBase(object):
         # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
         
         #go get the cf-clearance cookie because we can't post without it.  thanks cf, ya jerks!
-        if self.params["source"] == "bioRxiv":
-            # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-            await self._c_is_for_cookie(base_url = baseurl, headers = headers)
 
         try:
             #First request
             if post:
                 logger.debug(self.query_formatted)
-                if self.params["source"] == "medRxiv":
-                    response = requests.post(self.query_formatted, headers=headers) 
-                else:
-                    response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
-                    
+                if self.params["source"] == "bioRxiv":
+                    #Old useragent
+                    # ua = 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
+                    err_msg = None
+                    turnstile_on, err_msg = await self.check_turnstile(base_url=self.query_formatted, headers=headers)
+                    if err_msg != None:
+                        if turnstile_on:
+                            await self._c_is_for_cookie(base_url = baseurl, headers = headers)
+                            response = requests.post(self.query_formatted, headers=headers, cookies=self.cookies)
+                        else:
+                            response = requests.post(self.query_formatted, headers=headers)
+                    else:
+                        logger.warning(f"turnstile fetch error{err_msg}")
+                elif self.params["source"] == "medRxiv":
+                    response = requests.post(self.query_formatted, headers=headers)
+
             #Individual paper request
             elif doi_url:
                 logger.debug(doi_url)
                 if self.params["source"] == "medRxiv":
                     response = requests.get(doi_url, headers=headers)
-                else:
-                    response = requests.get(url=doi_url, headers=headers, cookies=self.cookies)
-                #TODO - update for CF
+                elif self.params["source"] == "bioRxiv":
+                    if self.turnstile_on:
+                        response = requests.get(url=doi_url, headers=headers, cookies=self.cookies)
+                    else:
+                        response = requests.get(doi_url, headers=headers)
 
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
                 logger.debug(url)
                 response = requests.post(url, headers=headers)
-                #TODO - update for CF
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
@@ -626,8 +661,8 @@ class xRxivBase(object):
         }
 
         try:
-            response = requests.get(baseurl, headers=headers)
             logger.debug(baseurl)
+            response = requests.get(baseurl, headers=headers)
             await asyncio.sleep(np.random.randint(6,8)) #Extra long nap because metrics.... don't like to come through for some reason. 
 
         except Exception as e:
@@ -776,38 +811,38 @@ def tfidf(data_fields:list, paper_names:list):
         tsfrm.toarray(),
         columns=feats,
         index=paper_names
-	)
+    )
     return tsfrm_df, paper_names
 
 def cosine_similarity(tsfrm, ts_type:str):
-	"""Function that allows you to use either sklearns, or scipy's cosine similarity
-	Inputs are already in a sparse array format.  Scipy uses np.arrays, but the code 
-	below will handle that. 
+    """Function that allows you to use either sklearns, or scipy's cosine similarity
+    Inputs are already in a sparse array format.  Scipy uses np.arrays, but the code 
+    below will handle that. 
 
-	Args:
-		tsfrm (sparse array): Sparse Matrix of Documents
-		ts_type (str): Version of Cosine Similarity you want
+    Args:
+        tsfrm (sparse array): Sparse Matrix of Documents
+        ts_type (str): Version of Cosine Similarity you want
 
-	Raises:
-		ValueError: If you don't specify "scipy" or "sklearn", it throws an error.
+    Raises:
+        ValueError: If you don't specify "scipy" or "sklearn", it throws an error.
 
-	Returns:
-		float: Cosine similarity
-	"""	
+    Returns:
+        float: Cosine similarity
+    """	
     
-	if ts_type == "sklearn":
-		sims = sklearn_cos(tsfrm[0], tsfrm)
-		return sims.flatten()
-	
-	elif ts_type == "scipy":
-		sims = []
-		X = tsfrm.iloc[0]
-		for row in range(tsfrm.shape[0]):
-			y = tsfrm.iloc[row]
-			sims.append(1 - scipy_cos(X, y))
-		return sims
-	else:
-		raise ValueError (f"{ts_type} not an available cosine transform. Check spelling for scipy or sklearn")
+    if ts_type == "sklearn":
+        sims = sklearn_cos(tsfrm[0], tsfrm)
+        return sims.flatten()
+    
+    elif ts_type == "scipy":
+        sims = []
+        X = tsfrm.iloc[0]
+        for row in range(tsfrm.shape[0]):
+            y = tsfrm.iloc[row]
+            sims.append(1 - scipy_cos(X, y))
+        return sims
+    else:
+        raise ValueError (f"{ts_type} not an available cosine transform. Check spelling for scipy or sklearn")
 
 def embedding_cos_sim(query:str, compare:str):
     """Manual cosine similarity calculation

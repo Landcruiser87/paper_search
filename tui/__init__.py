@@ -475,7 +475,7 @@ class PaperSearch(App):
 
         return sims[1:], paper_names[1:]
 
-    #FUNCTION search_data
+    #FUNCTION - search_data
     def search_data(
             self,
             srch_text:str, 
@@ -557,7 +557,7 @@ class PaperSearch(App):
         res = sorted(results.items(), key=lambda x:x[1].get("metric_match"), reverse=True)[:res_limit]
         return dict(res)
     
-    #FUNCTION add datasets
+    #FUNCTION - add datasets
     def add_datasets(self):
         """Handles the 'Add Dataset' button press by launching a worker."""
         datasets: SelectionList = self.query_one("#datasets", SelectionList)
@@ -595,7 +595,7 @@ class PaperSearch(App):
              self.notify("No valid datasets found to load.", severity="warning")
         datasets.deselect_all()
     
-    #FUNCTION add dataset worker
+    #FUNCTION - add dataset worker
     @work(thread=True, exclusive=True, group="dataset_loading")
     async def _add_multiple_datasets_worker(self, datasets_info: List[Tuple[str, PurePath]]):
         """
@@ -861,7 +861,7 @@ class PaperSearch(App):
             self.notify("Search inputs are malformed.\nCheck inputs and try again", severity="error")
             return None
 
-        #Remap the variables with their values     
+        #Remap the variables with their values
         variables = {
             "query"     : srch_text,
             "limit"     : limit,
@@ -875,7 +875,7 @@ class PaperSearch(App):
             "year"      : "",
             "add_cat"   : False
         }
-        
+
         if not end_date_input.disabled:
             variables["start_date"] = start_date
             variables["end_date"] = end_date
@@ -1008,12 +1008,12 @@ class PaperSearch(App):
             self.reload_datasets()
     
     ##########################  Tree Functions ####################################
-    #FUNCTION Tree Node select
+    #FUNCTION - Tree Node select
     def on_tree_node_selected(self, event: Tree.NodeSelected) -> None:
         """Called when a node in the tree is selected."""
         self.selected_node_data = event.node.data
 
-    #FUNCTION watch data node
+    #FUNCTION - watch data node
     def watch_selected_node_data(self, new_data: object | None) -> None:
         """Watches for changes to selected_node_data and updates the display."""
         json_docview = self.query_one(JSONDocumentView)
