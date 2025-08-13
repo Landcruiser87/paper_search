@@ -21,7 +21,7 @@ class CF_Solver:
         self,
         domain: str,
         user_agent: str = None,
-        headless: bool = False,
+        headless: bool = True,
         slow_mo: int = 50,
         poll_interval: float = 1.0,
         max_wait: float = 60.0,
@@ -88,9 +88,9 @@ class CF_Solver:
                 timeout=timeout or int(self.max_wait * 1000),
             )
             await self.page.mouse.move(np.random.randint(200,500), np.random.randint(100, 400))
-            await asyncio.sleep(np.random.randint(1, 2))
+            await asyncio.sleep(np.random.randint(1, 5))
             await self.page.mouse.down()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(np.random.randint(1, 5))
 
         except PlaywrightTimeoutError:
             # allow polling for clearance even if initial load timed out
@@ -100,15 +100,30 @@ class CF_Solver:
         while time.time() < wait_deadline:
             # check cookies
             cookies = await self.context.cookies(self.domain)
-            temp = {}
-            for ck in cookies:
-                c_type = ck.get("name")
-                for cookie_type in ["cf_clearance", "__cfwaitingroom", "__cf_bm"]:
-                    if cookie_type == c_type:
-                        temp[cookie_type] = ck.get("value")
-                        
-            if temp:
+
+            if cookies:
+                temp = {}
+                temp["has_js"] = "1"
+                temp["cookie-agreed"] = "2"
+                for ck in cookies:
+                    c_type = ck.get("name")
+                    val = ck.get("value")
+                    temp[c_type] = val
+
                 return temp
+
+                # for cookie_name in ["cf_clearance", "__cfwaitingroom", "__cf_bm", "_cfuvid"]:
+                #     if cookie_name == c_type:
+                #         temp[cookie_name] = ck.get("value")
+            
+            # if temp:
+            #     temp["has_js"] = "1"
+            #     temp["cookie-agreed"] = "2"
+            #     # #reformat dictionary
+            #     # cookiemonster = []
+            #     # for key, val in temp.items():
+            #     #     cookiemonster.append(f"{key}={val}")
+            #     # return ";".join(cookiemonster)
 
             # detect CAPTCHA
             content = await self.page.content()
