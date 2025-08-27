@@ -971,7 +971,6 @@ class PaperSearch(App):
 
             # Take a power nap to allow UI thread processing time
             await asyncio.sleep(0.1)
-
             if not worker.is_cancelled:                
                 if all_results:
                     root_name = root_name.replace("|", "_")

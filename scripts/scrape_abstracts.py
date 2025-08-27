@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from itertools import cycle
 from support import console, logger, log_time
 
-MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
+MAIN_CONFERENCES  = ["ICML", "ICLR"]#,"NEURIPS"
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ECCV"] #"CLDD"-Got an xml error for 2024
 FUN_STATUS_UPDATE = cycle(["Patience Iago", "Phenominal COSMIC POWER", "Iiiiiity bitty living space", "Books, i've read these books", "Your conclusions were all wrong Ryan", "Let it go Indiana", "Duuuude", "wheres my car", "I wanna talk to sampson!!"])
 
@@ -146,32 +146,35 @@ def request_conf(conference:str, year:int=None, version:str=""):
     if version:
         url = conf_dict["IND_CONF"]["url"]
         headers = conf_dict["IND_CONF"]["headers"]
-        resp = requests.get(url, headers=headers)
-        
+
     else:
         url = conf_dict[conference]["url"]
         headers = conf_dict[conference]["headers"]
+    
+    try:
         resp = requests.get(url, headers=headers)
-
-    if resp.status_code != 200:
-        # If there's an error, log it and return no data for that conference
-        logger.warning(f"Status code: {resp.status_code}")
-        logger.warning(f"Reason: {resp.reason}")
-        results = None
-    else:
-        logger.debug(f"request successful for {url}, parsing data")
-        #If its the overall scrape of PLMR
-        if conference == "PMLR":
-            results = parse_all(resp.content, year_limit=year)
-        #If its a main conference
-        elif conference in MAIN_CONFERENCES:
-            resp_json = resp.json()
-            results = extract_json(resp_json, url)
-        #If its a sub conference
+        if resp.status_code != 200:
+            # If there's an error, log it and return no data for that conference
+            logger.warning(f"Status code: {resp.status_code}")
+            logger.warning(f"Reason: {resp.reason}")
+            results = None
         else:
-            results = parse_conf(resp.content)
-
-    return results
+            logger.debug(f"request successful for {url}, parsing data")
+            #If its the overall scrape of PLMR
+            if conference == "PMLR":
+                results = parse_all(resp.content, year_limit=year)
+            #If its a main conference
+            elif conference in MAIN_CONFERENCES:
+                resp_json = resp.json()
+                results = extract_json(resp_json, url)
+            #If its a sub conference
+            else:
+                results = parse_conf(resp.content)
+        return results
+    
+    except Exception as e:
+        logger.warning(f"Error extracting {url} {e}")
+        return None
 
 def request_paper(paper:dict, version:str) -> dict | None:
     chrome_version = np.random.randint(120, 132)
@@ -318,19 +321,13 @@ def parse_paper(page_text:str):
         temp["conf_info"] = info.text.strip()
 
     return temp
-    #Things I need
-    # Authors, github, poster url
-
-    #NOTE Needs to return updated dictionary
-    #Also might need bs4 to parse the HTML..  Need to look for json build.
-
 
 #NOTE START PROGRAM
 #FUNCTION main
 @log_time
 def main():
     """Main driver code for program"""
-    years = range(2017, 2025)
+    years = range(2025, 2026)
     logger.debug("searching PMLR")
     PMLR = request_conf("PMLR", year=years.start)
     global prog, task

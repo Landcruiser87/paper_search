@@ -1,0 +1,753 @@
+{
+  "0_CaseReportBench An LLM Benchmark Dataset for Dense Information Extraction in Clinical Case Reports": {
+    "title": "CaseReportBench: An LLM Benchmark Dataset for Dense Information Extraction in Clinical Case Reports",
+    "abstract": "Rare diseases, including Inborn Errors of Metabolism (IEM), pose significant diagnostic challenges. Case reports serve as key but computationally underutilized resources to inform diagnosis. Clinical dense information extraction refers to organizing medical information into structured predefined categories. Large Language Models (LLMs) may enable scalable dense information extraction from case reports but are rarely evaluated for this task. We introduce CaseReportBench, an expert-crafted dataset for dense information extraction of case reports (focusing on IEMs). Using this dataset, we assess various models and promptings, introducing novel strategies of category-specific prompting and \\textbf{subheading-filtered data integration}. Zero-shot chain-of-thought offers little advantage over zero-shot prompting. Category-specific prompting improves alignment to benchmark. Open-source Qwen2.5:7B outperforms GPT-4o for this task. Our clinician evaluations show that LLMs can extract clinically relevant details from case reports, supporting rare disease diagnosis and management, while highlighting areas for improvement, such as LLM\u2019s limitation in recognizing negative findings for differential diagnosis. This work advances LLM-driven clinical NLP, paving the way for scalable, privacy-conscious medical AI applications.",
+    "url": "https://proceedings.mlr.press/v287/zhang25b.html",
+    "id": "https://proceedings.mlr.press/v287/zhang25b.html",
+    "pdf": "https://proceedings.mlr.press/v287/zhang25b/zhang25b.pdf",
+    "authors": {
+      "0_Xiao Yu Cindy Zhang": "Xiao Yu Cindy Zhang",
+      "1_Carlos R. Ferreira": "Carlos R. Ferreira",
+      "2_Francis Rossignol": "Francis Rossignol",
+      "3_Raymond T. Ng": "Raymond T. Ng",
+      "4_Wyeth Wasserman": "Wyeth Wasserman",
+      "5_Jian Zhu": "Jian Zhu"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/zhang25b/zhang25b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:527-542,\u00a02025.",
+    "supplemental": ""
+  },
+  "1_Uncovering Knowledge Gaps in Radiology Report Generation Models through Knowledge Graphs": {
+    "title": "Uncovering Knowledge Gaps in Radiology Report Generation Models through Knowledge Graphs",
+    "abstract": "Recent advancements in artificial intelligence have significantly improved the automatic generation of radiology reports. However, existing evaluation methods often focus on report-to-report similarities and fail to reveal the models\u2019 understanding of radiological images and their capacity to achieve human-level granularity in descriptions. To bridge this gap, we introduce a system, named ReXKG, which extracts structured information from processed reports to construct a comprehensive radiology knowledge graph. We then propose three metrics to evaluate the similarity of nodes, distribution of edges, and coverage of subgraphs across various knowledge graphs. Using these metrics, we conduct an in-depth comparative analysis of AI-generated and human-written radiology reports, assessing the performance of both specialist and generalist models. Our study provides a deeper understanding of the capabilities and limitations of current AI models in report generation, offering valuable insights for improving model performance and clinical applicability.",
+    "url": "https://proceedings.mlr.press/v287/zhang25a.html",
+    "id": "https://proceedings.mlr.press/v287/zhang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/zhang25a/zhang25a.pdf",
+    "authors": {
+      "0_Xiaoman Zhang": "Xiaoman Zhang",
+      "1_Julian Nicolas Acosta": "Julian Nicolas Acosta",
+      "2_Hong-Yu Zhou": "Hong-Yu Zhou",
+      "3_Pranav Rajpurkar": "Pranav Rajpurkar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/zhang25a/zhang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:30-42,\u00a02025.",
+    "supplemental": ""
+  },
+  "2_Caught in the Web of Words Do LLMs Fall for Spin in Medical Literature": {
+    "title": "Caught in the Web of Words: Do LLMs Fall for Spin in Medical Literature?",
+    "abstract": "Medical research faces well-documented challenges in translating novel treatments into clinical practice. Publishing incentives encourage researchers to present \"positive\" findings, even when empirical results are equivocal. Consequently, it is well-documented that authors often spin study results, especially in article abstracts. Such spin can influence clinician interpretation of evidence and may affect patient care decisions. In this study, we ask whether the interpretation of trial results offered by Large Language Models (LLMs) is similarly affected by spin. This is important since LLMs are increasingly being used to trawl through and synthesize published medical evidence. We evaluated 22 LLMs and found that they are across the board more susceptible to spin than humans. They might also propagate spin into their outputs: We find evidence, e.g., that LLMs implicitly incorporate spin into plain language summaries that they generate. We also find, however, that LLMs are generally capable of recognizing spin, and can be prompted in a way to mitigate spin\u2019s impact on LLM outputs.",
+    "url": "https://proceedings.mlr.press/v287/yun25a.html",
+    "id": "https://proceedings.mlr.press/v287/yun25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/yun25a/yun25a.pdf",
+    "authors": {
+      "0_Hye Sun Yun": "Hye Sun Yun",
+      "1_Karen Y.C. Zhang": "Karen Y.C. Zhang",
+      "2_Ramez Kouzy": "Ramez Kouzy",
+      "3_Iain James Marshall": "Iain James Marshall",
+      "4_Junyi Jessy Li": "Junyi Jessy Li",
+      "5_Byron C Wallace": "Byron C Wallace"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/yun25a/yun25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:458-479,\u00a02025.",
+    "supplemental": ""
+  },
+  "3_SelfExplaining Hypergraph Neural Networks for Diagnosis Prediction": {
+    "title": "Self-Explaining Hypergraph Neural Networks for Diagnosis Prediction",
+    "abstract": "The burgeoning volume of electronic health records (EHRs) has enabled deep learning models to excel in predictive healthcare. However, for high-stakes applications such as diagnosis prediction, model interpretability remains paramount. Existing deep learning diagnosis prediction models with intrinsic interpretability often assign attention weights to every past diagnosis or hospital visit, providing explanations lacking flexibility and succinctness. In this paper, we introduce SHy, a self-explaining hypergraph neural network model, designed to offer personalized, concise and faithful explanations that allow for interventions from clinical experts. By modeling each patient as a unique hypergraph and employing a message-passing mechanism, SHy captures higher-order disease interactions and extracts distinct temporal phenotypes as personalized explanations. It also addresses the incompleteness of the EHR data by accounting for essential false negatives in the original diagnosis record. A qualitative case study and extensive quantitative evaluations on two real-world EHR datasets demonstrate the superior predictive performance and interpretability of SHy over existing state-of-the-art models.",
+    "url": "https://proceedings.mlr.press/v287/yu25a.html",
+    "id": "https://proceedings.mlr.press/v287/yu25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/yu25a/yu25a.pdf",
+    "authors": {
+      "0_Leisheng Yu": "Leisheng Yu",
+      "1_Yanxiao Cai": "Yanxiao Cai",
+      "2_Minxing Zhang": "Minxing Zhang",
+      "3_Xia Hu": "Xia Hu"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/yu25a/yu25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:908-924,\u00a02025.",
+    "supplemental": ""
+  },
+  "4_Contrastive Pretraining for Stress Detection with Multimodal Wearable Sensor Data and Surveys": {
+    "title": "Contrastive Pretraining for Stress Detection with Multimodal Wearable Sensor Data and Surveys",
+    "abstract": "Stress adversely affects mental and physical health and underscores the importance of early detection. Some studies have utilized physiological signals from wearable sensors and other information to monitor stress levels in daily life. Recent studies use self-supervised methods due to the high cost of collecting stress labels. However, self-supervised learning using both time series and tabular features such as demographics, traits, and contextual information has been understudied. Therefore, there is a need to further investigate how a model can be effectively trained with different granularity of multimodal data and limited number of labels. In this study, we introduce a self-supervised multimodal learning approach for stress detection that combines time series and tabular features. Our proposed method presents a promising solution for effectively monitoring stress using multimodal data.",
+    "url": "https://proceedings.mlr.press/v287/yang25a.html",
+    "id": "https://proceedings.mlr.press/v287/yang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/yang25a/yang25a.pdf",
+    "authors": {
+      "0_Zeyu Yang": "Zeyu Yang",
+      "1_Han Yu": "Han Yu",
+      "2_Akane Sano": "Akane Sano"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/yang25a/yang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:166-178,\u00a02025.",
+    "supplemental": ""
+  },
+  "5_Predicting Partially Observed LongTerm Outcomes with Adversarial PositiveUnlabeled Domain Adaptation": {
+    "title": "Predicting Partially Observed Long-Term Outcomes with Adversarial Positive-Unlabeled Domain Adaptation",
+    "abstract": "Predicting long-term clinical outcomes often requires large-scale training data with sufficiently long follow-up. However, in electronic health records (EHR) data, long-term labels may not be available for contemporary patient cohorts. Given the dynamic nature of clinical practice, models that rely on historical training data may not perform optimally. In this work, we frame the problem as a positive\u2013unlabeled domain adaptation task, where we seek to adapt from a fully labeled source domain (e.g., historical data) to a partially labeled target domain (e.g., contemporary data). We propose an adversarial framework that includes three core components: (1) Overall Alignment, to match feature distributions between source and target domains; (2) Partial Alignment, to map source negatives to unlabeled target samples; and (3) Conditional Alignment, to address conditional shift using available positive labels in the target domain. We evaluate our method on a benchmark digit classification task (SVHN-MNIST), and two real-world EHR applications: prediction of one-year mortality post COVID-19, and long-term prediction of neurodevelopmental conditions (NDC) in children. In all settings, our approach consistently outperforms baseline models and, in most cases, achieves performance close to an oracle model trained with fully observed labels.",
+    "url": "https://proceedings.mlr.press/v287/yan25a.html",
+    "id": "https://proceedings.mlr.press/v287/yan25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/yan25a/yan25a.pdf",
+    "authors": {
+      "0_Mengying Yan": "Mengying Yan",
+      "1_Meng Xia": "Meng Xia",
+      "2_Wei Angel Huang": "Wei Angel Huang",
+      "3_Chuan Hong": "Chuan Hong",
+      "4_Benjamin Goldstein": "Benjamin Goldstein",
+      "5_Matthew M. Engelhard": "Matthew M. Engelhard"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/yan25a/yan25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:672-690,\u00a02025.",
+    "supplemental": ""
+  },
+  "6_When Attention Fails Pitfalls of Attentionbased Model Interpretability for Highdimensional Clinical TimeSeries": {
+    "title": "When Attention Fails: Pitfalls of Attention-based Model Interpretability for High-dimensional Clinical Time-Series",
+    "abstract": "Attention-based deep learning models are widely used for clinical time-series analysis, largely due to their perceived ability to enhance model interpretability. However, the reliability, faithfulness, and consistency of attention mechanisms as an interpretability tool in high-dimensional clinical time series data require further investigation. We conducted a comprehensive evaluation of consistency and faithfulness of attention mechanisms in deep learning models applied to high-dimensional clinical time-series data. Specifically, we trained 1000 different variants of an attention-based LSTM model architecture with random initializations to analyze the consistency of attention scores across mortality prediction and patient severity group classification. Our findings revealed significant inconsistencies in attention scores for individual samples across the thousand model variants. Visual inspection of attention weight distributions indicated that the attention mechanism did not consistently focus on the same feature-time pairs, challenging the assumption of faithfulness and reliability in model interpretability. The observed inconsistencies in per-sample attention weights suggest that attention mechanisms are unreliable as an interpretability tool for clinical decision-making tasks involving high-dimensional time-series data. While attention mechanisms may enhance model performance metrics, they often fail to produce clinically meaningful and consistent interpretations, limiting their utility in healthcare settings where transparency is critical for informed decision-making.",
+    "url": "https://proceedings.mlr.press/v287/yadav25a.html",
+    "id": "https://proceedings.mlr.press/v287/yadav25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/yadav25a/yadav25a.pdf",
+    "authors": {
+      "0_Shashank Yadav": "Shashank Yadav",
+      "1_Vignesh Subbian": "Vignesh Subbian"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/yadav25a/yadav25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:289-305,\u00a02025.",
+    "supplemental": ""
+  },
+  "7_CaReAQA A Cardiac and Respiratory Audio Question Answering Model for OpenEnded Diagnostic Reasoning": {
+    "title": "CaReAQA: A Cardiac and Respiratory Audio Question Answering Model for Open-Ended Diagnostic Reasoning",
+    "abstract": "Medical audio signals, such as heart and lung sounds, play a crucial role in clinical diagnosis. However, analyzing these signals remains challenging: traditional methods rely on handcrafted features or supervised deep learning models that demand extensive labeled datasets, limiting their scalability and applicability. To address these issues, we propose CaReAQA, an audio-language model that integrates a foundation audio model with the reasoning capabilities of large language models, enabling clinically relevant, open-ended diagnostic responses. Alongside CaReAQA, we introduce CaReSound, a benchmark dataset of annotated medical audio recordings enriched with metadata and paired question-answer examples, intended to drive progress in diagnostic reasoning research. Evaluation results show that CaReAQA achieves $86.2%$ accuracy on open-ended diagnostic reasoning tasks, outperforming baseline models. It also generalizes well to closed-ended classification tasks, achieving an average accuracy of $56.9%$ on unseen datasets. These findings highlight the transformative potential of integrating audio analysis with language-based reasoning to address key challenges in medical diagnostics, opening new possibilities for scalable, data-efficient AI systems capable of supporting real-world clinical decision-making.",
+    "url": "https://proceedings.mlr.press/v287/wang25b.html",
+    "id": "https://proceedings.mlr.press/v287/wang25b.html",
+    "pdf": "https://proceedings.mlr.press/v287/wang25b/wang25b.pdf",
+    "authors": {
+      "0_Tsai-Ning Wang": "Tsai-Ning Wang",
+      "1_Lin-Lin Chen": "Lin-Lin Chen",
+      "2_Neil Zeghidour": "Neil Zeghidour",
+      "3_Aaqib Saeed": "Aaqib Saeed"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/wang25b/wang25b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:231-246,\u00a02025.",
+    "supplemental": ""
+  },
+  "8_WatchSleepNet A Novel Model and Pretraining Approach for Advancing Sleep Staging with Smartwatches": {
+    "title": "WatchSleepNet: A Novel Model and Pretraining Approach for Advancing Sleep Staging with Smartwatches",
+    "abstract": "Sleep monitoring is essential for assessing overall health and managing sleep disorders, yet clinical adoption of consumer wearables remains limited due to inconsistent performance and scarce open source datasets and transparent codebase. In this study, we introduce WatchSleepNet, a novel, open-source three-stage sleep staging algorithm. The model uses sequence-to-sequence architecture integrating Residual Networks (ResNet), Temporal Convolutional Networks (TCN), and Long Short-Term Memory (LSTM) networks with self-attention to effectively capture both spatial and temporal dependencies crucial for sleep staging. To address the limited availability of high-quality wearable photoplethysmography (PPG) datasets, WatchSleepNet leveraged inter-beat interval (IBI) signals as a shared representation across polysomnography (PSG) and photoplethysmography (PPG) modalities. By pretraining on large PSG datasets and fine-tuning on wrist-worn PPG signals, the model achieved a REM F1 score of 0.642 +/- 0.072 and a Cohen\u2019s Kappa of 0.684 +/- 0.051, surpassing previous state-of-the-art methods. To promote transparency and further research, we publicly release our model and codebase, advancing reproducibility and accessibility in wearable sleep research and enabling the development for more robust, clinically viable sleep monitoring solutions.",
+    "url": "https://proceedings.mlr.press/v287/wang25a.html",
+    "id": "https://proceedings.mlr.press/v287/wang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/wang25a/wang25a.pdf",
+    "authors": {
+      "0_Will Ke Wang": "Will Ke Wang",
+      "1_Bill Chen": "Bill Chen",
+      "2_Jiamu Yang": "Jiamu Yang",
+      "3_Hayoung Jeong": "Hayoung Jeong",
+      "4_Leeor Hershkovich": "Leeor Hershkovich",
+      "5_Shekh Md Mahmudul Islam": "Shekh Md Mahmudul Islam",
+      "6_Mengde Liu": "Mengde Liu",
+      "7_Ali R Roghanizad": "Ali R Roghanizad",
+      "8_Md Mobashir Hasan Shandhi": "Md Mobashir Hasan Shandhi",
+      "9_Andrew R Spector": "Andrew R Spector",
+      "10_Jessilyn Dunn": "Jessilyn Dunn"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/wang25a/wang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:145-165,\u00a02025.",
+    "supplemental": ""
+  },
+  "9_The Latentverse An OpenSource Benchmarking Toolkit for Evaluating Latent Representations": {
+    "title": "The Latentverse: An Open-Source Benchmarking Toolkit for Evaluating Latent Representations",
+    "abstract": "Self-supervised representation learning is a powerful approach for extracting meaningful features without relying on large amounts of labeled data, making it particularly valuable in fields like healthcare. This enables pretrained models to be shared and fine-tuned with minimal data for various downstream applications. However, evaluating the quality and behavior of these representations remains challenging. To address this, we introduce Latentverse, an open-source library and web-based platform for evaluating latent representations. Latentverse generates detailed reports with visualizations and metrics that provide a comprehensive perspective on different properties of representations, such as clustering, disentanglement, generalization, expressiveness, and robustness. It also allows for the comparison of different representations, enabling developers to refine model architectures and helping users assess how well an embedding model aligns with the requirements of their specific applications.",
+    "url": "https://proceedings.mlr.press/v287/turura25a.html",
+    "id": "https://proceedings.mlr.press/v287/turura25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/turura25a/turura25a.pdf",
+    "authors": {
+      "0_Yoanna Turura": "Yoanna Turura",
+      "1_Sam Freesun Friedman": "Sam Freesun Friedman",
+      "2_Aurora Cremer": "Aurora Cremer",
+      "3_Mahnaz Maddah": "Mahnaz Maddah",
+      "4_Sana Tonekaboni": "Sana Tonekaboni"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/turura25a/turura25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:708-719,\u00a02025.",
+    "supplemental": ""
+  },
+  "10_Benchmarking Missing Data Imputation Methods for Time Series Using RealWorld Test Cases": {
+    "title": "Benchmarking Missing Data Imputation Methods for Time Series Using Real-World Test Cases",
+    "abstract": "Missing data is pervasive in healthcare. Many imputation methods exist to fill in missing values, yet most were evaluated using randomly deleted values rather than the actual mechanisms they were designed to address. We aimed to determine real-world accuracy on all types of missing data (missing completely at random, MCAR; missing at random, MAR; and not missing at random, NMAR) for state of the art and commonly used imputation methods. Using two time series data targets (continuous glucose monitoring, Loop dataset; heart rate, All of Us dataset) we simulated missingness for each mechanism, at a range of missingness percentages (5-30%) and tested 12 imputation methods. We evaluated accuracy with multiple metrics including root mean square error (RMSE) and bias. We found that overall, accuracy was significantly better on MCAR than on MAR and NMAR, despite many methods being developed for those mechanisms. Linear interpolation had the lowest RMSE with all mechanisms and for all demographic groups, with low bias. This study shows that current evaluation practices do not provide an accurate picture of real-world performance with realistic patterns of missingness. Future research is needed to develop evaluation practices that better capture real-world accuracy, and methods that better address real-world mechanisms.",
+    "url": "https://proceedings.mlr.press/v287/toye25a.html",
+    "id": "https://proceedings.mlr.press/v287/toye25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/toye25a/toye25a.pdf",
+    "authors": {
+      "0_Adedolapo Aishat Toye": "Adedolapo Aishat Toye",
+      "1_Asuman Celik": "Asuman Celik",
+      "2_Samantha Kleinberg": "Samantha Kleinberg"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/toye25a/toye25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:480-501,\u00a02025.",
+    "supplemental": ""
+  },
+  "11_ElectrocardiogramLanguage Model for FewShot Question Answering with Meta Learning": {
+    "title": "Electrocardiogram\u2013Language Model for Few-Shot Question Answering with Meta Learning",
+    "abstract": "Electrocardiogram (ECG) interpretation requires specialized expertise, often involving synthesizing insights from ECG signals with complex clinical queries posed in natural language. The scarcity of labeled ECG data coupled with the diverse nature of clinical inquiries presents a significant challenge for developing robust and adaptable ECG diagnostic systems. This work introduces a novel multimodal meta-learning method for few-shot ECG question answering, addressing the challenge of limited labeled data while leveraging the rich knowledge encoded within large language models (LLMs). Our LLM-agnostic approach integrates a pre-trained ECG encoder with a frozen LLM (e.g., LLaMA and Gemma) via a trainable fusion module, enabling the language model to reason about ECG data and generate clinically meaningful answers. Extensive experiments demonstrate superior generalization to unseen diagnostic tasks compared to supervised baselines, achieving notable performance even with limited ECG leads. For instance, in a 5-way 5-shot setting, our method using LLaMA-3.1-8B achieves an accuracy of 84.6%, 77.3%, and 69.6% on single verify, choose and query question types, respectively. These results highlight the potential of our method to enhance clinical ECG interpretation by combining signal processing with the nuanced language understanding capabilities of LLMs, particularly in data-constrained scenarios.",
+    "url": "https://proceedings.mlr.press/v287/tang25a.html",
+    "id": "https://proceedings.mlr.press/v287/tang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/tang25a/tang25a.pdf",
+    "authors": {
+      "0_Jialu Tang": "Jialu Tang",
+      "1_Tong Xia": "Tong Xia",
+      "2_Yuan Lu": "Yuan Lu",
+      "3_Cecilia Mascolo": "Cecilia Mascolo",
+      "4_Aaqib Saeed": "Aaqib Saeed"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/tang25a/tang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:89-104,\u00a02025.",
+    "supplemental": ""
+  },
+  "12_Investigating Primary Care Indications to Improve the Quality of Electronic Health Record Data in Target Trial Emulation for Dementia": {
+    "title": "Investigating Primary Care Indications to Improve the Quality of Electronic Health Record Data in Target Trial Emulation for Dementia",
+    "abstract": "Missing data, inaccuracies in medication lists, and recording delays in electronic health records (EHR) are major limitations for target trial emulation (TTE), which uses EHR data to retrospectively emulate a clinical trial. EHR-based TTE relies on recorded data that proxy actual drug exposures and outcomes. While prior work has proposed various methods to improve EHR data quality, here we investigate the under-utilized consideration that encounters with a primary care provider (PCP) may result in more accurate data in the EHR. Patients with a PCP within the EHR network being studied tend to have more encounters overall and a greater proportion of the types of encounters that yield comprehensive and up-to-date records. By contrasting data for patients with and without a PCP in the considered EHR network, we demonstrate how PCP status affects EHR data quality. Through a case study, we then empirically examine the impact on TTE of including a PCP status feature either in the propensity score and outcome models or as an eligibility criterion for cohort selection, versus ignoring it. Specifically, we compare the estimated effects of two first-line antidiabetic drug classes on the onset of Alzheimer\u2019s Disease and Related Dementias. We find that the estimated treatment effect is sensitive to the consideration of PCP status, particularly when used as an eligibility criterion. Our work suggests that further researching the role of PCP status may improve the design of pragmatic trials.",
+    "url": "https://proceedings.mlr.press/v287/sunog25a.html",
+    "id": "https://proceedings.mlr.press/v287/sunog25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/sunog25a/sunog25a.pdf",
+    "authors": {
+      "0_Max I Sunog": "Max I Sunog",
+      "1_Colin Magdamo": "Colin Magdamo",
+      "2_Marie-Laure Charpignon": "Marie-Laure Charpignon",
+      "3_Mark W. Albers": "Mark W. Albers"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/sunog25a/sunog25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:610-648,\u00a02025.",
+    "supplemental": ""
+  },
+  "13_Predicting Health States of Patients with Chronic Pain from Cellphone Usage Data": {
+    "title": "Predicting Health States of Patients with Chronic Pain from Cellphone Usage Data",
+    "abstract": "This study followed patients suffering from chronic pain and aimed to predict their health states. To this end, we conducted a clinical study in which patients were digitally monitored via clinically validated questionnaires (SF-36 and EQ-5D) and continuously collected cellphone usage data. We present a novel two-step approach for utilizing the immense amounts of unlabeled cellular logs in a supervised, binary classification problem and predicting patient-reported outcomes from objective cellphone usage data. Reaching an accuracy of 0.827 for women and 0.898 for men, our classification results show the feasibility of using cellphone monitoring data for patients\u2019 state prediction. Such a capability may enrich periodic clinical assessments with frequent digital follow-ups, assist in disease management for chronic patients, and raise awareness whenever necessary.",
+    "url": "https://proceedings.mlr.press/v287/stemmer25a.html",
+    "id": "https://proceedings.mlr.press/v287/stemmer25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/stemmer25a/stemmer25a.pdf",
+    "authors": {
+      "0_Maya Stemmer": "Maya Stemmer",
+      "1_Lior Ungar": "Lior Ungar",
+      "2_Talia Friedman": "Talia Friedman",
+      "3_Lihi Bik": "Lihi Bik",
+      "4_Yotam Hadari": "Yotam Hadari",
+      "5_Itamar Efrati": "Itamar Efrati",
+      "6_Yarden Rachamim": "Yarden Rachamim",
+      "7_Lior Carmi": "Lior Carmi",
+      "8_Shai Fine": "Shai Fine"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/stemmer25a/stemmer25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:443-457,\u00a02025.",
+    "supplemental": ""
+  },
+  "14_Global Deep Forecasting with PatientSpecific Pharmacokinetics": {
+    "title": "Global Deep Forecasting with Patient-Specific Pharmacokinetics",
+    "abstract": "Forecasting healthcare time series data is vital for early detection of adverse outcomes and patient monitoring. However, it can be challenging in practice due to variable medication administration and unique pharmacokinetic (PK) properties of each patient. To address these challenges, we propose a novel hybrid global-local architecture and a PK encoder that informs deep learning models of patient-specific treatment effects. We showcase the efficacy of our approach in achieving significant accuracy gains in a blood glucose forecasting task using both realistically simulated and real-world data. Our PK encoder surpasses baselines by up to 16.4% on simulated data and 5.3% on real-world data for individual patients during critical events of severely high and low glucose levels. Furthermore, our proposed hybrid global-local architecture outperforms patient-specific PK models by 15.8%, on average.",
+    "url": "https://proceedings.mlr.press/v287/potosnak25a.html",
+    "id": "https://proceedings.mlr.press/v287/potosnak25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/potosnak25a/potosnak25a.pdf",
+    "authors": {
+      "0_Willa Potosnak": "Willa Potosnak",
+      "1_Cristian Ignacio Challu": "Cristian Ignacio Challu",
+      "2_Kin G. Olivares": "Kin G. Olivares",
+      "3_Keith A Dufendach": "Keith A Dufendach",
+      "4_Artur Dubrawski": "Artur Dubrawski"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/potosnak25a/potosnak25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:306-336,\u00a02025.",
+    "supplemental": ""
+  },
+  "15_Beyond Prompting Time2Lang  Bridging TimeSeries Foundation Models and Large Language Models for Health Sensing": {
+    "title": "Beyond Prompting: Time2Lang - Bridging Time-Series Foundation Models and Large Language Models for Health Sensing",
+    "abstract": "Large language models (LLMs) show promise for health applications when combined with behavioral sensing data. Traditional approaches convert sensor data into text prompts, but this process is prone to errors, computationally expensive, and requires domain expertise. These challenges are particularly acute when processing extended time series data. While time series foundation models (TFMs) have recently emerged as powerful tools for learning representations from temporal data, bridging TFMs and LLMs remains challenging. Here, we present Time2Lang, a framework that directly maps TFM outputs to LLM representations without intermediate text conversion. Our approach first trains on synthetic data using periodicity prediction as a pretext task, followed by evaluation on mental health classification tasks. We validate Time2Lang on two longitudinal wearable and mobile sensing datasets: daily depression prediction using step count data (17,251 days from 256 participants) and flourishing classification based on conversation duration (46 participants over 10 weeks). Time2Lang maintains consistent inference times regardless of input length, unlike traditional prompting methods. The generated embeddings preserve essential time-series characteristics such as auto-correlation. Our results demonstrate that TFMs and LLMs can be effectively integrated while minimizing information loss and enabling performance transfer across these distinct modeling paradigms. This work establishes a foundation for future research combining general-purpose large models for complex healthcare tasks.",
+    "url": "https://proceedings.mlr.press/v287/pillai25a.html",
+    "id": "https://proceedings.mlr.press/v287/pillai25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/pillai25a/pillai25a.pdf",
+    "authors": {
+      "0_Arvind Pillai": "Arvind Pillai",
+      "1_Dimitris Spathis": "Dimitris Spathis",
+      "2_Subigya Nepal": "Subigya Nepal",
+      "3_Amanda C. Collins": "Amanda C. Collins",
+      "4_Daniel M Mackin": "Daniel M Mackin",
+      "5_Michael V. Heinz": "Michael V. Heinz",
+      "6_Tess Z Griffin": "Tess Z Griffin",
+      "7_Nicholas C. Jacobson": "Nicholas C. Jacobson",
+      "8_Andrew Campbell": "Andrew Campbell"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/pillai25a/pillai25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:268-288,\u00a02025.",
+    "supplemental": ""
+  },
+  "16_Benchmarking ECG Delineation using Deep Neural Networkbased Semantic Segmentation Models": {
+    "title": "Benchmarking ECG Delineation using Deep Neural Network-based Semantic Segmentation Models",
+    "abstract": "Accurate electrocardiogram (ECG) delineation is essential for automated cardiac diagnosis, enabling the precise identification of key waveforms such as the P wave, QRS complex, and T wave. This study presents the first comprehensive benchmarking of neural network-based semantic segmentation models for ECG delineation, evaluating their accuracy, resource efficiency, and robustness across both public and private datasets. Our results demonstrate that convolutional neural network (CNN)-based approaches consistently achieve superior accuracy compared to other network architectures. Additionally, we observed the presence of fragmented segments in the delineation results.  To address this issue, we explored post-processing techniques to consolidate or eliminate fragmented segments using an optimal configuration, leading to performance improvements.  Furthermore, by analyzing performance variations across different waveform labels, we provide critical insights into key considerations for ECG segmentation tasks. Notably, our findings also reveal that larger model sizes do not necessarily correlate with better performance.  Based on our findings, we propose a set of practical guidelines for leveraging segmentation models in ECG delineation, offering valuable direction for future research and clinical applications.",
+    "url": "https://proceedings.mlr.press/v287/park25a.html",
+    "id": "https://proceedings.mlr.press/v287/park25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/park25a/park25a.pdf",
+    "authors": {
+      "0_Jaeho Park": "Jaeho Park",
+      "1_TaeJun Park": "TaeJun Park",
+      "2_Joon-myoung Kwon": "Joon-myoung Kwon",
+      "3_Yong-Yeon Jo": "Yong-Yeon Jo"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/park25a/park25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:63-88,\u00a02025.",
+    "supplemental": ""
+  },
+  "17_MultiView Contrastive Learning for Robust Domain Adaptation in Medical Time Series Analysis": {
+    "title": "Multi-View Contrastive Learning for Robust Domain Adaptation in Medical Time Series Analysis",
+    "abstract": "Adapting machine learning models to medical time series across different domains remains a challenge due to complex temporal dependencies and dynamic distribution shifts. Current approaches often focus on isolated feature representations, limiting their ability to fully capture the intricate temporal dynamics necessary for robust domain adaptation. In this work, we propose a novel framework leveraging multi-view contrastive learning to integrate temporal patterns, derivative-based dynamics, and frequency-domain features. Our method employs independent encoders and a hierarchical fusion mechanism to learn feature-invariant representations that are transferable across domains while preserving temporal coherence. Extensive experiments on diverse medical datasets, including electroencephalogram (EEG), electrocardiogram (ECG), and electromyography (EMG), demonstrate that our approach significantly outperforms state-of-the-art methods in transfer learning tasks. By advancing the robustness and generalizability of machine learning models, our framework offers a practical pathway for deploying reliable AI systems in diverse healthcare settings.",
+    "url": "https://proceedings.mlr.press/v287/oh25a.html",
+    "id": "https://proceedings.mlr.press/v287/oh25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/oh25a/oh25a.pdf",
+    "authors": {
+      "0_YongKyung Oh": "YongKyung Oh",
+      "1_Alex Bui": "Alex Bui"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/oh25a/oh25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:502-526,\u00a02025.",
+    "supplemental": ""
+  },
+  "18_The Impact of Medication Nonadherence on Adverse Outcomes Evidence from Schizophrenia Patients via Survival Analysis": {
+    "title": "The Impact of Medication Non-adherence on Adverse Outcomes: Evidence from Schizophrenia Patients via Survival Analysis",
+    "abstract": "This study aims to quantify the association between non-adherence to antipsychotic medications and adverse outcomes among individuals with schizophrenia. We frame this problem in the context of survival analysis, looking at the time until the earliest of several types of adverse outcomes (early death, involuntary hospitalization, jail booking)\u2013we refer to this time duration as the adverse event time. We apply standard causal inference tools (T-learner, S-learner, and nearest neighbor matching) with various survival models to estimate individual and average treatment effects in terms of differences in mean adverse event times, where the treatment corresponds to medication non-adherence. We repeat our analysis using different amounts of longitudinal information available per individual (3, 6, 9, and 12 months). Using real data from a county\u2019s administrative records, our results show strong evidence that medication non-adherence is associated with earlier adverse outcomes, advancing the onset of an adverse event by approximately 1 to 4 months. Ablation studies confirm that risk scores provided by the county account for key confounders, as their removal amplifies the estimated effects of non-adherence. Finally, subgroup analyses by medication formulation (injectable vs. oral) and by specific medication type consistently show that non-adherence is associated with earlier adverse outcomes. These findings underscore the clinical importance of medication adherence in delaying severe psychiatric crises and show that integrating survival analysis with causal inference tools can yield policy-relevant insights in complex healthcare settings. We caution that although we use causal inference tools, we only make associative claims; we discuss the validity of some assumptions that would enable us to rigorously convert our claims into causal ones.",
+    "url": "https://proceedings.mlr.press/v287/noroozizadeh25a.html",
+    "id": "https://proceedings.mlr.press/v287/noroozizadeh25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/noroozizadeh25a/noroozizadeh25a.pdf",
+    "authors": {
+      "0_Shahriar Noroozizadeh": "Shahriar Noroozizadeh",
+      "1_Pim Welle": "Pim Welle",
+      "2_Jeremy Weiss": "Jeremy Weiss",
+      "3_George H. Chen": "George H. Chen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/noroozizadeh25a/noroozizadeh25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:573-609,\u00a02025.",
+    "supplemental": ""
+  },
+  "19_Causal considerations can deterimine the utility of machine learning assisted GWAS": {
+    "title": "Causal considerations can deterimine the utility of machine learning assisted GWAS",
+    "abstract": "Machine Learning (ML) is increasingly employed to generate health related traits (phenotypes) for genetic discovery, either by imputing existing phenotypes into larger cohorts or by creating novel phenotypes. While these ML-derived phenotypes can significantly increase sample size, and thereby empower genetic discovery, they can also inflate the false discovery rate (FDR). Recent research has focused on developing estimators that leverage both true and machine-learned phenotypes to properly control false positives. Our work complements these efforts by exploring how the true positive rate (TPR) and FDR depend on the causal relationships among the inputs to the ML model, the true phenotypes, and the environment.  Using a simulation-based framework, we study causal architectures in which the machine-learned proxy phenotype is derived from biomarkers (i.e. ML model input features) either causally upstream or downstream of the target phenotype (ML model output). We show that no inflation of the false discovery rate occurs when the proxy phenotype is generated from upstream biomarkers, but that false discoveries can occur when the proxy phenotype is generated from downstream biomarkers. Next, we show that power to detect genetic variants truly associated with the target trait depends on its genetic component and correlation with the proxy trait. However, the source of the correlation is key to evaluating a proxy phenotype\u2019s utility for genetic discovery. We demonstrate that evaluating machine-learned proxy phenotypes using out-of-sample predictive performance (e.g. test $R^2$) provides a poor lens on utility. This is because overall predictive performance does not differentiate between genetic and environmental components. In addition to parsing these properties of machine-learned phenotypes via simulations, we further illustrate them using real-world data from the UK Biobank.",
+    "url": "https://proceedings.mlr.press/v287/mukherjee25a.html",
+    "id": "https://proceedings.mlr.press/v287/mukherjee25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/mukherjee25a/mukherjee25a.pdf",
+    "authors": {
+      "0_Sumit Mukherjee": "Sumit Mukherjee",
+      "1_ZACHARY R MCCAW": "ZACHARY R MCCAW",
+      "2_David Amar": "David Amar",
+      "3_Rounak Dey": "Rounak Dey",
+      "4_Thomas W Soare": "Thomas W Soare",
+      "5_Hari Somineni": "Hari Somineni",
+      "6_Nicholas Eriksson": "Nicholas Eriksson",
+      "7_Colm O\u2019Dushlaine": "Colm O\u2019Dushlaine"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/mukherjee25a/mukherjee25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:179-193,\u00a02025.",
+    "supplemental": ""
+  },
+  "20_Transformer Model for Alzheimers Disease Progression Prediction Using  Longitudinal Visit Sequences": {
+    "title": "Transformer Model for Alzheimer\u2019s Disease Progression Prediction Using  Longitudinal Visit Sequences",
+    "abstract": "Alzheimer\u2019s disease (AD) is a neurodegenerative disorder with no known cure that affects tens of millions of people worldwide. Early detection of AD is critical for timely intervention to halt or slow the progression of the disease. In this study, we propose a Transformer model for predicting the stage of AD progression at a subject\u2019s next clinical visit using features from a sequence of visits extracted from the subject\u2019s visit history. We also rigorously compare our model to recurrent neural networks (RNNs) such as long short-term memory (LSTM), gated recurrent unit (GRU), and minimalRNN and assess their performances based on factors such as the length of prior visits and data imbalance. We test the importance of different feature categories and visit history, as well as compare the model to a newer Transfomer-based model optimized for time series. Our model demonstrates strong predictive performance despite missing visits and missing features in available visits, particularly in identifying converter subjects\u2013individuals transitioning to more severe disease stages\u2013an area that has posed significant challenges in longitudinal prediction. The results highlight the model\u2019s potential in enhancing early diagnosis and patient outcomes.",
+    "url": "https://proceedings.mlr.press/v287/moghaddami25a.html",
+    "id": "https://proceedings.mlr.press/v287/moghaddami25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/moghaddami25a/moghaddami25a.pdf",
+    "authors": {
+      "0_Mahdi Moghaddami": "Mahdi Moghaddami",
+      "1_Clayton Schubring": "Clayton Schubring",
+      "2_Mohammad Siadat": "Mohammad Siadat"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/moghaddami25a/moghaddami25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:804-816,\u00a02025.",
+    "supplemental": ""
+  },
+  "21_Uncertainty Quantification for Machine Learning in Healthcare A Survey": {
+    "title": "Uncertainty Quantification for Machine Learning in Healthcare: A Survey",
+    "abstract": "Uncertainty Quantification (UQ) is pivotal in enhancing the robustness, reliability, and interpretability of Machine Learning (ML) systems for healthcare, optimizing resources and improving patient care. Despite the emergence of ML-based clinical decision support tools, the lack of principled quantification of uncertainty in ML models remains a major challenge. Current reviews have a narrow focus on analyzing the state-of-the-art UQ in specific healthcare domains without systematically evaluating method efficacy across different stages of model development, and despite a growing body of research, its implementation in healthcare applications remains limited. Therefore, in this survey, we provide a comprehensive analysis of current UQ in healthcare, offering an informed framework that highlights how different methods can be integrated into each stage of the ML pipeline including data processing, training and evaluation. We also highlight the most popular methods used in healthcare and novel approaches from other domains that hold potential for future adoption in the medical context. We expect this study will provide a clear overview of the challenges and opportunities of implementing UQ in the ML pipeline for healthcare, guiding researchers and practitioners in selecting suitable techniques to enhance the reliability, safety and trust from patients and clinicians on ML-driven healthcare solutions.",
+    "url": "https://proceedings.mlr.press/v287/lopez25a.html",
+    "id": "https://proceedings.mlr.press/v287/lopez25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/lopez25a/lopez25a.pdf",
+    "authors": {
+      "0_Leopoldo Julian Lechuga Lopez": "Leopoldo Julian Lechuga Lopez",
+      "1_Shaza Elsharief": "Shaza Elsharief",
+      "2_Dhiyaa Al Jorf": "Dhiyaa Al Jorf",
+      "3_Firas Darwish": "Firas Darwish",
+      "4_Congbo Ma": "Congbo Ma",
+      "5_Farah E. Shamout": "Farah E. Shamout"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/lopez25a/lopez25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:862-907,\u00a02025.",
+    "supplemental": ""
+  },
+  "22_Bridging the utility gap between MALDITOF and WGS for affordable outbreak cluster detection": {
+    "title": "Bridging the utility gap between MALDI-TOF and WGS for affordable outbreak cluster detection",
+    "abstract": "Rapid and accurate detection of emerging outbreak clusters can help contain the spread of diseases with epidemic potential. Among the available pathogen matching methods that can be used to support the task, whole genome sequencing (WGS) offers the highest discriminatory power but is expensive and time-consuming. On the other hand,  Matrix-Assisted Laser Desorption Ionization\u2013Time of Flight (MALDI-TOF) mass spectrometry is gaining attention for being a rapid and cost-effective, albeit less precise, alternative. In order to combine the strengths of both MALDI-TOF and WGS, we present MSMAP, the first machine learning framework that establishes a mapping between MALDI-TOF mass spectra and the single nucleotide polymorphism (SNP) distances obtained from WGS analysis. We demonstrate the effectiveness of MSMAP in retrieving WGS-defined outbreak clusters on synthetic mass spectrum data and on proprietary data with paired MALDI-TOF and SNP information. The results show that MSMAP augments MALDI-TOF with the discriminatory power of WGS, thus bridging their utility gap and paving the way toward fast, accurate and cost-effective outbreak cluster detection.",
+    "url": "https://proceedings.mlr.press/v287/liu25a.html",
+    "id": "https://proceedings.mlr.press/v287/liu25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/liu25a/liu25a.pdf",
+    "authors": {
+      "0_Chang Liu": "Chang Liu",
+      "1_Jieshi Chen": "Jieshi Chen",
+      "2_Lee H Harrison": "Lee H Harrison",
+      "3_Artur Dubrawski": "Artur Dubrawski"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/liu25a/liu25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:557-572,\u00a02025.",
+    "supplemental": ""
+  },
+  "23_A Case Study Exploring the Current Landscape of Synthetic Medical Record Generation with Commercial LLMs": {
+    "title": "A Case Study Exploring the Current Landscape of Synthetic Medical Record Generation with Commercial LLMs",
+    "abstract": "Synthetic Electronic Health Records (EHRs) offer a valuable opportunity to create privacy-preserving and harmonized structured data, supporting numerous applications in healthcare. Key benefits of synthetic data include precise control over the data schema, improved fairness and representation of patient populations, and the ability to share datasets without concerns about compromising real individuals\u2019 privacy. Consequently, the AI community has increasingly turned to Large Language Models (LLMs) to generate synthetic data across various domains. However, a significant challenge in healthcare is ensuring that synthetic health records reliably generalize across different hospitals, a long-standing issue in the field. In this work, we evaluate the current state of commercial LLMs for generating synthetic data and investigate multiple aspects of the generation process to identify areas where these models excel and where they fall short. Our main finding from this work is that while LLMs can reliably generate synthetic health records for smaller subsets of features, they struggle to preserve realistic distributions and correlations as the dimensionality of the data increases, ultimately limiting their ability to generalize across diverse hospital settings.",
+    "url": "https://proceedings.mlr.press/v287/lin25a.html",
+    "id": "https://proceedings.mlr.press/v287/lin25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/lin25a/lin25a.pdf",
+    "authors": {
+      "0_Yihan Lin": "Yihan Lin",
+      "1_Zhirong Yu": "Zhirong Yu",
+      "2_Simon A. Lee": "Simon A. Lee"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/lin25a/lin25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:105-129,\u00a02025.",
+    "supplemental": ""
+  },
+  "24_Treatment NonAdherence Bias in Clinical Machine Learning A RealWorld Study on Hypertension Medication": {
+    "title": "Treatment Non-Adherence Bias in Clinical Machine Learning: A Real-World Study on Hypertension Medication",
+    "abstract": "Machine learning systems trained on electronic health records (EHRs) increasingly guide treatment decisions, but their reliability depends on the critical assumption that patients follow the prescribed treatments recorded in EHRs. Using EHR data from 3,623 hypertension patients, we investigate how treatment non-adherence introduces implicit bias that can fundamentally distort both causal inference and predictive modeling. By extracting patient adherence information from clinical notes using a large language model, we identify 786 patients (21.7%) with medication non-adherence. We further uncover key demographic and clinical factors associated with non-adherence, as well as patient-reported reasons including side effects and difficulties obtaining refills. Our findings demonstrate that this implicit bias can not only reverse estimated treatment effects, but also degrade model performance by up to 5% while disproportionately affecting vulnerable populations by exacerbating disparities in decision outcomes and model error rates. This highlights the importance of accounting for treatment non-adherence in developing responsible and equitable clinical machine learning systems.",
+    "url": "https://proceedings.mlr.press/v287/liang25a.html",
+    "id": "https://proceedings.mlr.press/v287/liang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/liang25a/liang25a.pdf",
+    "authors": {
+      "0_Zhongyuan Liang": "Zhongyuan Liang",
+      "1_Arvind Suresh": "Arvind Suresh",
+      "2_Irene Y. Chen": "Irene Y. Chen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/liang25a/liang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:430-442,\u00a02025.",
+    "supplemental": ""
+  },
+  "25_Towards Predicting Temporal Changes in a Patients Chest Xray Images based on Electronic Health Records": {
+    "title": "Towards Predicting Temporal Changes in a Patient\u2019s Chest X-ray Images based on Electronic Health Records",
+    "abstract": "Chest X-ray (CXR) is an important diagnostic tool widely used in hospitals to assess patient conditions and monitor changes over time. Recently, generative models, specifically diffusion-based models, have shown promise in generating realistic synthetic CXRs. However, these models mainly focus on conditional generation using single-time-point data, i.e., generating CXRs conditioned on their corresponding reports from a specific time. This limits their clinical utility, particularly for capturing temporal changes. To address this limitation, we propose a novel framework, EHRXDiff, which predicts future CXR images by integrating previous CXRs with subsequent medical events, e.g., prescriptions, lab measures, etc. Our framework dynamically tracks and predicts disease progression based on a latent diffusion model, conditioned on the previous CXR image and a history of medical events. We comprehensively evaluate the performance of our framework across three key aspects, including clinical consistency, demographic consistency, and visual realism. Results show that our framework generates high-quality, realistic future images that effectively capture potential temporal changes. This suggests that our framework could be further developed to support clinical decision-making and provide valuable insights for patient monitoring and treatment planning in the medical field.",
+    "url": "https://proceedings.mlr.press/v287/kyung25a.html",
+    "id": "https://proceedings.mlr.press/v287/kyung25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/kyung25a/kyung25a.pdf",
+    "authors": {
+      "0_Daeun Kyung": "Daeun Kyung",
+      "1_Junu Kim": "Junu Kim",
+      "2_Tackeun Kim": "Tackeun Kim",
+      "3_Edward Choi": "Edward Choi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/kyung25a/kyung25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:247-267,\u00a02025.",
+    "supplemental": ""
+  },
+  "26_ALPEC A Comprehensive Evaluation Framework and Dataset for Machine LearningBased Arousal Detection in Clinical Practice": {
+    "title": "ALPEC: A Comprehensive Evaluation Framework and Dataset for Machine Learning-Based Arousal Detection in Clinical Practice",
+    "abstract": "Detecting arousals during sleep is crucial for diagnosing sleep disorders, yet the adoption of Machine Learning (ML) in clinical practice is hindered by a mismatch between clinical protocols and ML methods. Clinicians typically annotate only arousal onsets, whereas ML approaches conventionally rely on annotations for both the beginning and end. Moreover, no standardized evaluation methodology exists that is tailored to the specific needs of arousal detection in clinical practice. We address these challenges by proposing a novel post-processing and evaluation framework - Approximate Localization and Precise Event Count (ALPEC) - which optimizes arousal detectors to reflect operational priorities. We further advocate focusing on arousal onset detection and assess the impact of this on current training and evaluation schemes, addressing associated simplifications and challenges. Finally, we introduce a novel polysomnographic dataset that reflects the aforementioned clinical annotation constraints and includes modalities absent from existing datasets, demonstrating the benefits of leveraging multimodal data for arousal onset detection. Our contributions significantly advance the integration of ML-based arousal detection into clinical settings, narrowing the gap between technological advancements and clinical requirements.",
+    "url": "https://proceedings.mlr.press/v287/kraft25a.html",
+    "id": "https://proceedings.mlr.press/v287/kraft25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/kraft25a/kraft25a.pdf",
+    "authors": {
+      "0_Stefan Kraft": "Stefan Kraft",
+      "1_Andreas Theissler": "Andreas Theissler",
+      "2_Dr. Vera Wienhausen-Wilke": "Dr. Vera Wienhausen-Wilke",
+      "3_Philipp Walter": "Philipp Walter",
+      "4_Gjergji Kasneci": "Gjergji Kasneci",
+      "5_Hendrik Lensch": "Hendrik Lensch"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/kraft25a/kraft25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:395-429,\u00a02025.",
+    "supplemental": ""
+  },
+  "27_Feasibility of Immersive Virtual Reality and Customized Robotics with Wearable Sensors for Upper Extremity Training": {
+    "title": "Feasibility of Immersive Virtual Reality and Customized Robotics with Wearable Sensors for Upper Extremity Training",
+    "abstract": "Upper limb impairment significantly impacts daily activities and quality of life. Traditional robotic systems have been widely used in neurological rehabilitation applications. However, its adoption has been limited to laboratory and clinical settings due to cost constraints. Our study aimed to assess the feasibility and usability of a cost-effective virtual reality (VR) for home-based upper limb training. We used a customized wearable sleeve sensor to assess the hand and elbow joint movements objectively.   A pilot user study (n = 16) with healthy participants involved evaluating system usability, task load, and presence within two conditions of VR alone and VR combined with a customized inverse kinematics robot arm (KinArm).  Results of statistical analysis using a two-way repeated measure (ANOVA) revealed no significant difference between conditions in task completion time. However, significant differences were observed in the normalized number of mistakes and recorded elbow joint angles  between tasks.  Our findings highlight the potential advantages of an immersive and multi-sensory approach towards performance assessment.  This study explores avenues for the development of potentially cost-effective, tailored, and engaging environments for home-based therapy applications.",
+    "url": "https://proceedings.mlr.press/v287/kiafar25a.html",
+    "id": "https://proceedings.mlr.press/v287/kiafar25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/kiafar25a/kiafar25a.pdf",
+    "authors": {
+      "0_Behdokht Kiafar": "Behdokht Kiafar",
+      "1_Pinar Kullu": "Pinar Kullu",
+      "2_Rakshith Lokesh": "Rakshith Lokesh",
+      "3_Amit Chaudhari": "Amit Chaudhari",
+      "4_Qile Wang": "Qile Wang",
+      "5_Shayla Sharmin": "Shayla Sharmin",
+      "6_Sagar M. Doshi": "Sagar M. Doshi",
+      "7_Elham Bakhshipour": "Elham Bakhshipour",
+      "8_Erik Thostenson": "Erik Thostenson",
+      "9_Joshua Cashaback": "Joshua Cashaback",
+      "10_Roghayeh Leila Barmaki": "Roghayeh Leila Barmaki"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/kiafar25a/kiafar25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:543-556,\u00a02025.",
+    "supplemental": ""
+  },
+  "28_Multiaccuracy for Subpopulation Calibration Over Distribution Shift in Medical Prediction Models": {
+    "title": "Multiaccuracy for Subpopulation Calibration Over Distribution Shift in Medical Prediction Models",
+    "abstract": "Multiaccuracy was previously demonstrated to improve subpopulation calibration in medical prediction models, ensuring fairness towards subpopulations. Medical prediction models often experience degraded performance due to distribution shifts (e.g. changes in input data resulting from changes in space or time), but the effectiveness of multiaccuracy in ensuring medical predictors\u2019 fairness under these circumstances was suggested theoretically but has yet to be studied empirically. To explore this, we trained prediction models using real-world data, applied an adaptation of multiaccuracy as a post-processing step to intersecting subpopulations defined by combinations of protected features such as age, gender, and socioeconomic status, and tested the performance of the models on target test sets from distributions different than the development cohorts. The results demonstrated that the improvement in subpopulation calibration achieved by multiaccuracy was maintained in the target distribution over two experiments, simulating spatial-temporal and migration-induced distribution shifts. On average, over the two experiments, Calibration in the Large mean error and variance measures were reduced by 71.8% and 70.7% on the target distributions after applying multiaccuracy, respectively. These findings highlight the potential of post-processing for multiaccuracy as a tool for enhancing the fairness and reliability of medical prediction models across diverse populations, even under circumstances of major distribution shifts.",
+    "url": "https://proceedings.mlr.press/v287/kapash25a.html",
+    "id": "https://proceedings.mlr.press/v287/kapash25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/kapash25a/kapash25a.pdf",
+    "authors": {
+      "0_Daniel Kapash": "Daniel Kapash",
+      "1_Noam Barda": "Noam Barda",
+      "2_Omer Reingold": "Omer Reingold",
+      "3_Noa Dagan": "Noa Dagan",
+      "4_Ran Balicer": "Ran Balicer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/kapash25a/kapash25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:130-144,\u00a02025.",
+    "supplemental": ""
+  },
+  "29_TestTime Calibration A Framework for Personalized TestTime Adaptation in RealWorld Biosignals": {
+    "title": "Test-Time Calibration: A Framework for Personalized Test-Time Adaptation in Real-World Biosignals",
+    "abstract": "Test-Time Adaptation (TTA) methods have been widely used to enhance model robustness by continuously updating pre-trained models with unlabeled target data.  However, in real-world biosignal applications-where factors such as age, lifestyle, and comorbidities induce significant variability\u2013traditional TTA often falls short in addressing personalization needs.  To satisfy such needs, we introduce a novel Test-Time Calibration (TTC) framework that integrates continuous self-supervised adaptation on unlabeled samples with periodic supervised calibration using the sporadically available ground-truth labels.  Our approach leverages a model equipped with dual heads for supervised learning (SL) and self-supervised learning (SSL), and further incorporates a dual buffer along with a weighted batch sampling strategy to effectively manage and utilize both data types during the test phase.  We evaluate our framework on two distinct datasets: the publicly available PulseDB, a benchmark for cuff-less blood pressure estimation, and a private ICU dataset collected from critically ill patients.  Experimental results demonstrate that our approach improves blood pressure prediction accuracy and robustness, highlighting its suitability for dynamic, personalized biosignal applications.",
+    "url": "https://proceedings.mlr.press/v287/jo25a.html",
+    "id": "https://proceedings.mlr.press/v287/jo25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/jo25a/jo25a.pdf",
+    "authors": {
+      "0_Yong-Yeon Jo": "Yong-Yeon Jo",
+      "1_Byeong Tak Lee": "Byeong Tak Lee",
+      "2_Jeong-Ho Hong": "Jeong-Ho Hong",
+      "3_Hak Seung Lee": "Hak Seung Lee",
+      "4_Joon-myoung Kwon": "Joon-myoung Kwon",
+      "5_Beom Joon Kim": "Beom Joon Kim"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/jo25a/jo25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:381-394,\u00a02025.",
+    "supplemental": ""
+  },
+  "30_A Study of Artifacts on Melanoma Classification under DiffusionBased Perturbations": {
+    "title": "A Study of Artifacts on Melanoma Classification under Diffusion-Based Perturbations",
+    "abstract": "In melanoma classification, deep learning models have been shown to rely on non-medical artifacts (e.g., surgical markings) rather than clinically relevant features (e.g., lesion asymmetry), compromising their generalizability. In this work, we investigate the impact of artifacts on melanoma classification under two settings: (1) input disruptions, such as bounding boxes and frequency-based filtering, which isolate artifacts by region or frequency, and (2) a novel diffusion-based perturbation method that selectively introduces isolated artifacts into images, generating controlled pairs for direct comparison. We systematically analyze artifact biases in three benchmark datasets: ISIC 2018, HAM10000, and PH2. Our findings reveal that whole-image training outperforms lesion-only or background-only approaches, low-frequency features are essential for melanoma prediction, and classifiers are more sensitive to perturbations for the artifacts of ink markings, rulers, and patches. These results emphasize the need for systematic artifact assessment and provide insights for improving the robustness of melanoma classification models.",
+    "url": "https://proceedings.mlr.press/v287/jin25b.html",
+    "id": "https://proceedings.mlr.press/v287/jin25b.html",
+    "pdf": "https://proceedings.mlr.press/v287/jin25b/jin25b.pdf",
+    "authors": {
+      "0_Qixuan Jin": "Qixuan Jin",
+      "1_Marzyeh Ghassemi": "Marzyeh Ghassemi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/jin25b/jin25b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:844-861,\u00a02025.",
+    "supplemental": ""
+  },
+  "31_Distributionally Robust Learning in Survival Analysis": {
+    "title": "Distributionally Robust Learning in Survival Analysis",
+    "abstract": "We introduce an innovative approach that incorporates a $\\textit{Distributionally Robust Learning (DRL)}$ approach into Cox regression to enhance the robustness and accuracy of survival predictions. By formulating a DRL framework with a Wasserstein distance-based ambiguity set, we develop a variant Cox model that is less sensitive to assumptions about the underlying data distribution and more resilient to model misspecification and data perturbations. By leveraging Wasserstein duality, we reformulate the original min-max DRL problem into a tractable regularized empirical risk minimization problem, which can be computed by exponential conic programming. We provide guarantees on the finite sample behavior of our DRL-Cox model. Moreover, through extensive simulations and real world case studies, we demonstrate that our regression model achieves superior performance in terms of prediction accuracy and robustness compared with traditional methods.",
+    "url": "https://proceedings.mlr.press/v287/jin25a.html",
+    "id": "https://proceedings.mlr.press/v287/jin25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/jin25a/jin25a.pdf",
+    "authors": {
+      "0_Yeping Jin": "Yeping Jin",
+      "1_Lauren Wise": "Lauren Wise",
+      "2_Ioannis Paschalidis": "Ioannis Paschalidis"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/jin25a/jin25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:369-380,\u00a02025.",
+    "supplemental": ""
+  },
+  "32_Learning Interactions Between Continuous Treatments and Covariates with a Semiparametric Model": {
+    "title": "Learning Interactions Between Continuous Treatments and Covariates with a Semiparametric Model",
+    "abstract": "Estimating the impact of continuous treatment variables (e.g., dosage amount) on binary outcomes presents significant challenges in modeling and estimation because many existing approaches make strong assumptions that do not hold for certain continuous treatment variables. For instance, traditional logistic regression makes strong linearity assumptions that do not hold for continuous treatment variables like time of initiation. In this work, we propose a semiparametric regression framework that decomposes effects into two interpretable components: a prognostic score that captures baseline outcome risk based on a combination of clinical, genetic, and sociodemographic features, and a treatment-interaction score that flexibly models the optimal treatment level via a nonparametric link function. By connecting these two parametric scores with Nadaraya\u2013Watson regression, our approach is both interpretable and flexible. The potential of our approach is demonstrated through numerical simulations that show empirical estimation convergence. We conclude by applying our approach to a real-world case study using the International Warfarin Pharmacogenomics Consortium (IWPC) dataset to show our approach\u2019s clinical utility by deriving personalized warfarin dosing recommendations that integrate both genetic and clinical data, providing insights towards enhancing patient safety and therapeutic efficacy in anticoagulation therapy.",
+    "url": "https://proceedings.mlr.press/v287/jiang25a.html",
+    "id": "https://proceedings.mlr.press/v287/jiang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/jiang25a/jiang25a.pdf",
+    "authors": {
+      "0_Muyan Jiang": "Muyan Jiang",
+      "1_Yunkai Zhang": "Yunkai Zhang",
+      "2_Anil Aswani": "Anil Aswani"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/jiang25a/jiang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:691-707,\u00a02025.",
+    "supplemental": ""
+  },
+  "33_How does my language model understand clinical text": {
+    "title": "How does my language model understand clinical text?",
+    "abstract": "Large language models (LLMs) have performed well across various tasks in clinical natural language processing tasks, despite not being directly trained on electronic health record (EHR) data. In this work, we examine how popular open-source LLMs learn clinical information from large mined corpora through two crucial but understudied lenses: (1) their interpretation of clinical jargon, a foundational ability for understanding real-world clinical notes, and (2) their responses to medical misinformation. For both use cases, we investigate the frequency of relevant clinical information in their corresponding pretraining corpora, the relationship between pretraining data composition and model outputs, and the sources underlying this data. To isolate clinical jargon understanding, we evaluate LLMs on a new dataset MedLingo. Unsurprisingly, we find that the frequency of clinical jargon mentions across major pretraining corpora correlates with model performance. However, jargon frequently appearing in clinical notes often rarely appears in pretraining corpora, revealing a mismatch between available data and real-world usage. Similarly, we find that a non-negligible portion of documents support disputed claims that can then be parroted by models. Finally, we classified and analyzed the types of online sources in which clinical jargon and misinformation appear, with implications for future dataset composition.",
+    "url": "https://proceedings.mlr.press/v287/jia25a.html",
+    "id": "https://proceedings.mlr.press/v287/jia25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/jia25a/jia25a.pdf",
+    "authors": {
+      "0_Furong Jia": "Furong Jia",
+      "1_David Sontag": "David Sontag",
+      "2_Monica Agrawal": "Monica Agrawal"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/jia25a/jia25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:720-743,\u00a02025.",
+    "supplemental": ""
+  },
+  "34_ExOSITO Explainable OffPolicy Learning with Side Information for Intensive Care Unit Blood Test Orders": {
+    "title": "ExOSITO: Explainable Off-Policy Learning with Side Information for Intensive Care Unit Blood Test Orders",
+    "abstract": "Ordering a minimal subset of lab tests for patients in the intensive care unit (ICU) can be challenging. Care teams must balance between ensuring the availability of the right information and reducing the clinical burden and costs associated with each lab test order. Most in-patient settings experience frequent over-ordering of lab tests, but are now aiming to reduce this burden on both hospital resources and the environment. This paper develops a novel method that combines off-policy learning with privileged information to identify the optimal set of ICU lab tests to order. Our approach, EXplainable Off-policy learning with Side Information for ICU blood Test Orders (ExOSITO) creates an interpretable assistive tool for clinicians to order lab tests by considering both the observed and predicted future status of each patient.  We pose this problem as a causal bandit trained using offline data and a novel reward function derived from clinically-approved rules; we introduce a novel learning framework that integrates clinical knowledge with observational data to bridge the gap between the optimal and logging policies.  The learned policy function provides interpretable clinical information and reduces costs without omitting any vital lab orders, outperforming both a physician\u2019s policy and prior approaches to this practical problem.",
+    "url": "https://proceedings.mlr.press/v287/ji25a.html",
+    "id": "https://proceedings.mlr.press/v287/ji25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/ji25a/ji25a.pdf",
+    "authors": {
+      "0_Zongliang Ji": "Zongliang Ji",
+      "1_Andre Carlos Kajdacsy-Balla Amaral": "Andre Carlos Kajdacsy-Balla Amaral",
+      "2_Anna Goldenberg": "Anna Goldenberg",
+      "3_Rahul G Krishnan": "Rahul G Krishnan"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/ji25a/ji25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:337-368,\u00a02025.",
+    "supplemental": ""
+  },
+  "35_LabTOP A Unified Model for Lab Test Outcome Prediction on Electronic Health Records": {
+    "title": "LabTOP: A Unified Model for Lab Test Outcome Prediction on Electronic Health Records",
+    "abstract": "Lab tests are fundamental for diagnosing diseases and monitoring patient conditions. However, frequent testing can be burdensome for patients, and test results may not always be immediately available. To address these challenges, we propose  LabTOP, a unified model that predicts lab test outcomes by leveraging autoregressive generative modeling approach on EHR data. Unlike conventional methods that estimate only a subset of lab tests or classify discrete value ranges, LabTOP performs continuous numerical predictions for a diverse range of lab items. We evaluate LabTOP on three publicly available EHR datasets, and demonstrate that it outperforms existing methods, including traditional machine learning models and state-of-the-art large language models. We also conduct extensive ablation studies to confirm the effectiveness of our design choices. We believe that LabTOP will serve as an accurate and generalizable framework for lab test outcome prediction, with potential applications in clinical decision support and early detection of critical conditions.",
+    "url": "https://proceedings.mlr.press/v287/im25a.html",
+    "id": "https://proceedings.mlr.press/v287/im25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/im25a/im25a.pdf",
+    "authors": {
+      "0_Sujeong Im": "Sujeong Im",
+      "1_Jungwoo Oh": "Jungwoo Oh",
+      "2_Edward Choi": "Edward Choi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/im25a/im25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:817-843,\u00a02025.",
+    "supplemental": ""
+  },
+  "36_MultiObjective FineTuning of Clinical Scoring Tables Adapting to Variations in Demography and Data": {
+    "title": "Multi-Objective Fine-Tuning of Clinical Scoring Tables: Adapting to Variations in Demography and Data",
+    "abstract": "Clinical scoring tables (e.g., CURB-65 for pneumonia severity and mortality estimation) are widely used for estimating outcomes in healthcare, but their applicability is limited by i) demographic variations, ii) incomplete data availability of clinical variables, or iii) the need to incorporate data of new cohort-relevant clinical variables. We introduce a novel constrained multi-objective evolutionary machine learning (ML) optimization framework, SET (Scoring-table Evolutionary Tuning), that fine-tunes established clinical scoring tables to enhance performance while maintaining familiarity. SET works by iteratively making small constrained changes to the original table to improve performance across multiple metrics, while maintaining a similar structure, ensuring that minimal adjustments are made. This is in contrast to ML-based proposals that replace scoring tables with entirely new models or tables, which may encounter barriers to clinical adoption. Extensive evaluations across 8 established scoring tables and cohorts demonstrate that SET allows existing clinically-trusted scoring tables to adapt to variations in demography, enhancing performance. We also show that in situations with incomplete data availability of key clinical variables, SET can still augment scoring tables and perform competitively. Additionally, SET can also augment existing tables to incorporate new cohort-relevant features.",
+    "url": "https://proceedings.mlr.press/v287/fong25a.html",
+    "id": "https://proceedings.mlr.press/v287/fong25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/fong25a/fong25a.pdf",
+    "authors": {
+      "0_Kei Sen Fong": "Kei Sen Fong",
+      "1_Mehul Motani": "Mehul Motani"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/fong25a/fong25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:744-780,\u00a02025.",
+    "supplemental": ""
+  },
+  "37_MedMod Multimodal Benchmark for Medical Prediction Tasks with Electronic Health Records and Chest XRay Scans": {
+    "title": "MedMod: Multimodal Benchmark for Medical Prediction Tasks with Electronic Health Records and Chest X-Ray Scans",
+    "abstract": "Multimodal machine learning provides a myriad of opportunities for developing models that integrate multiple modalities and mimic decision-making in the real-world, such as in medical settings. However, benchmarks involving multimodal medical data are scarce, especially routinely collected modalities such as Electronic Health Records (EHR) and Chest X-ray images (CXR). To contribute towards advancing multimodal learning in tackling real-world prediction tasks, we present MedMod, a multimodal medical benchmark with EHR and CXR using publicly available datasets MIMIC-IV and MIMIC-CXR, respectively. MedMod comprises five clinical prediction tasks: clinical conditions, in-hospital mortality, decompensation, length of stay, and radiological findings. We extensively evaluate several multimodal supervised learning models and self-supervised learning frameworks, making all of our code and models open-source.",
+    "url": "https://proceedings.mlr.press/v287/elsharief25a.html",
+    "id": "https://proceedings.mlr.press/v287/elsharief25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/elsharief25a/elsharief25a.pdf",
+    "authors": {
+      "0_Shaza Elsharief": "Shaza Elsharief",
+      "1_Saeed Shurrab": "Saeed Shurrab",
+      "2_Baraa Al Jorf": "Baraa Al Jorf",
+      "3_Leopoldo Julian Lechuga Lopez": "Leopoldo Julian Lechuga Lopez",
+      "4_Krzysztof J. Geras": "Krzysztof J. Geras",
+      "5_Farah E. Shamout": "Farah E. Shamout"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/elsharief25a/elsharief25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:781-803,\u00a02025.",
+    "supplemental": ""
+  },
+  "38_KEEP Integrating Medical Ontologies with Clinical Data for Robust Code Embeddings": {
+    "title": "KEEP: Integrating Medical Ontologies with Clinical Data for Robust Code Embeddings",
+    "abstract": "Machine learning in healthcare requires effective representation of structured medical codes, but current methods face a trade-off: knowledge graph-based approaches capture formal relationships but miss real-world patterns, while data-driven methods learn empirical associations but often overlook structured knowledge in medical terminologies. We present KEEP (Knowledge-preserving and Empirically-refined Embedding Process), an efficient framework that bridges this gap by combining knowledge graph embeddings with adaptive learning from clinical data. KEEP first generates embeddings from knowledge graphs, then employs regularized training on patient records to adaptively integrate empirical patterns while preserving ontological relationships. Evaluations on structured EHR from UK Biobank demonstrate that KEEP outperforms both traditional and LLM-based approaches in capturing semantic relationships and predicting clinical outcomes. Moreover, KEEP\u2019s minimal computational requirements make it particularly suitable for resource-constrained environments.",
+    "url": "https://proceedings.mlr.press/v287/elhussein25a.html",
+    "id": "https://proceedings.mlr.press/v287/elhussein25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/elhussein25a/elhussein25a.pdf",
+    "authors": {
+      "0_Ahmed Elhussein": "Ahmed Elhussein",
+      "1_Paul Meddeb": "Paul Meddeb",
+      "2_Abigail Newbury": "Abigail Newbury",
+      "3_Jeanne Mirone": "Jeanne Mirone",
+      "4_Martin Stoll": "Martin Stoll",
+      "5_Gamze Gursoy": "Gamze Gursoy"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/elhussein25a/elhussein25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:43-62,\u00a02025.",
+    "supplemental": ""
+  },
+  "39_Learning Disease Progression Models That Capture Health Disparities": {
+    "title": "Learning Disease Progression Models That Capture Health Disparities",
+    "abstract": "Disease progression models are widely used to inform the diagnosis and treatment of many progressive diseases. However, a significant limitation of existing models is that they do not account for health disparities that can bias the observed data. To address this, we develop an interpretable Bayesian disease progression model that captures three key health disparities: certain patient populations may (1) start receiving care only when their disease is more severe, (2) experience faster disease progression even while receiving care, or (3) receive follow-up care less frequently conditional on disease severity. We show theoretically and empirically that failing to account for disparities produces biased estimates of severity (underestimating severity for disadvantaged groups, for example). On a dataset of heart failure patients, we show that our model can identify groups that face each type of health disparity, and that accounting for these disparities meaningfully shifts which patients are considered high-risk.",
+    "url": "https://proceedings.mlr.press/v287/chiang25a.html",
+    "id": "https://proceedings.mlr.press/v287/chiang25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/chiang25a/chiang25a.pdf",
+    "authors": {
+      "0_Erica Chiang": "Erica Chiang",
+      "1_Divya M Shanmugam": "Divya M Shanmugam",
+      "2_Ashley Beecy": "Ashley Beecy",
+      "3_Gabriel Sayer": "Gabriel Sayer",
+      "4_Deborah Estrin": "Deborah Estrin",
+      "5_Nikhil Garg": "Nikhil Garg",
+      "6_Emma Pierson": "Emma Pierson"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/chiang25a/chiang25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:1-29,\u00a02025.",
+    "supplemental": ""
+  },
+  "40_Conditional Frontdoor Adjustment for Heterogeneous Treatment Assignment Effect Estimation Under Noncompliance": {
+    "title": "Conditional Front-door Adjustment for Heterogeneous Treatment Assignment Effect Estimation Under Non-compliance",
+    "abstract": "Estimates of heterogeneous treatment assignment effects are valuable when making treatment decisions. Under the presence of non-compliance (e.g., patients do not adhere to their assigned treatment), the standard backdoor adjustment (SBD) and the conditional frond-door adjustment (CFD) can both recover unbiased estimates of the treatment assignment effects. Therefore, which is more suitable depends on their estimation variance. From existing literature, it is unclear which of the two produces lower-variance estimates. In this work, we demonstrate theoretically and empirically that CFD yields lower-variance estimates than SBD when the true effect of treatment assignment is small. Additionally, since CFD requires estimating multiple nuisance parameters, we introduce LobsterNet, a multi-task neural network that implements CFD with joint modeling. Empirically, LobsterNet reduces estimation error across several semi-synthetic and real-world datasets compared to baselines. Our findings suggest CFD with shared nuisance parameter modeling can improve treatment assignment effect estimation under non-compliance.",
+    "url": "https://proceedings.mlr.press/v287/chen25a.html",
+    "id": "https://proceedings.mlr.press/v287/chen25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/chen25a/chen25a.pdf",
+    "authors": {
+      "0_Winston Chen": "Winston Chen",
+      "1_Trenton Chang": "Trenton Chang",
+      "2_Jenna Wiens": "Jenna Wiens"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/chen25a/chen25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:194-230,\u00a02025.",
+    "supplemental": ""
+  },
+  "41_HeadCTONE Enabling Granular and Controllable Automated Evaluation of Head CT Radiology Report Generation": {
+    "title": "HeadCT-ONE: Enabling Granular and Controllable Automated Evaluation of Head CT Radiology Report Generation",
+    "abstract": "We present Head CT Ontology Normalized Evaluation (HeadCT-ONE), a metric for evaluating head CT report generation through ontology-normalized entity and relation extraction. HeadCT-ONE enhances current information extraction derived metrics (such as RadGraph F1) by implementing entity normalization through domain-specific ontologies, addressing radiological language variability. HeadCT-ONE compares normalized entities and relations, allowing for controllable weighting of different entity types or specific entities. Through experiments on head CT reports from three health systems, we show that HeadCT-ONE\u2019s normalization and weighting approach improves the capture of semantically equivalent reports, better distinguishes between normal and abnormal reports, and aligns with radiologists\u2019 assessment of clinically significant errors, while offering flexibility to prioritize specific aspects of report content. Our results demonstrate how HeadCT-ONE enables more flexible, controllable, and granular automated evaluation of head CT reports.",
+    "url": "https://proceedings.mlr.press/v287/acosta25a.html",
+    "id": "https://proceedings.mlr.press/v287/acosta25a.html",
+    "pdf": "https://proceedings.mlr.press/v287/acosta25a/acosta25a.pdf",
+    "authors": {
+      "0_Julian Nicolas Acosta": "Julian Nicolas Acosta",
+      "1_Xiaoman Zhang": "Xiaoman Zhang",
+      "2_Siddhant Dogra": "Siddhant Dogra",
+      "3_Hong-Yu Zhou": "Hong-Yu Zhou",
+      "4_Seyedmehdi Payabvash": "Seyedmehdi Payabvash",
+      "5_Guido J. Falcone": "Guido J. Falcone",
+      "6_Eric Karl Oermann": "Eric Karl Oermann",
+      "7_Pranav Rajpurkar": "Pranav Rajpurkar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v287/main/assets/acosta25a/acosta25a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the sixth Conference on Health, Inference, and Learning,\u00a0PMLR 287:649-671,\u00a02025.",
+    "supplemental": ""
+  }
+}
