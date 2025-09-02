@@ -12,7 +12,6 @@ import asyncio
 import curl_cffi as cf
 from os import path, mkdir
 from support import logger
-from bypass import CF_Solver
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from dataclasses import dataclass, fields
