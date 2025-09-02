@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 from itertools import cycle
 from support import console, logger, log_time
 
-MAIN_CONFERENCES  = ["ICML", "ICLR"]#,"NEURIPS"
+MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ECCV"] #"CLDD"-Got an xml error for 2024
 FUN_STATUS_UPDATE = cycle(["Patience Iago", "Phenominal COSMIC POWER", "Iiiiiity bitty living space", "Books, i've read these books", "Your conclusions were all wrong Ryan", "Let it go Indiana", "Duuuude", "wheres my car", "I wanna talk to sampson!!"])
 

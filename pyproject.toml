@@ -26,6 +26,7 @@ dependencies = [
     "textual-dev (>=1.7.0,<2.0.0)",
     "requests (>=2.32.4,<3.0.0)",
     "playwright (>=1.52.0,<2.0.0)",
+    "curl-cffi (>=0.13.0,<0.14.0)",
 ]
 
 [build-system]

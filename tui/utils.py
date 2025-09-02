@@ -215,7 +215,6 @@ class xRxivBase(object):
         launchdt         : str,
         params           : dict,
         base_url         : str,
-        cookies          : str = "",
         progress_callback: Optional[Callable[[int],None]] = None
     ):
         self.server      : str = server
@@ -224,7 +223,8 @@ class xRxivBase(object):
         self.base_url    : str = base_url
         self.results     : dict = {}
         self.cursor      : int = 0
-        self.cookies     : str = ""
+        self.cookies     : dict = {}
+        self.redirect_url: str = ""
         self.turnstile_on: bool = False
         self.progress_callback = progress_callback
 
@@ -521,26 +521,31 @@ class xRxivBase(object):
             max_wait = 90
         )
         try:
-            self.cookies = await solver.bypass()
+            tempcookies = await solver.bypass()
+            tempcookies.pop("__cf_bm")
+            self.cookies.update(tempcookies)
             logger.info(f"cookies found\n{self.cookies}")
 
         finally:
             await solver.close()
 
-    async def _check_turnstile(self, req_url:str, headers:dict = "")-> bool|str:
+    async def _check_turnstile(self, req_url:str, headers:dict = "", params:dict="")-> bool|str:
         try:
             logger.debug(f"turnstile check on {req_url}")
-            response = requests.get(req_url, headers=headers, timeout=10)
+            response = requests.post(req_url[:-1], headers=headers, data=params)
             await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
             if response.status_code != 200:
                 if "cloudflare" in response.headers["Server"]:
                     logger.warning(f'Status code: {response.status_code}')
                     logger.warning(f'Reason: {response.reason}')
                     logger.debug(f"cloudflare detected in {self.server}")
-                    return True
+                    self.cookies = response.cookies.get_dict()
+                    # self.redirect_url = response.headers["Location"]
+                    return True 
                 else:
                     return False
             elif response.status_code == 200:
+                #TODO - remember to test once you get 200
                 soup = BeautifulSoup(response.content, "lxml")
                 turnstile = soup.find("div", _class="cf-turnstile")
                 if turnstile != None:
@@ -556,7 +561,7 @@ class xRxivBase(object):
             return e
 
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
-        chrome_version = np.random.randint(101, 139)
+        chrome_version = np.random.randint(138, 139)
         if doi_url:
             baseurl = self.query_formatted
         else:
@@ -585,7 +590,6 @@ class xRxivBase(object):
         #windows test header
             # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
             # 'user-agent':  'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
-            
         #BUG = need the cf-clearance cookie because we can't post without it.  thanks cf, ya jerks!
         
         try:
@@ -593,33 +597,81 @@ class xRxivBase(object):
             if post:
                 logger.debug(self.query_formatted)
                 if self.params["source"] == "bioRxiv":
+                    #TODO - Update this to dynamically pull the selected search features
                     bioheaders = {
                         'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                        'accept-encoding':'gzip,deflate,br,zstd',
                         'accept-language': 'en-US,en;q=0.9',
                         'cache-control': 'max-age=0',
-                        'origin':f'https://www.{self.server.lower()}.org',
                         'content-type':'application/x-www-form-urlencoded',
+                        'origin':f'https://www.{self.server.lower()}.org',
                         'priority': 'u=0,i',
                         'referer': headers["referer"][:-1],
-                        'sec-ch-ua': headers["sec-ch-ua"],
-                        'ua-mobile':"?1",
-                        'sec-ch-ua-mobile': '?1',
-                        'sec-ch-ua-platform': '"Android"',
+                        'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
+                        'sec-ch-ua-mobile': '?0',
+                        'sec-ch-ua-platform': '"Windows"',
                         'sec-fetch-dest': 'document',
                         'sec-fetch-mode': 'navigate',
                         'sec-fetch-site': 'same-origin',
                         'sec-fetch-user': '?1',
                         'upgrade-insecure-requests':'1',
-                        'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+                        'user-agent':f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+                        # 'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
                     }
-                    turnstile_on : bool|str = await self._check_turnstile(req_url=self.query_formatted, headers=bioheaders, ch_ver=chrome_version)
+                    params = {
+                        'txtsimple':'',
+                        'limit_from[date]_replacement':'',
+                        'limit_from[date]':'',
+                        'limit_to[date]_replacement':'',
+                        'limit_to[date]':'',
+                        'jcode[]':'biorxiv',
+                        'author1':'',
+                        'author2':'',
+                        'title':'cardiac arrest',
+                        'title_flags':'match-all',
+                        'abstract_title':'',
+                        'abstract_title_flags':'match-all',
+                        'text_abstract_title':'',
+                        'text_abstract_title_flags':'match-all',
+                        'references':'',
+                        'references_flags':'match-all',
+                        'publisher':'',
+                        'pubyear':'',
+                        'volume':'',
+                        'issue':'',
+                        'firstpage':'',
+                        'doi':'',
+                        'isbn':'',
+                        'numresults':'75',
+                        'sort':'relevance-rank',
+                        'format_result':'standard',
+                        'jcode_option':'medrxiv biorxiv',
+                        'form_build_id':'form-kVqdGyjqBtWJx2Jo9yJFmTnrfIU0lXF_vnjOXosdvL4',
+                        'form_id':'highwire_search_form',
+                        'op':'Search'
+                    }
+                    headers_redirect = {
+                        'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                        'accept-language': 'en-US,en;q=0.9',
+                        'cache-control': 'max-age=0',
+                        'priority': 'u=0,i',
+                        'referer': headers["referer"][:-1],
+                        'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
+                        'sec-ch-ua-mobile': '?0',
+                        'sec-ch-ua-platform': '"Windows"',
+                        'sec-fetch-dest': 'document',
+                        'sec-fetch-mode': 'navigate',
+                        'sec-fetch-site': 'same-origin',
+                        'sec-fetch-user': '?1',
+                        'upgrade-insecure-requests': '1',
+                        'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+                    }
+                    turnstile_on : bool|str = await self._check_turnstile(req_url=self.base_url, headers=bioheaders, params=params)
                     match turnstile_on:
                         case True:
                             await self._c_is_for_cookie(base_url = baseurl, headers = headers)
-                            response = requests.post(self.base_url, headers=bioheaders, cookies=self.cookies)
+                            response = requests.get(self.query_formatted, cookies=self.cookies, headers=headers_redirect)
                         case False:
-                            response = requests.post(self.query_formatted, headers=bioheaders)
+                            response = requests.post(self.query_formatted, headers=headers)
                         case requests.models.Response():
                             logger.warning(f"{turnstile_on.status_code} {turnstile_on.reason}")
                             response = turnstile_on
@@ -727,6 +779,7 @@ class medRxiv(xRxivBase):
     )
 
 ###############################  Date Functions ########################################
+#FUNCTION Date Check
 def is_a_date(datetext:str) -> bool:
     """Tries to format a date, returns boolean of if successful
 
@@ -780,6 +833,7 @@ def clean_string_values(obj: dict|list|str) -> dict|list|str:
 
     return obj
 
+#FUNCTION clean text
 def clean_text(srch_text:str, srch_field, node)-> list:
     """String cleaning routine for cosine similarities.  Removes stopwords and numerics.
 
@@ -815,6 +869,7 @@ def clean_text(srch_text:str, srch_field, node)-> list:
             data_fields[idx] = ""
     return data_fields, paper_names
 
+#FUNCTION TFIDF Vectorizer
 def tfidf(data_fields:list, paper_names:list):
     #L1 normlization
     base_params = {
@@ -839,6 +894,7 @@ def tfidf(data_fields:list, paper_names:list):
     )
     return tsfrm_df, paper_names
 
+#FUNCTION Cosine Sim
 def cosine_similarity(tsfrm, ts_type:str):
     """Function that allows you to use either sklearns, or scipy's cosine similarity
     Inputs are already in a sparse array format.  Scipy uses np.arrays, but the code 
@@ -869,6 +925,7 @@ def cosine_similarity(tsfrm, ts_type:str):
     else:
         raise ValueError (f"{ts_type} not an available cosine transform. Check spelling for scipy or sklearn")
 
+#FUNCTION Embedded cosine sim
 def embedding_cos_sim(query:str, compare:str):
     """Manual cosine similarity calculation
 
@@ -881,6 +938,7 @@ def embedding_cos_sim(query:str, compare:str):
     """    
     return np.dot(query, compare) / (np.linalg.norm(query) * np.linalg.norm(compare))
 
+#FUNCTION Word2Vec model
 def word2vec():
     """Loads the standard spacy pipeline
 
@@ -897,6 +955,7 @@ def word2vec():
     except Exception as e:
         raise ValueError(f"No Soup for you! Download the model by running python -m spacy download {model_name}")
 
+#FUNCTION Sbert Model
 def sbert(model_name:str):
     """Loads up either of the Bidirectional Sentence Bert models for comparison. 
 

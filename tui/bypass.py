@@ -91,7 +91,8 @@ class CF_Solver:
             await asyncio.sleep(np.random.randint(1, 5))
             await self.page.mouse.down()
             await asyncio.sleep(np.random.randint(1, 5))
-
+            await self.page.mouse.up()
+            
         except PlaywrightTimeoutError:
             # allow polling for clearance even if initial load timed out
             logger.warning("Warning: initial navigation timed out, continuing to poll for clearance cookie.")
