@@ -9,6 +9,7 @@ import pandas as pd
 import torch
 import time
 import asyncio
+import curl_cffi as cf
 from os import path, mkdir
 from support import logger
 from bypass import CF_Solver
@@ -597,86 +598,88 @@ class xRxivBase(object):
             if post:
                 logger.debug(self.query_formatted)
                 if self.params["source"] == "bioRxiv":
-                    #TODO - Update this to dynamically pull the selected search features
-                    bioheaders = {
-                        'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                        'accept-language': 'en-US,en;q=0.9',
-                        'cache-control': 'max-age=0',
-                        'content-type':'application/x-www-form-urlencoded',
-                        'origin':f'https://www.{self.server.lower()}.org',
-                        'priority': 'u=0,i',
-                        'referer': headers["referer"][:-1],
-                        'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
-                        'sec-ch-ua-mobile': '?0',
-                        'sec-ch-ua-platform': '"Windows"',
-                        'sec-fetch-dest': 'document',
-                        'sec-fetch-mode': 'navigate',
-                        'sec-fetch-site': 'same-origin',
-                        'sec-fetch-user': '?1',
-                        'upgrade-insecure-requests':'1',
-                        'user-agent':f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
-                        # 'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
-                    }
-                    params = {
-                        'txtsimple':'',
-                        'limit_from[date]_replacement':'',
-                        'limit_from[date]':'',
-                        'limit_to[date]_replacement':'',
-                        'limit_to[date]':'',
-                        'jcode[]':'biorxiv',
-                        'author1':'',
-                        'author2':'',
-                        'title':'cardiac arrest',
-                        'title_flags':'match-all',
-                        'abstract_title':'',
-                        'abstract_title_flags':'match-all',
-                        'text_abstract_title':'',
-                        'text_abstract_title_flags':'match-all',
-                        'references':'',
-                        'references_flags':'match-all',
-                        'publisher':'',
-                        'pubyear':'',
-                        'volume':'',
-                        'issue':'',
-                        'firstpage':'',
-                        'doi':'',
-                        'isbn':'',
-                        'numresults':'75',
-                        'sort':'relevance-rank',
-                        'format_result':'standard',
-                        'jcode_option':'medrxiv biorxiv',
-                        'form_build_id':'form-kVqdGyjqBtWJx2Jo9yJFmTnrfIU0lXF_vnjOXosdvL4',
-                        'form_id':'highwire_search_form',
-                        'op':'Search'
-                    }
-                    headers_redirect = {
-                        'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                        'accept-language': 'en-US,en;q=0.9',
-                        'cache-control': 'max-age=0',
-                        'priority': 'u=0,i',
-                        'referer': headers["referer"][:-1],
-                        'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
-                        'sec-ch-ua-mobile': '?0',
-                        'sec-ch-ua-platform': '"Windows"',
-                        'sec-fetch-dest': 'document',
-                        'sec-fetch-mode': 'navigate',
-                        'sec-fetch-site': 'same-origin',
-                        'sec-fetch-user': '?1',
-                        'upgrade-insecure-requests': '1',
-                        'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
-                    }
-                    turnstile_on : bool|str = await self._check_turnstile(req_url=self.base_url, headers=bioheaders, params=params)
-                    match turnstile_on:
-                        case True:
-                            await self._c_is_for_cookie(base_url = baseurl, headers = headers)
-                            response = requests.get(self.query_formatted, cookies=self.cookies, headers=headers_redirect)
-                        case False:
-                            response = requests.post(self.query_formatted, headers=headers)
-                        case requests.models.Response():
-                            logger.warning(f"{turnstile_on.status_code} {turnstile_on.reason}")
-                            response = turnstile_on
-                        case _:
-                            logger.warning(f"Something is very broken to get here")
+                    response = cf.requests.post(self.query_formatted, impersonate="chrome")
+                    logger.info("Much Success!")
+                    # #TODO - Update this to dynamically pull the selected search features
+                    # bioheaders = {
+                    #     'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                    #     'accept-language': 'en-US,en;q=0.9',
+                    #     'cache-control': 'max-age=0',
+                    #     'content-type':'application/x-www-form-urlencoded',
+                    #     'origin':f'https://www.{self.server.lower()}.org',
+                    #     'priority': 'u=0,i',
+                    #     'referer': headers["referer"][:-1],
+                    #     'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
+                    #     'sec-ch-ua-mobile': '?0',
+                    #     'sec-ch-ua-platform': '"Windows"',
+                    #     'sec-fetch-dest': 'document',
+                    #     'sec-fetch-mode': 'navigate',
+                    #     'sec-fetch-site': 'same-origin',
+                    #     'sec-fetch-user': '?1',
+                    #     'upgrade-insecure-requests':'1',
+                    #     'user-agent':f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+                    #     # 'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+                    # }
+                    # params = {
+                    #     'txtsimple':'',
+                    #     'limit_from[date]_replacement':'',
+                    #     'limit_from[date]':'',
+                    #     'limit_to[date]_replacement':'',
+                    #     'limit_to[date]':'',
+                    #     'jcode[]':'biorxiv',
+                    #     'author1':'',
+                    #     'author2':'',
+                    #     'title':'cardiac arrest',
+                    #     'title_flags':'match-all',
+                    #     'abstract_title':'',
+                    #     'abstract_title_flags':'match-all',
+                    #     'text_abstract_title':'',
+                    #     'text_abstract_title_flags':'match-all',
+                    #     'references':'',
+                    #     'references_flags':'match-all',
+                    #     'publisher':'',
+                    #     'pubyear':'',
+                    #     'volume':'',
+                    #     'issue':'',
+                    #     'firstpage':'',
+                    #     'doi':'',
+                    #     'isbn':'',
+                    #     'numresults':'75',
+                    #     'sort':'relevance-rank',
+                    #     'format_result':'standard',
+                    #     'jcode_option':'medrxiv biorxiv',
+                    #     'form_build_id':'form-kVqdGyjqBtWJx2Jo9yJFmTnrfIU0lXF_vnjOXosdvL4',
+                    #     'form_id':'highwire_search_form',
+                    #     'op':'Search'
+                    # }
+                    # headers_redirect = {
+                    #     'accept':'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                    #     'accept-language': 'en-US,en;q=0.9',
+                    #     'cache-control': 'max-age=0',
+                    #     'priority': 'u=0,i',
+                    #     'referer': headers["referer"][:-1],
+                    #     'sec-ch-ua': f'"Not;A=Brand";v="99", "Google Chrome";v="{chrome_version}", "Chromium";v="{chrome_version}"',
+                    #     'sec-ch-ua-mobile': '?0',
+                    #     'sec-ch-ua-platform': '"Windows"',
+                    #     'sec-fetch-dest': 'document',
+                    #     'sec-fetch-mode': 'navigate',
+                    #     'sec-fetch-site': 'same-origin',
+                    #     'sec-fetch-user': '?1',
+                    #     'upgrade-insecure-requests': '1',
+                    #     'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36'
+                    # }
+                    # turnstile_on : bool|str = await self._check_turnstile(req_url=self.base_url, headers=bioheaders, params=params)
+                    # match turnstile_on:
+                    #     case True:
+                    #         await self._c_is_for_cookie(base_url = baseurl, headers = headers)
+                    #         response = requests.get(self.query_formatted, cookies=self.cookies, headers=headers_redirect)
+                    #     case False:
+                    #         response = requests.post(self.query_formatted, headers=headers)
+                    #     case requests.models.Response():
+                    #         logger.warning(f"{turnstile_on.status_code} {turnstile_on.reason}")
+                    #         response = turnstile_on
+                    #     case _:
+                    #         logger.warning(f"Something is very broken to get here")
 
                 elif self.params["source"] == "medRxiv":
                     response = requests.post(self.query_formatted, headers=headers)
@@ -684,19 +687,19 @@ class xRxivBase(object):
             #Individual paper request
             elif doi_url:
                 logger.debug(doi_url)
-                if self.params["source"] == "medRxiv":
+                if self.params["source"] == "bioRxiv":
+                    response = cf.requests.get(url=doi_url, impersonate="chrome")
+                elif self.params["source"] == "medRxiv":
                     response = requests.get(doi_url, headers=headers)
-                elif self.params["source"] == "bioRxiv":
-                    if self.turnstile_on:
-                        response = requests.get(url=doi_url, headers=headers, cookies=self.cookies)
-                    else:
-                        response = requests.get(doi_url, headers=headers)
 
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
                 logger.debug(url)
-                response = requests.post(url, headers=headers)
+                if self.params["source"] == "bioRxiv":
+                    response = cf.requests.post(url=url, impersonate="chrome")
+                elif self.params["source"] == "medRxiv":
+                    response = requests.post(url, headers=headers)
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
