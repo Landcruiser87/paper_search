@@ -699,7 +699,7 @@ class xRxivBase(object):
                 if self.params["source"] == "bioRxiv":
                     response = cf.requests.post(url=url, impersonate="chrome")
                 elif self.params["source"] == "medRxiv":
-                    response = requests.post(url, headers=headers)
+                    response = requests.post(url=url, headers=headers)
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
@@ -742,7 +742,10 @@ class xRxivBase(object):
 
         try:
             logger.debug(baseurl)
-            response = requests.get(baseurl, headers=headers)
+            if "biorxiv" in doi:
+                response = cf.requests.get(baseurl, impersonate="chrome")
+            else:
+                response = requests.get(baseurl, headers=headers)
             await asyncio.sleep(np.random.randint(6,8)) #Extra long nap because metrics.... don't like to come through for some reason. 
 
         except Exception as e:
