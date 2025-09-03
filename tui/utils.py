@@ -38,7 +38,7 @@ class Paper:
     supplemental   : str = ""  #general comments
     date_published : str = ""  # mm-dd-yyyy
     conference_info: str = ""  # e.g. arxiv
-    
+
 ################################# Classes #################################
 class ArxivSearch(object):
     def __init__(self, variables:dict):
