@@ -377,10 +377,11 @@ class xRxivBase(object):
                 return None, f"No papers returned for search ({self.params['query']}) in {self.params['source']} {self.params['field']}"
             pcount = paper_count.text.split()[0]
             pcount = int("".join(x for x in pcount if x.isnumeric()))
-            self.paper_count = pcount
-            logger.info(f"{pcount} found on {self.params['source']} in {self.params['field']}")
+            if isinstance(pcount, int):
+                self.paper_count = pcount
+                logger.info(f"{pcount} papers found on {self.params['source']} in {self.params['field']}")
 
-        if pcount:
+        if pcount != None:
             await self._parse_query(bs4ob)
             logger.info(f'{len(self.results)} papers processed arxiv searching {self.params["query"]}')
             return self.results, None
@@ -474,7 +475,7 @@ class xRxivBase(object):
 
                     proc_table = True
                     metrics = await self._make_subdata_request(paper.doi)
-                    logger.debug(f"searching metric {paper_idx}")
+                    logger.debug(f"searching paper {paper_idx} metrics")
                     no_stats = metrics.find("div", class_="messages highwire-stats")
                     if no_stats != None:
                         if "No statistics" in no_stats.text:

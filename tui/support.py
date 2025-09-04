@@ -160,7 +160,7 @@ def launch_tui():
         )
         files = walk_directory(Path(directory), tree)
         print(tree)
-    # logger.info(f"There are {pcount} papers in {directory}")
+
     question ="What file would you like to load?\n"
     file_choice = console.input(f"{question}")
     if file_choice.isnumeric():
@@ -408,7 +408,7 @@ ARXIV_DATES = ["All Dates", "Past 12 Months", "Specific Year", "Date Range"]
 ARXIV_AREAS = load_taxonomy()
 
 XARXIV_FIELDS = ["Title", "Abstract", "Author(s)", "Abstract|Title", "Text|Abstract|Title"]  
-XARXIV_SOURCES = ["bioRxiv", "medRxiv", "both"]
+XARXIV_SOURCES = ["bioRxiv", "medRxiv"]
 XARXIV_SORT = ["Best match", "Oldest first", "Newest first", "Popularity"]
 BIOARXIV_SUBJECTS =[
     "Animal Behavior and Cognition", "Biochemistry", "Bioengineering",

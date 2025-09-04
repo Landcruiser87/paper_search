@@ -74,7 +74,7 @@ If you want to store you virtual environment locally.  Set this global configura
 poetry config virtualenvs.in-project true
 ```
 
-For general instruction as to poetry's functionality and commands, please see read through poetry's [cli documentation](https://python-poetry.org/docs/cli/)
+For general instruction as to poetry's functionality and commands, please read through poetry's [cli documentation](https://python-poetry.org/docs/cli/)
 
 To create a new venv
 
@@ -83,10 +83,13 @@ python -m venv .venv
 ```
 
 or 
+
 This command will automatically activate the env
 ```terminal
 poetry env use python3.12
 ```
+
+or 
 
 Activate the venv
 Windows
