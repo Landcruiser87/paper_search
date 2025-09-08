@@ -14,12 +14,6 @@ from __init__ import PaperSearch, __prog_name__, __version__
 WINDOWS = platform.system() == "Windows"
 DEBUGPY_PORT = 5678
 
-#BUG - System headers
-#TODO - Update this to emulate headers that are consistent 
-#with the platform.  I'm currently seeing linux machines
-#get 400 responses because they don't generate the right 
-#header structure
-
 def main():
     parser = argparse.ArgumentParser(
         prog=__prog_name__, description="ML_Tree. Exploring high quality machine learning papers", epilog=f"v{__version__}"
@@ -90,3 +84,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#TODO - Reformat f strings that are calling bracketed variables
+
+# Test single brackets on mac as they use the special curly apostrophe
+# init.py -  787, 824, 889, 894, 967, 981, 993,
+# utils.py - 271

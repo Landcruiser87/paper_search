@@ -784,7 +784,7 @@ class PaperSearch(App):
         subject = self.query_one("#radio-arx-subjects", RadioSet).pressed_index
         categories = self.query_one("#sl-arx-categories", SelectionList)
         selected_cat = self.query_one("#sl-arx-categories", SelectionList).selected
-        root_name = f"arxiv_{ARXIV_FIELDS[field].lower()}_{"_".join(ARXIV_SUBJECTS[subject].lower().split(" "))}_{'-'.join(srch_text.lower().split())}"
+        root_name = f"arxiv_{ARXIV_FIELDS[field].lower()}_{'_'.join(ARXIV_SUBJECTS[subject].lower().split(' '))}_{'-'.join(srch_text.lower().split())}"
 
         #bind the info together into a list
         variables = [limit, field, date_range, subject]
@@ -821,7 +821,7 @@ class PaperSearch(App):
             tree: Tree = tree_view.query_one(Tree)
 
             try:
-                self.notify(f"{len(json_data)} papers found on arXiv searching {variables["query"]} in subject {variables["subject"]}")
+                self.notify(f"{len(json_data)} papers found on arXiv searching {variables['query']} in subject {variables['subject']}")
                 #load the JSON into the Tree
                 self.load_data(tree, root_name, json_data)
                 #save the search
@@ -886,12 +886,12 @@ class PaperSearch(App):
         if selected_cat:
             temp =  ["_".join(variables["categories"][x].lower().split(" ")) for x in range(len(variables["categories"]))]
             cat_string = "_".join(temp)
-            root_name = f"{variables["source"]}_{XARXIV_FIELDS[field].lower()}_{cat_string}_{'-'.join(srch_text.lower().split())}"
+            root_name = f"{variables['source']}_{XARXIV_FIELDS[field].lower()}_{cat_string}_{'-'.join(srch_text.lower().split())}"
             variables["categories"] = ",".join(map(str, variables["categories"]))
             variables["add_cat"] = True
 
         else:
-            root_name = f"{variables["source"]}_{XARXIV_FIELDS[field].lower()}_all_{'-'.join(srch_text.lower().split())}"
+            root_name = f"{variables['source']}_{XARXIV_FIELDS[field].lower()}_all_{'-'.join(srch_text.lower().split())}"
         
         try:    
             tree_view: TreeView = self.query_one("#tree-container", TreeView)
@@ -964,7 +964,7 @@ class PaperSearch(App):
                 if variables["sort"] == "popularity":
                     json_data = dict(sorted(json_data.items(), key=lambda x: x[1].get("score"), reverse=True))
                 all_results.update(**json_data)
-                self.app.call_from_thread(self.notify, f"{len(json_data)} results found on {variables["source"]}")
+                self.app.call_from_thread(self.notify, f"{len(json_data)} results found on {variables['source']}")
             elif no_res_message:
                 self.app.call_from_thread(self.notify, f"No results:\nMessage: {no_res_message}")
                 logger.warning(f"No Results due to {no_res_message}")
@@ -978,7 +978,7 @@ class PaperSearch(App):
                         self.app.call_from_thread(self.load_data, tree, root_name, all_results)
                         # self.load_data(tree, root_name, json_data)
                         save_data(root_name, all_results)
-                        self.app.call_from_thread(self.notify, f"Found {len(all_results.keys())} papers in {variables["source"]} sources.")
+                        self.app.call_from_thread(self.notify, f"Found {len(all_results.keys())} papers in {variables['source']} sources.")
 
                     except Exception as e:
                         logger.error(f"Failed to save saerch results: {e}")
@@ -990,7 +990,7 @@ class PaperSearch(App):
         except Exception as e:
             # Catch other potential errors during link traversal
             logger.error(f"Error during worker run: {e}")
-            self.app.call_from_thread(self.notify, f"Search failed on {variables["source"]}:\n{e}", severity="error", timeout=2)
+            self.app.call_from_thread(self.notify, f"Search failed on {variables['source']}:\n{e}", severity="error", timeout=2)
 
         finally:
             # Remove Progress Bar

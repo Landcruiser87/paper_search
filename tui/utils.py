@@ -201,7 +201,7 @@ class ArxivSearch(object):
             return new_papers, None
 
         else:
-            message =f"No papers returned for search ({self.params['query']}) in category {self.params['subject']}"
+            message = f"No papers returned for search ({self.params['query']}) in category {self.params['subject']}"
             logger.warning(message)
             return None, message
 
@@ -268,7 +268,7 @@ class xRxivBase(object):
                 if self.params["submitted_date"][:4] == start:
                     self.params["end_date"] = self.params["submitted_date"]
                 else:
-                    self.params["end_date"] = f"{self.params["year"]}-12-31"
+                    self.params["end_date"] = f"{self.params['year']}-12-31"
                 return True
             else:
                 return False
