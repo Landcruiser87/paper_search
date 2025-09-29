@@ -161,10 +161,10 @@ def launch_tui():
             guide_style="bold bright_blue",
         )
         files = walk_directory(Path(directory), tree)
-        print(tree)
+        # print(tree)
 
     question ="What file would you like to load?\n"
-    file_choice = console.input(f"{question}")
+    file_choice = "40" #console.input(f"{question}")
     if file_choice.isnumeric():
         file_to_load = files[int(file_choice) - 1]
         #check output directory exists
@@ -210,15 +210,16 @@ def walk_directory(directory: Path, tree: Tree) -> None:
             text_filename.stylize(f"link file://{path}")
             file_size = path.stat().st_size
             text_filename.append(f" ({decimal(file_size)})", "blue")
-            if path.name.split(".")[0].split("_")[1] in MAIN_CONFERENCES:
-                icon = "🔥 "
-            elif path.name.split(".")[0].split("_")[1] in SUB_CONFERENCES:
-                icon = "🐍 "
-            elif path.suffix == ".mib":
-                icon = "👽 "
-            else:
-                icon = "🔫 "
-            tree.add(Text(f'{idx} ', "blue") + Text(icon) + text_filename)
+            # if path.name.split(".")[0].split("_")[1] in MAIN_CONFERENCES:
+            #     icon = "🔥 "
+            # elif path.name.split(".")[0].split("_")[1] in SUB_CONFERENCES:
+            #     icon = "🐍 "
+            # elif path.suffix == ".mib":
+            #     icon = "👽 "
+            # else:
+            #     icon = "🔫 "
+            # tree.add(Text(f'{idx} ', "blue") + Text(icon) + text_filename)
+            tree.add(Text(f'{idx} ', "blue") + text_filename)
         idx += 1
 
     return paths

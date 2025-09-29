@@ -82,8 +82,6 @@ To create a new venv
 python -m venv .venv
 ```
 
-or 
-
 This command will automatically activate the env
 ```terminal
 poetry env use python3.12

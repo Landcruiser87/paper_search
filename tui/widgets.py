@@ -15,7 +15,7 @@ from textual.widgets import (
     Static, 
 )
 from textual.widgets.tree import TreeNode
-from os import get_terminal_size
+# from os import get_terminal_size
 
 highlighter = ReprHighlighter()
 
@@ -207,7 +207,7 @@ class SearchProgress(ProgressBar):
         self.total = total
         self.border_title = "Searching.."
         self.color = "magenta"
-        self.width = round(0.8 * get_terminal_size()[0])
+        # self.width = round(0.8 * get_terminal_size()[0])
 
     # def style_text(self, segment: Segment) -> Text:
     #     return Text.from_markup(segment[0], style=self.color,) + Text.from_markup(
