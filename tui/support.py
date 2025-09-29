@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #main libraries
 import datetime
 import time
