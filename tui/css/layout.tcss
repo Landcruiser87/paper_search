@@ -448,7 +448,7 @@ SearchProgress {
 }
 
 #loading-container {
-    width: 80%;
+    width: 100%;
     height: 100%;
     align: center middle;
 }
