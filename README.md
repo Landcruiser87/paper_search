@@ -38,6 +38,71 @@ Navigate to the directory where you want to clone the repo.
 ## Cloning and setting up environment.
 Launch VSCode if that is IDE of choice.
 
+Next clone the paper_search repo to your desired location.  If using a blank VM you'll have to install git as shown below. 
+
+```terminal
+git clone https://www.github.com/Landcruiser87/paper_search.git
+```
+
+After opening the newly cloned folder (CTRL + K + O in Vscode) 
+While in root directory run commands below
+
+```terminal
+$ mkdir data/logs data/logs/scrape data/logs/tui searches
+$ mkdir data/searches data/models/marco data/models/specter
+```
+
+
+### VM setup
+
+If installing this onto a GCP VM, follow the steps below.  
+
+Create your VM with your desired GPU.  For this example we'll use the standard Tesla T4 GPU onto a blank Linux Ubuntu 24.04 instance.  The first step will be to run the following commands to install the necessary dependencies and confirm the GPU is running.
+
+```terminal
+#Update your dependencies
+sudo apt update && sudo apt upgrade
+sudo apt install -y build-essential
+sudo apt install git
+
+sudo apt install -y python3.12 python3-pip python3-venv
+lspci | grep -i nvidia
+hostnamectl
+gcc --version
+```
+
+Note: If you install poetry below, you will need to add poetry to the path once you are SSH'd into the project folder.  Do so with the following. 
+
+```terminal
+export PATH="/home/username/.local/bin:$PATH
+source ~/.bashrc
+```
+
+Next we'll want to add the CUDA drivers to it.  (Get ready this is not fun!)
+First we'll go here and check what drivers are available for our GPU
+[Nvidia Developer page](https://developer.nvidia.com/cuda-downloads?)
+
+From there we select our system and begin the joy of installing the Cuda drivers. 
+The process will look something like this.  We'll use the open source kernel as that is the recommended for the T4 GPU. 
+
+```terminal
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin
+sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/13.0.1/local_installers/cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2404-13-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda-toolkit-13-0
+sudo apt-get install -y nvidia-open
+```
+
+Now that the Nvidia/Cuda side is installed, you can follow the instructions below surrounding pytorch. We just installed Cuda 13.01 above, so we need to keep the pytorch version BELOW that number.  
+If you'd like to monitor your GPU temps to make sure they don't explode.  Use the following. 
+
+```terminal
+watch -n 1 nvidia-smi
+```
+
 # Project setup with Poetry
 
 ## How to check Poetry installation
@@ -100,15 +165,6 @@ Mac/Linux
 source .venv/bin/activate
 ```
 
-## Folder Setup
-
-While in root directory run commands below
-
-```terminal
-$ mkdir data/logs data/logs/scrape data/logs/tui searches
-$ mkdir data/searches data/models/marco data/models/specter
-```
-
 ### Installation with GPU
 To use your GPU, or not to use your GPU.  That is the question.  If you're lucky enough to have workhorse GPU on your rig, you might be inclined to use it when selecting the "Marco" and "Specter" models.  To do so requires... a few extra annoying steps.  Hopefully you bought into the NVIDIA hype and have one of their GPU's as most of pytorch's implmentations are based on the NVIDIA CUDA drivers.  
 
@@ -128,6 +184,8 @@ Go through the selections and see which align with your system.  My only options
 
 ```terminal
 poetry source add --priority=explicit pytorch-cuda "https://download.pytorch.org/whl/cu118"
+or
+poetry source add --priority=explicit pytorch-cuda "https://download.pytorch.org/whl/cu129"
 ```
 
 After the source is added, you should see something like this in your project.toml file.
@@ -143,6 +201,7 @@ Now you can install the specific versions of what you'll need to run SBert model
 
 ```terminal
 poetry add torch==2.7.0+cu118 torchaudio==2.7.0+cu118 torchvision==0.22.0+cu118 --source pytorch-cuda
+poetry add torch==2.8.0+cu129 torchaudio==2.8.0+cu129 torchvision==0.23.0+cu129 --source pytorch-cuda
 poetry add sentence-transformers
 ```
 

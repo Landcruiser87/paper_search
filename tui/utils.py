@@ -852,7 +852,7 @@ def sbert(model_name:str):
             device = "cuda:0" if torch.cuda.is_available() else "cpu"
         else:
             device = "cuda" if torch.cuda.is_available() else "cpu"
-        # device = "cpu"
+        
         #Trained on a bunch of bing queries
         if model_name == "Marco": #Polooooooo.
             model_path = "./data/models/marco/"

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 #Main imports
+import gc
 import json
 import sys
 import asyncio
@@ -109,6 +110,7 @@ class PaperSearch(App):
                     with Horizontal(id="dataset-container"):
                         with Container(id="dc-leftside"):
                             yield Static("Available Datasets", id="data-title", classes="header")
+                            yield Input(tooltip="Begin typing to filter datasets", id="input-filt", type="text")
                             yield SelectionList(*self.all_datasets, name="Dataset List", id="datasets")
 
                         with Container(id="dc-rightside"):
@@ -216,6 +218,36 @@ class PaperSearch(App):
         else:
             abutton.label = f"Add Data"
             rbutton.label = f"Remove Data"
+
+    @on(Input.Changed, "#input-filt")
+    def filter_list_by_input(self, event: Input.Changed) -> None:
+        """Handle the Input.Changed event from #filter_input to filter the selection list."""
+        
+        # Get the SelectionList instance
+        datasets: SelectionList = self.query_one("#datasets", SelectionList)
+        
+        # Normalize the search term (case-insensitive search)
+        search_term = event.value.strip().lower()
+        DS = self.all_datasets
+
+        # Filter the original list of datasets
+        if not search_term:
+            # If the search term is empty, show all datasets
+            filtered_options = DS
+        else:
+            # Filter options where the label contains the search term
+            filtered_options, idx = [], 0
+            for label in DS:
+                if search_term in label[0].lower():
+                    filtered_options.append((label[0], idx))
+                    idx += 1
+
+        # clear existing options and add the filtered options
+        datasets.clear_options()
+        # Add them back into the selection list
+        datasets.add_options(
+            [Selection(label, id) for label, id in filtered_options]
+        )
 
     @on(RadioSet.Changed, "#radio-models")
     def on_radio_models_changed(self, event: RadioSet.Changed) -> None:
@@ -557,6 +589,7 @@ class PaperSearch(App):
             return
         
         res = sorted(results.items(), key=lambda x:x[1].get("metric_match"), reverse=True)[:res_limit]
+        gc.collect()
         return dict(res)
     
     #FUNCTION - add datasets
@@ -575,7 +608,7 @@ class PaperSearch(App):
             if index <= len(datasets.options):
                 # Safely access the prompt text
                 prompt_text_list = getattr(datasets.options[index].prompt, '_text', None)
-                if prompt_text_list and isinstance(prompt_text_list, list):# and prompt_text_list:
+                if prompt_text_list and isinstance(prompt_text_list, list):
                     ds_name_base = prompt_text_list[0]
                     ds_name = ds_name_base + ".json"
                     # Determine source path based on whether the base name has numbers
