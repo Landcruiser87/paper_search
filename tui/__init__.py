@@ -133,7 +133,7 @@ class PaperSearch(App):
                                 yield RadioButton(field)
                         with Container(id="sub-container"):
                             with Vertical(id="srch-fields"):
-                                yield Input("res limit", tooltip="Limit the amount of returned results", id="input-limit", type="integer")
+                                yield Input("res limit", tooltip="Limit the amount of returned results per json", id="input-limit", type="integer")
                                 yield Input("threshold", tooltip="Threshold the appropriate metric", id="input-thres", type="number")
                             yield Button("Search Datasets", tooltip="Run like ya stole something!", id="search-button")
 
@@ -591,7 +591,8 @@ class PaperSearch(App):
             return
         
         res = sorted(results.items(), key=lambda x:x[1].get("metric_match"), reverse=True)[:res_limit]
-        gc.collect()
+        #NOTE: slows down iterations when gc is collected here
+        # gc.collect()
         return dict(res)
     
     #FUNCTION - add datasets
@@ -754,6 +755,7 @@ class PaperSearch(App):
                 result = self.search_data(srch_text, node, variables, conf_name)
                 if result:
                     all_results.update(**result)
+                    del result
                 srchcount += 1
                 # Define a helper function to perform the UI updates
                 def update_progress_ui(current_count:int):
@@ -784,7 +786,7 @@ class PaperSearch(App):
 
                 else:
                     self.app.call_from_thread(self.notify, "Search Complete, No results found")
-                    sleep(2)
+                    sleep(1)
 
         except Exception as e:
             # Catch other potential errors during json traversal
@@ -805,6 +807,7 @@ class PaperSearch(App):
             self.app.call_from_thread(remove_progress_ui)
             #Reload SelectionList to include search results
             self.reload_datasets()
+            gc.collect()
 
     #FUNCTION - search arXiv
     def search_arxiv(self):
