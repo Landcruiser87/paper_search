@@ -367,8 +367,10 @@ class PaperSearch(App):
         tree: Tree = tree_view.query_one(Tree)
         datasets: SelectionList = self.query_one("#datasets", SelectionList)
         selected: list = datasets.selected
-
-        if len(selected) > 1:
+        if not selected:
+            self.app.notify(f"No dataset selected")
+            return
+        elif len(selected) > 1:
             for itemid in selected:
                 rem_conf = getattr(datasets.options[itemid].prompt, '_text', None)[0]
                 # rem_conf = datasets.options[itemid].prompt._text[0] + ".json"
