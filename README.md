@@ -49,7 +49,7 @@ While in root directory run commands below
 
 ```terminal
 $ mkdir data/logs data/logs/scrape data/logs/tui searches
-$ mkdir data/searches data/models/marco data/models/specter
+$ mkdir data/searches data/models data/models/marco data/models/specter
 ```
 
 
@@ -63,7 +63,7 @@ Create your VM with your desired GPU.  For this example we'll use the standard T
 #Update your dependencies
 sudo apt update && sudo apt upgrade
 sudo apt install -y build-essential
-sudo apt install git
+sudo apt install -y git
 
 sudo apt install -y python3.12 python3-pip python3-venv
 lspci | grep -i nvidia
@@ -71,12 +71,6 @@ hostnamectl
 gcc --version
 ```
 
-Note: If you install poetry below, you will need to add poetry to the path once you are SSH'd into the project folder.  Do so with the following. 
-
-```terminal
-export PATH="/home/username/.local/bin:$PATH
-source ~/.bashrc
-```
 
 Next we'll want to add the CUDA drivers to it.  (Get ready this is not fun!)
 First we'll go here and check what drivers are available for our GPU
@@ -121,6 +115,12 @@ On Linux/Mac
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
+If on a gcp image, you will need to add poetry to the path once you are SSH'd into the project folder.  Do so with the following. Change the user name to your gcp email. 
+
+```terminal
+export PATH="/home/useremail/.local/bin:$PATH"
+```
+
 To check if poetry is installed on your system. Type the following into your terminal
 
 ```terminal
@@ -157,12 +157,12 @@ or
 Activate the venv
 Windows
 ```terminal
-.venv\scripts\activate
+.venv/scripts/activate
 ```
 
 Mac/Linux
 ```terminal
-source .venv/bin/activate
+source .venv\bin\activate
 ```
 
 ### Installation with GPU
@@ -205,7 +205,7 @@ poetry add torch==2.8.0+cu129 torchaudio==2.8.0+cu129 torchvision==0.23.0+cu129 
 poetry add sentence-transformers
 ```
 
-### Installation without GPU
+### Installation without GPU but with poetry
 
 You'll want to go into the project.toml file and before you run the command below.  Delete lines `23-25` and `34-44`. Then run the following below.  To update the lock file (first) then install libraries.  Do the following
 
@@ -225,6 +225,10 @@ To view only top level library requirements
 ```terminal
 poetry show -T
 ```
+
+### Installation without GPU on mac with pip
+#TODO - Update README to mac installation without IDE. 
+
 
 
 ## Model setup
@@ -284,5 +288,5 @@ https://github.com/user-attachments/assets/b20b32c9-55f0-4e3b-a436-5571a47f9700
 #### Todo
 
 [ ] - Add Google Scholar
+[ ] - Add Nature
 [ ] - Add Pubmed
-[ ] - ResearchGate or JSTOR?
