@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
-
-import contextlib
-import datetime
-import requests
-import json
 import re
+import json
+import time
 import spacy
+import torch
+import asyncio
+import requests
+import datetime
+import contextlib
 import numpy as np
 import pandas as pd
-import torch
-import time
-import asyncio
 import curl_cffi as cf
 from os import path, mkdir
 from support import logger
 from bs4 import BeautifulSoup
 from urllib.parse import quote
-from dataclasses import dataclass, fields
 from typing import Callable, Optional
+from dataclasses import dataclass, fields
 from sentence_transformers import SentenceTransformer
 from scipy.spatial.distance import cosine as scipy_cos
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -38,12 +37,31 @@ class Paper:
     score   : float = 0
     github_url     : str = ""
     supplemental   : str = ""  #general comments
-    date_published : str = ""  # mm-dd-yyyy
-    conference_info: str = ""  # e.g. arxiv
-
+    date_published : str = ""  #mm-dd-yyyy
+    conference_info: str = ""  #e.g. arxiv
 
 ################################# Classes #################################
 class GoogleScholar(object):
+    #ISSUES with GScholar
+        #Unfortunately it looks like I might have to figure out a way to 
+        #parse an unknown result format to get the information I want for comparison. 
+        
+        #Don't haves
+            #I can't get a full abstract.  
+            #I can't get keywords or a doi
+            #I can't get all the authors
+            #I don't have a DOI
+        #Do haves
+            #I can get a pdf url
+            #I can get a source possibly
+            #I can get publisher and year
+        
+        #So ...  
+        # In general, a publication on Google Scholar has two forms:
+            #* Appearing as a PUBLICATION SNIPPET and
+            #* Appearing as a paper in an AUTHOR PAGE
+
+            
     def __init__(self, variables:dict):
         self.params: dict = variables
         self.results: list = []
@@ -117,7 +135,7 @@ class GoogleScholar(object):
                 if possiblematch:
                     paper.github_url = possiblematch[0]
             paper.conference_info = "https://scholar.google.com"
-            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}# asdict(paper). asdict not saving the authors keys
+            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
             del paper
         
         return paper_dict
@@ -306,7 +324,7 @@ class ArxivSearch(object):
             return False
         
     def request_papers(self) -> dict:
-        chrome_version = np.random.randint(120, 137)
+        chrome_version = np.random.randint(120, 140)
         baseurl = "https://arxiv.org/search/advanced"
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -346,12 +364,13 @@ class ArxivSearch(object):
             'size': self.params["limit"],
             'order':'-submitted_date',
         }
+
         if self.params["add_cat"]:
             parameters[f'{self.params["classification"]}' + "_archives"]  = self.params["categories"]
 
         try:
             response = requests.get(baseurl, headers=headers, params=parameters)
-            
+
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
 
