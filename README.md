@@ -285,8 +285,9 @@ With the TUI running, it should look something like this.
 
 https://github.com/user-attachments/assets/b20b32c9-55f0-4e3b-a436-5571a47f9700
 
-#### Todo
 
-[ ] - Add Google Scholar
-[ ] - Add Nature
-[ ] - Add Pubmed
+### Todo
+
+- [ ] Add Google Scholar
+- [ ] Add Nature
+- [ ] Add Pubmed
