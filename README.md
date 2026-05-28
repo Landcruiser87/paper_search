@@ -290,4 +290,17 @@ https://github.com/user-attachments/assets/b20b32c9-55f0-4e3b-a436-5571a47f9700
 
 - [ ] Add Google Scholar
 - [ ] Add Nature
+  - https://dev.springernature.com/docs/quick-start/api-access/
 - [ ] Add Pubmed
+- [ ] https://api.semanticscholar.org/api-docs/
+
+### IDEA
+
+- [ ] Do an author and institution search.  
+  - Could launch that as a separate tab.  Stats/ML tab maybe?
+  - Possibly an aggregate of papers and top keywords.
+  - Do a TFIDF on keywords
+  - What keywords to use though.  
+    - Ah!  OCR to the rescue.  Just OCR the first page and see if the keywords are in the pdf. 
+    - Might take up a bit more memory but would be useful to build a tool that can 
+    - grab those or the abstract.

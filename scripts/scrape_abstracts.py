@@ -327,7 +327,7 @@ def parse_paper(page_text:str):
 @log_time
 def main():
     """Main driver code for program"""
-    years = range(2025, 2026)
+    years = range(2025, 2027)
     logger.debug("searching PMLR")
     PMLR = request_conf("PMLR", year=years.start)
     global prog, task
@@ -369,5 +369,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-#TODO - Would it be worth scraping openreview.net for any missing details in my json?

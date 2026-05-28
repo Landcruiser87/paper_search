@@ -89,11 +89,11 @@ def log_time(fn):
         te = time.time()
         took = round(te - tnow, 2)
         if took <= 60:
-            logging.info(f"{fn.__name__} ran in {took:.3f}s")
+            logger.info(f"{fn.__name__} ran in {took:.3f}s")
         elif took <= 3600:
-            logging.info(f"{fn.__name__} ran in {(took)/60:.3f}m")		
+            logger.info(f"{fn.__name__} ran in {(took)/60:.3f}m")		
         else:
-            logging.info(f"{fn.__name__} ran in {(took)/3600:.3f}h")
+            logger.info(f"{fn.__name__} ran in {(took)/3600:.3f}h")
         return out
     return inner
 

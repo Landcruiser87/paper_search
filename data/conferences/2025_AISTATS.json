@@ -838,19 +838,7 @@
     "abstract": "From pedestrians to Kuramoto oscillators, interactions between agents govern how dynamical systems evolve in space and time. Discovering how these agents relate to each other has the potential to improve our understanding of the often complex dynamics that underlie these systems. Recent works learn to categorize relationships between agents based on observations of their physical behavior. These approaches model relationship categories as outcomes of a categorical distribution which is limiting and contrary to real-world systems, where relationship categories often intermingle and interact. In this work, we introduce a level of abstraction between the observable behavior of agents and the latent categories that determine their behavior. To do this, we learn a mapping from agent observations to agent preferences for a set of latent categories. The learned preferences and inter-agent proximity are integrated in a nonlinear opinion dynamics model, which allows us to naturally identify mutually exclusive categories, predict an agent\u2019s evolution in time, and control an agent\u2019s behavior. Through extensive experiments, we demonstrate the utility of our model for learning interpretable categories, and the efficacy of our model for long-horizon trajectory prediction.",
     "url": "https://proceedings.mlr.press/v258/yang25d.html",
     "id": "https://proceedings.mlr.press/v258/yang25d.html",
-    "pdf": "https://proceedings.mlr.press/v258/yang25d/yang25d.pdf",
-    "authors": {
-      "0_Yulong Yang": "Yulong Yang",
-      "1_Bowen Feng": "Bowen Feng",
-      "2_Keqin Wang": "Keqin Wang",
-      "3_Naomi Leonard": "Naomi Leonard",
-      "4_Adji Bousso Dieng": "Adji Bousso Dieng",
-      "5_Christine Allen-Blanchette": "Christine Allen-Blanchette"
-    },
-    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v258/main/assets/yang25d/yang25d.pdf",
-    "github_url": "https://github.com/CAB-Lab-Princeton/Behavior-Inspired-Neural-Network",
-    "conf_info": "Proceedings of The 28th International Conference on Artificial Intelligence and Statistics,\u00a0PMLR 258:4312-4320,\u00a02025.",
-    "supplemental": ""
+    "pdf": "https://proceedings.mlr.press/v258/yang25d/yang25d.pdf"
   },
   "50_Infinitedimensional Diffusion Bridge Simulation via Operator Learning": {
     "title": "Infinite-dimensional Diffusion Bridge Simulation via Operator Learning",

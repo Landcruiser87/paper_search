@@ -56,7 +56,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
@@ -129,7 +128,6 @@ dmypy.json
 .pyre/
 
 #Project specific folders
-
 /data/backup/
 /data/screenshots/
 /data/cleaned
@@ -147,5 +145,3 @@ dmypy.json
 *.xlsx
 .Rhistory
 .DS_Store
-
-
