@@ -1,0 +1,87 @@
+{
+  "0_Expert Collapse and Compositional Failure in Simple Multimodal MoE": {
+    "title": "Expert Collapse and Compositional Failure in Simple Multimodal MoE",
+    "abstract": "Mixture-of-Experts (MoE) is a technique that uses multiple MLPs at each transformer layer, rather than using a single MLP. MoE architectures are hypothesised to create specialised experts, but this is often inferred rather than quantitatively measured. Further, this specialisation is in conflict with standard load-balancing losses that promote more uniform load distribution, though can encourage expert redundancy. We construct a novel two-unimodal-expert (vision/text) MoE testbed and use a three-stage protocol to first force specialisation with uni-modal data (Stage 2), then test its stability during fine-tuning (Stage 3). Our findings demonstrate that while Stage 2 successfully creates specialised experts, this specialisation persists only at the object-level. In Stage 3, the standard multimodal loss actively overwrites this structure, causing the latent space to default to only clustering by <i>modality</i>, rather than by <i>concept</i>. We identify the mechanism as <i>layer-level expert collapse</i>. Furthermore, a case study on compositional binding reveals that even when specialisation is present, it captures monolithic objects (e.g., \u2019car\u2019) but fails to bind attributes like colour, perhaps highlighting a source of bias in multimodal representation.",
+    "url": "https://proceedings.mlr.press/v332/ticinovic26a.html",
+    "id": "https://proceedings.mlr.press/v332/ticinovic26a.html",
+    "pdf": "https://proceedings.mlr.press/v332/ticinovic26a/ticinovic26a.pdf",
+    "authors": {
+      "0_Anthony Ticinovic": "Anthony Ticinovic",
+      "1_Caren Han": "Caren Han"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v332/main/assets/ticinovic26a/ticinovic26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of AAAI 2026 Workshop on Bias in Multimodal AI,\u00a0PMLR 332:1-10,\u00a02026.",
+    "supplemental": ""
+  },
+  "1_Physicsbased phenomenological characterization of crossmodal bias in multimodal models": {
+    "title": "Physics-based phenomenological characterization of cross-modal bias in multimodal models",
+    "abstract": "The term \u2019algorithmic fairness\u2019 is used to evaluate whether AI models operate fairly in both comparative (where fairness is understood as formal equality, such as \u201ctreat like cases as like\u201d) and non-comparative (where unfairness arises from the model\u2019s inaccuracy, arbitrariness, or inscrutability) contexts. Recent advances in multimodal large language models (MLLMs) are breaking new ground in multimodal understanding, reasoning, and generation; however, we argue that inconspicuous distortions arising from complex multimodal interaction dynamics can lead to systematic bias. The purpose of this position paper is twofold: first, it is intended to acquaint AI researchers with phenomenological explainable approaches that rely on the physical entities that the machine experiences during training/inference, as opposed to the traditional cognitivist symbolic account or metaphysical approaches; second, it is to state that this phenomenological doctrine will be practically useful for tackling algorithmic fairness issues in MLLMs. We develop a surrogate physics-based model that describes transformer dynamics (i.e., semantic network structure and self-cross-attention) to analyze the dynamics of cross-modal bias in MLLM, which are not fully captured by conventional embedding- or representation-level analyses. We support this position through multi-input diagnostic experiments: 1) perturbation-based analyses of emotion classification using Qwen2.5-Omni and Gemma 3n, and 2) dynamical analysis of Lorenz chaotic time-series prediction through the physical surrogate. Across two architecturally distinct MLLMs, we show that multimodal inputs can reinforce modality dominance rather than mitigate it, as revealed by structured error-attractor patterns under systematic label perturbation, complemented by dynamical analysis.",
+    "url": "https://proceedings.mlr.press/v332/kim26a.html",
+    "id": "https://proceedings.mlr.press/v332/kim26a.html",
+    "pdf": "https://proceedings.mlr.press/v332/kim26a/kim26a.pdf",
+    "authors": {
+      "0_Hyeongmo Kim": "Hyeongmo Kim",
+      "1_Sohyun Kang": "Sohyun Kang",
+      "2_Yerin Choi": "Yerin Choi",
+      "3_Seungyeon Ji": "Seungyeon Ji",
+      "4_Junhyuk Woo": "Junhyuk Woo",
+      "5_Hyunsuk Chung": "Hyunsuk Chung",
+      "6_Soyeon Caren Han": "Soyeon Caren Han",
+      "7_Kyungreem Han": "Kyungreem Han"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v332/main/assets/kim26a/kim26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of AAAI 2026 Workshop on Bias in Multimodal AI,\u00a0PMLR 332:19-32,\u00a02026.",
+    "supplemental": ""
+  },
+  "2_Cultural Representation Bias and Alignment Divergence in Large Language Models": {
+    "title": "Cultural Representation Bias and Alignment Divergence in Large Language Models",
+    "abstract": "Large Language Models (LLMs) are increasingly deployed as globally applicable tools, yet their internal mechanisms remain deeply conditioned by regional cultural schemas. Through a three-stage cultural audit comparing Western and Chinese LLMs, we identify a systematic divergence in how these models prioritize core social values. Quantitative results reveal a stark contrast: Western models consistently prioritize individualistic constructs like \"Autonomy\", while Chinese models favor relational ethics such as \"Harmony\". We attribute this divergence to a two-stage \u201ccultural imprinting\u201d process during large-scale pre-training and subsequent human-feedback refinement. This cumulative imprinting suggests that aligning AI to a single set of cultural standards may inadvertently impose a restrictive lens on the model, creating a risk where cultural differences are misconstrued as moral or behavioral deficits. Consequently, we advocate for the development of locally-aligned models and multidisciplinary fairness metrics to ensure global representation equity in the era of foundation AI.",
+    "url": "https://proceedings.mlr.press/v332/kan26a.html",
+    "id": "https://proceedings.mlr.press/v332/kan26a.html",
+    "pdf": "https://proceedings.mlr.press/v332/kan26a/kan26a.pdf",
+    "authors": {
+      "0_Tongtong Kan": "Tongtong Kan",
+      "1_Zhen He": "Zhen He",
+      "2_Shuofeng Hu": "Shuofeng Hu",
+      "3_Xiaomin Ying": "Xiaomin Ying"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v332/main/assets/kan26a/kan26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of AAAI 2026 Workshop on Bias in Multimodal AI,\u00a0PMLR 332:11-14,\u00a02026.",
+    "supplemental": ""
+  },
+  "3_Annotator Risk Preference as a Catalyst for Systemic Bias in Multimodal AI": {
+    "title": "Annotator Risk Preference as a Catalyst for Systemic Bias in Multimodal AI",
+    "abstract": "As artificial intelligence evolves toward multimodal cognition, systems are moving beyond unimodal dependencies to integrate visual, auditory, and linguistic dimensions, thereby simulating human perception of reality. However, this increased complexity not only enhances expressiveness but also opens more insidious channels for bias infiltration. Existing research largely focuses on the demographic attributes of annotators (e.g., race, gender) while overlooking critical variables within the dimension of decision psychology (Ferrara, 2024; Sap et al., 2022). Among these, risk preference acts as a core driver of individual decision-making, exerting a subtle anchoring effect during the multimodal annotation process. When annotators confront materials characterized by high ambiguity, fuzziness, or potential social sensitivity, their intrinsic risk tolerance directly dictates label polarity, the degree of neutralization, and sensitivity toward minority attributes.",
+    "url": "https://proceedings.mlr.press/v332/hu26a.html",
+    "id": "https://proceedings.mlr.press/v332/hu26a.html",
+    "pdf": "https://proceedings.mlr.press/v332/hu26a/hu26a.pdf",
+    "authors": {
+      "0_Shuofeng Hu": "Shuofeng Hu",
+      "1_Zhen He": "Zhen He",
+      "2_Tongtong Kan": "Tongtong Kan",
+      "3_Xiaomin Ying": "Xiaomin Ying"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v332/main/assets/hu26a/hu26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of AAAI 2026 Workshop on Bias in Multimodal AI,\u00a0PMLR 332:15-18,\u00a02026.",
+    "supplemental": ""
+  },
+  "4_Preface": {
+    "title": "Preface",
+    "abstract": "Preface",
+    "url": "https://proceedings.mlr.press/v332/han26a.html",
+    "id": "https://proceedings.mlr.press/v332/han26a.html",
+    "pdf": "https://proceedings.mlr.press/v332/han26a/han26a.pdf",
+    "authors": {
+      "0_Soyeon Caren Han": "Soyeon Caren Han",
+      "1_Rina Carines Cabral": "Rina Carines Cabral"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v332/main/assets/han26a/han26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of AAAI 2026 Workshop on Bias in Multimodal AI,\u00a0PMLR 332:i-ii,\u00a02026.",
+    "supplemental": ""
+  }
+}

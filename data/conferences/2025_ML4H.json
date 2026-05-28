@@ -1,0 +1,1454 @@
+{
+  "0_NewOnset Diabetes Assessment Using Artificial IntelligenceEnhanced Electrocardiography": {
+    "title": "New-Onset Diabetes Assessment Using Artificial Intelligence-Enhanced Electrocardiography",
+    "abstract": "Diabetes has a long asymptomatic period which can often remain undiagnosed for multiple years. In this study, we trained a deep learning model to detect new-onset diabetes using 12-lead {ECG} and readily available demographic information. To do so, we used retrospective data where patients have both a hemoglobin A1c and {ECG} measured. However, such patients may not be representative of the complete patient population. As part of the study, we proposed a methodology to evaluate our model in the target population by estimating the probability of receiving an A1c test and reweight the retrospective population to represent the general population. We also adapted an efficient algorithm to generate Shapley values for both {ECG} signals and demographic features at the same time for model interpretation. The model offers an automated, more accurate method for early diabetes detection compared to current screening efforts. Their potential use in wearable devices can facilitate large-scale, community-wide screening, improving healthcare outcomes.",
+    "url": "https://proceedings.mlr.press/v297/zhang26a.html",
+    "id": "https://proceedings.mlr.press/v297/zhang26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/zhang26a/zhang26a.pdf",
+    "authors": {
+      "0_Hao Zhang": "Hao Zhang",
+      "1_Neil Jethani": "Neil Jethani",
+      "2_Aahlad Puli": "Aahlad Puli",
+      "3_Leonid Garber": "Leonid Garber",
+      "4_Lior Jankelson": "Lior Jankelson",
+      "5_Yindalon Aphinyanaphongs": "Yindalon Aphinyanaphongs",
+      "6_Rajesh Ranganath": "Rajesh Ranganath"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/zhang26a/zhang26a.pdf",
+    "github_url": "https://github.com/rajesh-lab/a1c_ecg",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1194-1217,\u00a02026.",
+    "supplemental": ""
+  },
+  "1_Uncovering Trajectory and Topological Signatures in Multimodal Pediatric Sleep Embeddings": {
+    "title": "Uncovering Trajectory and Topological Signatures in Multimodal Pediatric Sleep Embeddings",
+    "abstract": "While generative models have shown promise in pediatric sleep analysis, the latent structure of their multimodal embeddings remains poorly understood. This work investigates session-wide diagnostic information contained in the sequences of 30-second pediatric {PSG} epochs embedded by a multimodal masked autoencoder. We test whether augmenting embeddings with (i) {PHATE}-derived per-epoch coordinates and whole-night movement descriptors, (ii) persistent homology summaries of the embedding cloud, and (iii) {EHR} yields task-relevant signals. Simple linear and {MLP} models, chosen for interpretability rather than state-of-the-art performance, show that geometric, topological, and clinical features each provide complementary gains. For binary predictions, feature importance is task-dependent, and more expressive late-fusion models generally perform better, with {AUPRC} improving 0.26$\\rightarrow$0.34 for desaturation, 0.31$\\rightarrow$0.48 for {EEG} arousal, 0.09$\\rightarrow$0.22 for hypopnea, and 0.05$\\rightarrow$0.14 for apnea. We also report Brier score and Expected Calibration Error, where the full fusion model yields the best calibration across all four binary tasks. Our study reveals that latent geometry/topology and {EHR} offer complementary, interpretable signals beyond embeddings, improving calibration and robustness under extreme imbalance.",
+    "url": "https://proceedings.mlr.press/v297/ye26a.html",
+    "id": "https://proceedings.mlr.press/v297/ye26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ye26a/ye26a.pdf",
+    "authors": {
+      "0_Scott Ye": "Scott Ye",
+      "1_Harlin Lee": "Harlin Lee"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ye26a/ye26a.pdf",
+    "github_url": "https://github.com/scottye009/PedSleep-TTA",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1392-1411,\u00a02026.",
+    "supplemental": ""
+  },
+  "2_MedExpert An ExpertAnnotated Dataset for Medical Chatbot Evaluation": {
+    "title": "MedExpert: An Expert-Annotated Dataset for Medical Chatbot Evaluation",
+    "abstract": "Large language models ({LLM}s) can create compelling patient-facing medical chatbots, but their reliability in clinical settings remains a concern due to the accuracy of their responses. To better evaluate patient-facing {LLM} generations, we introduce MedExpert, a comprehensive dataset featuring clinician-created questions and annotations to assess the accuracy and reliability of {LLM}-generated medical responses. MedExpert comprises 540 question\u2013response pairs in two specialties\u2014young adult mental health and prenatal care\u2014each annotated by clinical subject-matter experts for aspects such as factual accuracy and completeness. The dataset provides a framework for exploring these issues in medical chatbots, and to evaluate automatic error detection systems in these domains.",
+    "url": "https://proceedings.mlr.press/v297/yarmohammadi26a.html",
+    "id": "https://proceedings.mlr.press/v297/yarmohammadi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/yarmohammadi26a/yarmohammadi26a.pdf",
+    "authors": {
+      "0_Mahsa Yarmohammadi": "Mahsa Yarmohammadi",
+      "1_Alexandra DeLucia": "Alexandra DeLucia",
+      "2_Lillian C. Chen": "Lillian C. Chen",
+      "3_Leslie Miller": "Leslie Miller",
+      "4_Heyuan Huang": "Heyuan Huang",
+      "5_Sonal Joshi": "Sonal Joshi",
+      "6_Jonathan Lasko": "Jonathan Lasko",
+      "7_Sarah Collica": "Sarah Collica",
+      "8_Ryan Moore": "Ryan Moore",
+      "9_Haoling Qiu": "Haoling Qiu",
+      "10_Peter P. Zandi": "Peter P. Zandi",
+      "11_Damianos Karakos": "Damianos Karakos",
+      "12_Mark Dredze": "Mark Dredze"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/yarmohammadi26a/yarmohammadi26a.pdf",
+    "github_url": "https://github.com/JHU-CLSP/MedExpert",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1516-1561,\u00a02026.",
+    "supplemental": ""
+  },
+  "3_Beyond the Clinic A LargeScale Evaluation of Augmenting EHR with Wearable Data for Diverse Health Prediction": {
+    "title": "Beyond the Clinic: A Large-Scale Evaluation of Augmenting EHR with Wearable Data for Diverse Health Prediction",
+    "abstract": "Electronic health records ({EHR}s) provide a powerful basis for predicting the onset of health outcomes. Yet {EHR}s primarily capture in-clinic events and miss aspects of daily behavior and lifestyle containing rich health information. Consumer wearables, by contrast, continuously measure activity, heart rate, sleep, and more, offering complementary signals that can fill this gap. Despite this potential, there has been little systematic evaluation of the benefit that wearable data can bring to health outcome prediction on top of {EHR}s. In this study, we present an extensible framework for multimodal health outcome prediction that integrates {EHR} and wearable data streams. Using data from the All of Us Program, we systematically compared the combination of different encoding methods on {EHR} and wearable data, including the traditional feature engineering approach, as well as foundation model embeddings. Across ten clinical outcomes, wearable integration consistently improved model performance relative to {EHR}-only baselines, e.g., average Delta {AUROC} +6.8% for major depressive disorder, +9.7% for hypertension, and +12.6% for diabetes. On average across all ten outcomes, fusing {EHR}s with wearable features shows 8.5% improvement in {AUROC}. To our knowledge, this is the first large-scale evaluation of wearable\u2013{EHR} fusion, underscoring the utility of wearable-derived signals in complementing {EHR}s and enabling more holistic, personalized health outcome predictions. Meanwhile, our analysis elucidates future directions for optimizing foundation models for wearable data and its integration with {EHR} data.",
+    "url": "https://proceedings.mlr.press/v297/wang26a.html",
+    "id": "https://proceedings.mlr.press/v297/wang26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/wang26a/wang26a.pdf",
+    "authors": {
+      "0_Will Ke Wang": "Will Ke Wang",
+      "1_Rui Yang": "Rui Yang",
+      "2_Chao Pang": "Chao Pang",
+      "3_Karthik Natarajan": "Karthik Natarajan",
+      "4_Nan Liu": "Nan Liu",
+      "5_Daniel McDuff": "Daniel McDuff",
+      "6_David J. Slotwiner": "David J. Slotwiner",
+      "7_Fei Wang": "Fei Wang",
+      "8_Matthew B.A. McDermott": "Matthew B.A. McDermott",
+      "9_Xuhai Xu": "Xuhai Xu"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/wang26a/wang26a.pdf",
+    "github_url": "https://github.com/WillKeWang/AoU_Wearable_Valuation.git",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:295-309,\u00a02026.",
+    "supplemental": ""
+  },
+  "4_From 2D to 3D Without Extra Baggage DataEfficient Cancer Detection in Digital Breast Tomosynthesis": {
+    "title": "From 2D to 3D Without Extra Baggage: Data-Efficient Cancer Detection in Digital Breast Tomosynthesis",
+    "abstract": "Digital Breast Tomosynthesis ({DBT}) enhances finding visibility for breast cancer detection by providing volumetric information that reduces the impact of overlapping tissues; however, limited annotated data has constrained the development of deep learning models for {DBT}. To address data scarcity, existing methods attempt to reuse {2D} full-field digital mammography ({FFDM}) models by either flattening {DBT} volumes or processing slices individually, thus discarding volumetric information. Alternatively, {3D} reasoning approaches introduce complex architectures that require more {DBT} training data. Tackling these drawbacks, we propose {M&M-3D}, an architecture that enables learnable {3D} reasoning while remaining parameter-free relative to its {FFDM} counterpart, {M&M}. {M&M-3D} constructs malignancy-guided {3D} features, and {3D} reasoning is learned through repeatedly mixing these {3D} features with slice-level information. This is achieved by modifying operations in {M&M} without adding parameters, thus enabling direct weight transfer from {FFDM}. Extensive experiments show that {M&M-3D} surpasses {2D} projection and {3D} slice-based methods by 11\u201354% for localization and 3\u201310% for classification. Additionally, {M&M-3D} outperforms complex {3D} reasoning variants by 20\u201347% for localization and 2\u201310% for classification in the low-data regime, while matching their performance in high-data regime. On the popular {BCS-DBT} benchmark, {M&M-3D} outperforms previous top baseline by 4% for classification and 10% for localization.",
+    "url": "https://proceedings.mlr.press/v297/vu26a.html",
+    "id": "https://proceedings.mlr.press/v297/vu26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/vu26a/vu26a.pdf",
+    "authors": {
+      "0_Yen Nhi Truong Vu": "Yen Nhi Truong Vu",
+      "1_Dan Guo": "Dan Guo",
+      "2_Sripad Joshi": "Sripad Joshi",
+      "3_Harshit Kumar": "Harshit Kumar",
+      "4_Jason Su": "Jason Su",
+      "5_Thomas Paul Matthews": "Thomas Paul Matthews"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/vu26a/vu26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1346-1359,\u00a02026.",
+    "supplemental": ""
+  },
+  "5_One VLM Two Roles StageWise Routing and SpecialtyLevel Deployment for Clinical Workflows": {
+    "title": "One VLM, Two Roles: Stage-Wise Routing and Specialty-Level Deployment for Clinical Workflows",
+    "abstract": "Clinical {ML} workflows are often fragmented and inefficient: triage, task selection, and model deployment are handled by a patchwork of task-specific networks. These pipelines are rarely aligned with data-science practice, reducing efficiency and increasing operational cost. They also lack data-driven model identification (from imaging/tabular inputs) and standardized delivery of model outputs. We present a framework that employs a single vision\u2013language model ({VLM}) in two complementary, modular roles. First (Solution 1): the {VLM} acts as an aware model-card matcher that routes an incoming image to the appropriate specialist model via a three-stage workflow (modality $\\rightarrow$ primary abnormality $\\rightarrow$ model-card {ID}). Reliability is improved by (i) stage-wise prompts enabling early termination via None/Other and (ii) a calibrated top-2 answer selector with a stage-wise cutoff. This raises routing accuracy by +9 and +11 percentage points on the training and held-out splits, respectively, compared with a baseline router, and improves held-out calibration (lower {ECE}). Second (Solution 2): we fine-tune the same {VLM} on specialty-specific datasets so that one model per specialty covers multiple downstream tasks, simplifying deployment while maintaining performance. Across gastroenterology, hematology, ophthalmology, pathology, and radiology, this single-model deployment matches or approaches specialized baselines. Together, these solutions reduce data-science effort through more accurate selection, simplify monitoring and maintenance by consolidating task-specific models, and increase transparency via per-stage justifications and calibrated thresholds. Each solution stands alone, and in combination they offer a practical, modular path from triage to deployment.",
+    "url": "https://proceedings.mlr.press/v297/vassef26a.html",
+    "id": "https://proceedings.mlr.press/v297/vassef26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/vassef26a/vassef26a.pdf",
+    "authors": {
+      "0_Shayan Vassef": "Shayan Vassef",
+      "1_Soorya Ram Shimgekar": "Soorya Ram Shimgekar",
+      "2_Abhay Goyal": "Abhay Goyal",
+      "3_Christian Poellabauer": "Christian Poellabauer",
+      "4_Koustuv Saha": "Koustuv Saha",
+      "5_Pi Zonooz": "Pi Zonooz",
+      "6_Navin Kumar": "Navin Kumar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/vassef26a/vassef26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:263-274,\u00a02026.",
+    "supplemental": ""
+  },
+  "6_NOVA An Agentic Framework for Automated Histopathology Analysis and Discovery": {
+    "title": "NOVA: An Agentic Framework for Automated Histopathology Analysis and Discovery",
+    "abstract": "Histopathology image analysis involves time-intensive and specialized workflows, limiting its accessibility. We introduce Nova, an agentic framework that translates scientific queries into executable analysis pipelines by iteratively generating and running Python code. Nova integrates 49 domain-specific tools (e.g., nuclei segmentation, whole-slide encoding) built on open-source software, and can also create new tools ad hoc. To evaluate such systems, we present SlideQuest, a 90-question benchmark, verified by pathologists and biomedical scientists, spanning data processing, quantitative analysis, and hypothesis testing. Unlike prior biomedical benchmarks focused on knowledge recall or diagnostic QA, SlideQuest demands multi-step reasoning, iterative coding, and computational problem solving. Quantitative evaluation shows Nova outperforms coding-agent baselines, and a pathologist-verified case study links morphology to prognostically relevant PAM50 subtypes, demonstrating its discovery potential.",
+    "url": "https://proceedings.mlr.press/v297/vaidya26a.html",
+    "id": "https://proceedings.mlr.press/v297/vaidya26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/vaidya26a/vaidya26a.pdf",
+    "authors": {
+      "0_Anurag J. Vaidya": "Anurag J. Vaidya",
+      "1_Felix Meissen": "Felix Meissen",
+      "2_Daniel C. Castro": "Daniel C. Castro",
+      "3_Shruthi Bannur": "Shruthi Bannur",
+      "4_Tristan Lazard": "Tristan Lazard",
+      "5_Drew F. K. Williamson": "Drew F. K. Williamson",
+      "6_Faisal Mahmood": "Faisal Mahmood",
+      "7_Javier Alvarez-Valle": "Javier Alvarez-Valle",
+      "8_Stephanie L. Hyland": "Stephanie L. Hyland",
+      "9_Kenza Bouzid": "Kenza Bouzid"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/vaidya26a/vaidya26a.pdf",
+    "github_url": "https://github.com/microsoft/nova-agent",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:310-349,\u00a02026.",
+    "supplemental": ""
+  },
+  "7_Interpreting Dataset Shift in Clinical Notes": {
+    "title": "Interpreting Dataset Shift in Clinical Notes",
+    "abstract": "Distribution shift can lead to degradation in the performance of machine learning models. This concern is particularly salient in medicine, in which several forces can lead to shifts in Electronic Health Record ({EHR}) data. Distribution shift in the text domain is vastly understudied, but increasingly important, given the widespread integration of large language models into clinical workflows. Identifying the existence of a shift is necessary but insufficient; actionability often requires understanding the nature of the shift. To address this challenge, we establish an extensible benchmark suite that induces synthetic distribution shifts using real clinical notes and develop two methods to assess generated shift explanations. We further introduce {SIReNs}, a general-domain end-to-end approach that explains distributional differences between two datasets by selecting representative notes from each. The {SIReNs} method was evaluated on both binary and continuous feature shifts, and the results show that it recovers salient binary shifts well, but struggles with more subtle shifts. A substantial gap remains to a ground-truth oracle for continuous shifts, suggesting room for improvement in future methods.",
+    "url": "https://proceedings.mlr.press/v297/vaez-ghaemi26a.html",
+    "id": "https://proceedings.mlr.press/v297/vaez-ghaemi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/vaez-ghaemi26a/vaez-ghaemi26a.pdf",
+    "authors": {
+      "0_Shariar Vaez-Ghaemi": "Shariar Vaez-Ghaemi",
+      "1_Furong Jia": "Furong Jia",
+      "2_Monica Agrawal": "Monica Agrawal"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/vaez-ghaemi26a/vaez-ghaemi26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:243-262,\u00a02026.",
+    "supplemental": ""
+  },
+  "8_CancerGUIDE Cancer Guideline Understanding via Internal Disagreement Estimation": {
+    "title": "CancerGUIDE: Cancer Guideline Understanding via Internal Disagreement Estimation",
+    "abstract": "The National Comprehensive Cancer Network ({NCCN}) provides evidence-based guidelines for cancer treatment. Translating complex patient presentations into guideline-compliant treatment recommendations is time-intensive, requires specialized expertise, and is prone to error. Advances in large language model ({LLM}) capabilities promise to reduce the time required to generate treatment recommendations and improve accuracy. We present an {LLM} agent-based approach to automatically generate guideline-concordant treatment trajectories for patients with non-small cell lung cancer ({NSCLC}). Our contributions are threefold. First, we construct a novel longitudinal dataset of 121 cases of {NSCLC} patients that includes clinical encounters, diagnostic results, and medical histories, each expertly annotated with the corresponding {NCCN} guideline trajectories by board-certified oncologists. Second, we demonstrate that existing {LLM}s possess domain-specific knowledge that enables high-quality proxy benchmark generation for both model development and evaluation, achieving strong correlation (Spearman coefficient r = 0.88, {RMSE} = 0.08) with expert-annotated benchmarks. Third, we develop a hybrid approach combining expensive human annotations with model consistency information to create both the agent framework that predicts the relevant guidelines for a patient, as well as a meta-classifier that verifies prediction accuracy with calibrated confidence scores for treatment recommendations ({AUROC} = 0.800). Calibrated confidence scoring is a critical capability for communicating the accuracy of outputs, custom-tailoring tradeoffs in performance, and supporting regulatory compliance. This work establishes a framework for clinically viable {LLM}-based guideline adherence systems that balance accuracy, interpretability, and regulatory requirements while reducing annotation costs, providing a scalable pathway toward automated clinical decision support.",
+    "url": "https://proceedings.mlr.press/v297/unell26a.html",
+    "id": "https://proceedings.mlr.press/v297/unell26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/unell26a/unell26a.pdf",
+    "authors": {
+      "0_Alyssa Unell": "Alyssa Unell",
+      "1_Noel C. F. Codella": "Noel C. F. Codella",
+      "2_J. Samuel Preston": "J. Samuel Preston",
+      "3_Peniel Argaw": "Peniel Argaw",
+      "4_Wen-wai Yim": "Wen-wai Yim",
+      "5_Zelalem Gero": "Zelalem Gero",
+      "6_Cliff Wong": "Cliff Wong",
+      "7_Rajesh Jena": "Rajesh Jena",
+      "8_Eric Horvitz": "Eric Horvitz",
+      "9_Amanda K. Hall": "Amanda K. Hall",
+      "10_Rachel Ruican Zhong": "Rachel Ruican Zhong",
+      "11_Jiachen Li": "Jiachen Li",
+      "12_Shrey Jain": "Shrey Jain",
+      "13_Mu Wei": "Mu Wei",
+      "14_Matthew P. Lungren": "Matthew P. Lungren",
+      "15_Hoifung Poon": "Hoifung Poon"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/unell26a/unell26a.pdf",
+    "github_url": "https://aka.ms/CancerGUIDE",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:275-294,\u00a02026.",
+    "supplemental": ""
+  },
+  "9_Guardianregularized Safe Offline Reinforcement Learning for Smart Weaning of Mechanical Circulatory Devices": {
+    "title": "Guardian-regularized Safe Offline Reinforcement Learning for Smart Weaning of Mechanical Circulatory Devices",
+    "abstract": "We study the sequential decision-making problem for automated weaning of mechanical circulatory support ({MCS}) devices in cardiogenic shock patients. {MCS} devices are percutaneous micro-axial flow pumps that provide left ventricular unloading and forward blood flow, but current weaning strategies vary significantly across care teams and lack data-driven approaches. Offline reinforcement learning ({RL}) has proven to be successful in sequential decision-making tasks, but our setting presents challenges for training and evaluating traditional offline {RL} methods: prohibition of online patient interaction, highly uncertain circulatory dynamics due to concurrent treatments, and limited data availability. We developed an end-to-end machine learning framework with two key contributions (1) Clinically-aware OOD-regularized Model-based Policy Optimization ({CORMPO}) a density-regularized offline {RL} algorithm for out-of-distribution suppression that also incorporates clinically-informed reward shaping and (2) a Transformer-based probabilistic digital twin that models {MCS} circulatory dynamics for policy evaluation with rich physiological and clinical metrics. We prove that {CORMPO} achieves theoretical performance guarantees under mild assumptions. {CORMPO} attains a higher reward than the offline {RL} baselines by 28% and higher scores in clinical metrics by 82.6% on real and synthetic datasets. Our approach offers a principled framework for safe offline policy learning in high-stakes medical applications where domain expertise and safety constraints are essential.",
+    "url": "https://proceedings.mlr.press/v297/tumay26a.html",
+    "id": "https://proceedings.mlr.press/v297/tumay26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/tumay26a/tumay26a.pdf",
+    "authors": {
+      "0_Aysin Tumay": "Aysin Tumay",
+      "1_Sophia Sun": "Sophia Sun",
+      "2_Sonia Fereidooni": "Sonia Fereidooni",
+      "3_Aaron Dumas": "Aaron Dumas",
+      "4_Elise Jortberg": "Elise Jortberg",
+      "5_Rose Yu": "Rose Yu"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/tumay26a/tumay26a.pdf",
+    "github_url": "https://github.com/Rose-STL-Lab/CORMPO",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1269-1296,\u00a02026.",
+    "supplemental": ""
+  },
+  "10_UncertaintyAware Logistic Regression with GrayZone Refinement for Predicting Response to Neoadjuvant Chemotherapy in Breast Cancer": {
+    "title": "Uncertainty-Aware Logistic Regression with Gray-Zone Refinement for Predicting Response to Neoadjuvant Chemotherapy in Breast Cancer",
+    "abstract": "Predicting response to neoadjuvant chemotherapy ({NAC}) in breast cancer remains a clinical challenge. We developed a machine learning framework combining bibliographically-weighted Elastic Net for dimensionality reduction with regularized Logistic Regression ({LR}) as the primary model, and a selective escalation strategy using a multilayer perceptron ({MLP}) for ambiguous predictions. From GSE205568 (n=2551), 730 robust genes were selected. {LR} achieved strong performance (nested-{CV} {AUCPR} = 0.82, {ROC}-{AUC} = 0.93), but uncertainty analysis identified a \u201cgray zone\u201d near the decision threshold, concentrating misclassifications. Routing these cases to an {MLP} and aggregating outputs via stacking with isotonic recalibration improved gray-zone {AUCPR} by +0.24 and yielded perfect calibration ({ECE} $\\approx$ 0). External validation on GSE25065 (n=198) showed that while discrimination transferred ({ROC}-{AUC} = 0.94, {AUCPR} = 0.76), recalibration and local threshold adjustment were required to recover clinically useful performance (F1 = 0.74, Recall = 0.95) (de Hond et al., 2023). These findings support the use of {LR} as a reliable baseline, augmented by explicit uncertainty detection and selective complexity to improve robustness in clinical prediction.",
+    "url": "https://proceedings.mlr.press/v297/torres-fuertes26a.html",
+    "id": "https://proceedings.mlr.press/v297/torres-fuertes26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/torres-fuertes26a/torres-fuertes26a.pdf",
+    "authors": {
+      "0_Aixa Ximena Torres Fuertes": "Aixa Ximena Torres Fuertes",
+      "1_Fatima R. Jara Cuya": "Fatima R. Jara Cuya",
+      "2_Rodrigo Romero Tello": "Rodrigo Romero Tello",
+      "3_Jesus A. Sullon Silva": "Jesus A. Sullon Silva",
+      "4_Ariana M. Villegas Suarez": "Ariana M. Villegas Suarez"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/torres-fuertes26a/torres-fuertes26a.pdf",
+    "github_url": "https://anonymous.4open.science/r/chemo-response-prediction-5785/",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1336-1345,\u00a02026.",
+    "supplemental": ""
+  },
+  "11_Exploring TimeStep Size in Reinforcement Learning for Sepsis Treatment": {
+    "title": "Exploring Time-Step Size in Reinforcement Learning for Sepsis Treatment",
+    "abstract": "Existing studies on reinforcement learning ({RL}) for sepsis management have mostly followed an established problem setup, in which patient data are aggregated into 4-hour time steps. Although concerns have been raised regarding the coarseness of this time-step size, which might distort patient dynamics and lead to suboptimal treatment policies, the extent to which this is a problem in practice remains unexplored. In this work, we conducted empirical experiments for a controlled comparison of four time-step sizes ($\\Delta t = 1, 2, 4, 8$ h) on this domain, following an identical offline {RL} pipeline. To enable a fair comparison across time-step sizes, we designed action re-mapping methods that allow for evaluation of policies on datasets with different time-step sizes, and conducted cross-$\\Delta t$ model selections under two policy learning setups. Our goal was to quantify how time-step size influences state representation learning, behavior cloning, policy training, and off-policy evaluation. Our results show that performance trends across $\\Delta t$ vary as learning setups change, while policies learned at finer time-step sizes ($\\Delta t = 1$ h and 2 h) using a static behavior policy achieve the overall best performance and stability. Our work highlights time-step size as a core design choice in offline {RL} for healthcare and provides evidence supporting alternatives beyond the conventional 4-hour setup.",
+    "url": "https://proceedings.mlr.press/v297/sun26a.html",
+    "id": "https://proceedings.mlr.press/v297/sun26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/sun26a/sun26a.pdf",
+    "authors": {
+      "0_Yingchuan Sun": "Yingchuan Sun",
+      "1_Shengpu Tang": "Shengpu Tang"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/sun26a/sun26a.pdf",
+    "github_url": "https://github.com/ysun564/rl4h_timestep",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1235-1252,\u00a02026.",
+    "supplemental": ""
+  },
+  "12_Perspective Machine Learning for Health Should Consider Social Drivers of Health": {
+    "title": "Perspective: Machine Learning for Health Should Consider Social Drivers of Health",
+    "abstract": "Clinical machine learning (ML) algorithms can exacerbate a wide range of injustices across multiple domains and levels of society. These harms are often underemphasized and differentially distributed, with minoritized communities disproportionately experiencing the harms and not the benefits of health ML algorithms. By proposing a correspondence between prominent algorithmic harm and social drivers of health (SDOH) frameworks, we show that a range of algorithmic harms ultimately impact human health through SDOH factors, especially structural factors. This presents an inherent tension in the development of ML for health, where the harms of algorithms may lead to the worsening of health inequities. We recommend the consideration of SDOH throughout the pipeline of ML system development for examining algorithmic harms to health. Effectively considering SDOH necessitates developing competencies in structural analysis and community-engaged approaches. Accounting for SDOH could illuminate pathways toward equity-promoting algorithms, although we highlight that, in many cases, an equity-promoting algorithm may not exist. Thus, we also emphasize the need for interventions on the root causes of health inequities.",
+    "url": "https://proceedings.mlr.press/v297/srivathsa26a.html",
+    "id": "https://proceedings.mlr.press/v297/srivathsa26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/srivathsa26a/srivathsa26a.pdf",
+    "authors": {
+      "0_Neha Srivathsa": "Neha Srivathsa",
+      "1_Sherri Rose": "Sherri Rose"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/srivathsa26a/srivathsa26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1637-1644,\u00a02026.",
+    "supplemental": ""
+  },
+  "13_Multimodal Cancer Modeling in the Age of Foundation Model Embeddings": {
+    "title": "Multimodal Cancer Modeling in the Age of Foundation Model Embeddings",
+    "abstract": "The Cancer Genome Atlas ({TCGA}) has enabled novel discoveries and served as a large-scale reference dataset in cancer through its harmonized genomics, clinical, and imaging data. Numerous prior studies have developed bespoke deep learning models over {TCGA} for tasks such as cancer survival prediction. A modern paradigm in biomedical deep learning is the development of foundation models ({FM}s) to derive feature embeddings agnostic to a specific modeling task. Biomedical text especially has seen growing development of {FM}s. While {TCGA} contains free-text data as pathology reports, these have been historically underutilized. Here, we investigate the ability to train classical machine learning models over multimodal, zero-shot {FM} embeddings of cancer data. We demonstrate the ease and additive effect of multimodal fusion, outperforming unimodal models. Further, we show the benefit of including pathology report text and rigorously evaluate the effect of model-based text summarization and hallucination. Overall, we propose an embedding-centric approach to multimodal cancer modeling.",
+    "url": "https://proceedings.mlr.press/v297/song26a.html",
+    "id": "https://proceedings.mlr.press/v297/song26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/song26a/song26a.pdf",
+    "authors": {
+      "0_Steven Song": "Steven Song",
+      "1_Morgan Borjigin-Wang": "Morgan Borjigin-Wang",
+      "2_Irene R. Madejski": "Irene R. Madejski",
+      "3_Robert L. Grossman": "Robert L. Grossman"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/song26a/song26a.pdf",
+    "github_url": "https://github.com/StevenSong/multimodal-cancer-modeling",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:202-227,\u00a02026.",
+    "supplemental": ""
+  },
+  "14_Clinicallyaligned Multimodal Chest Xray Classification": {
+    "title": "Clinically-aligned Multi-modal Chest X-ray Classification",
+    "abstract": "Radiology is essential to modern healthcare, yet rising demand and staffing shortages continue to pose major challenges. Recent advances in artificial intelligence have the potential to support radiologists and help address these challenges. Given its widespread use and clinical importance, chest X-ray classification is well suited to augment radiologists workflows. However, most existing approaches rely solely on single-view, image-level inputs, ignoring the structured clinical information and multi-image studies available at the time of reporting. In this work, we introduce CaMCheX, a multimodal transformer-based framework that aligns multi-view chest X-ray studies with structured clinical data to better reflect how clinicians make diagnostic decisions. Our architecture employs view-specific ConvNeXt encoders for frontal and lateral chest radiographs, whose features are fused with clinical indications, history and vital signs using a transformer fusion module. This design enables the model to generate context-aware representations that mirror the reasoning in clinical practice. Our results exceed the state of the art for both the original MIMIC-CXR dataset and the more recent CXR-LT benchmarks, and highlight the value of clinically grounded multimodal alignment for advancing chest X-ray classification.",
+    "url": "https://proceedings.mlr.press/v297/sloan26a.html",
+    "id": "https://proceedings.mlr.press/v297/sloan26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/sloan26a/sloan26a.pdf",
+    "authors": {
+      "0_Phillip Sloan": "Phillip Sloan",
+      "1_Edwin Simpson": "Edwin Simpson",
+      "2_Majid Mirmehdi": "Majid Mirmehdi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/sloan26a/sloan26a.pdf",
+    "github_url": "https://github.com/phillipSloan/CaMCheX",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:228-242,\u00a02026.",
+    "supplemental": ""
+  },
+  "15_STAMP SpatialTemporal Adapter with MultiHead Pooling": {
+    "title": "STAMP: Spatial-Temporal Adapter with Multi-Head Pooling",
+    "abstract": "Time series foundation models ({TSFM}s) pretrained on data from multiple domains have shown strong performance on diverse modeling tasks. Various efforts have been made to develop foundation models specific to electroencephalography ({EEG}) data, which records brain electrical activity as time series. However, no comparative analysis of {EEG}-specific foundation models ({EEGFM}s) versus general {TSFM}s has been performed on {EEG}-specific tasks. We introduce a novel Spatial-Temporal Adapter with Multi-Head Pooling ({STAMP}), which leverages univariate embeddings produced by a general {TSFM}, implicitly models spatial-temporal characteristics of {EEG} data, and achieves performance comparable to state-of-the-art {EEGFM}s. A comprehensive analysis is performed on 8 benchmark datasets of clinical tasks using {EEG} for classification, along with ablation studies. Our proposed adapter is lightweight in trainable parameters and flexible in the inputs it can accommodate, supporting easy modeling of {EEG} data using {TSFM}s.",
+    "url": "https://proceedings.mlr.press/v297/shook26a.html",
+    "id": "https://proceedings.mlr.press/v297/shook26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/shook26a/shook26a.pdf",
+    "authors": {
+      "0_Brad Shook": "Brad Shook",
+      "1_Abby Turner": "Abby Turner",
+      "2_Jieshi Chen": "Jieshi Chen",
+      "3_Michal Wilinski": "Michal Wilinski",
+      "4_Mononito Goswami": "Mononito Goswami",
+      "5_Jonathan Elmer": "Jonathan Elmer",
+      "6_Artur Dubrawski": "Artur Dubrawski"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/shook26a/shook26a.pdf",
+    "github_url": "https://github.com/autonlab/STAMP",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1159-1177,\u00a02026.",
+    "supplemental": ""
+  },
+  "16_Deep Kernel AalenJohansen Estimator An Interpretable and Flexible Neural Net Framework for Competing Risks": {
+    "title": "Deep Kernel Aalen-Johansen Estimator: An Interpretable and Flexible Neural Net Framework for Competing Risks",
+    "abstract": "We propose an interpretable deep competing risks model called the Deep Kernel Aalen-Johansen ({DKAJ}) estimator, which generalizes the classical Aalen-Johansen nonparametric estimate of cumulative incidence functions ({CIF}s). Each data point (e.g., patient) is represented as a weighted combination of clusters. If a data point has nonzero weight only for one cluster, then its predicted {CIF}s correspond to those of the classical Aalen-Johansen estimator restricted to data points from that cluster. These weights come from an automatically learned kernel function that measures how similar any two data points are. On four standard competing risks datasets, we show that {DKAJ} is competitive with state-of-the-art baselines while being able to provide visualizations to assist model interpretation.",
+    "url": "https://proceedings.mlr.press/v297/shen26a.html",
+    "id": "https://proceedings.mlr.press/v297/shen26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/shen26a/shen26a.pdf",
+    "authors": {
+      "0_Xiaobin Shen": "Xiaobin Shen",
+      "1_George H. Chen": "George H. Chen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/shen26a/shen26a.pdf",
+    "github_url": "https://github.com/xiaobin-xs/dkaj",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1096-1125,\u00a02026.",
+    "supplemental": ""
+  },
+  "17_DataDriven Discovery of Feature Groups in Clinical Time Series": {
+    "title": "Data-Driven Discovery of Feature Groups in Clinical Time Series",
+    "abstract": "Clinical time series data are critical for patient monitoring and predictive modeling. These time series are typically multivariate and often comprise hundreds of heterogeneous features from different data sources. The grouping of features based on similarity and relevance to the prediction task has been shown to enhance the performance of deep learning architectures. However, defining these groups a priori using only semantic knowledge is challenging, even for domain experts. To address this, we propose a novel method that learns feature groups by clustering weights of feature-wise embedding layers. This approach seamlessly integrates into standard supervised training and discovers the groups that directly improve downstream performance on clinically relevant tasks. We demonstrate that our method outperforms static clustering approaches on synthetic data and achieves performance comparable to expert-defined groups on real-world medical data. Moreover, the learned feature groups are clinically interpretable, enabling data-driven discovery of task-relevant relationships between variables.",
+    "url": "https://proceedings.mlr.press/v297/sergeev26a.html",
+    "id": "https://proceedings.mlr.press/v297/sergeev26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/sergeev26a/sergeev26a.pdf",
+    "authors": {
+      "0_Fedor Sergeev": "Fedor Sergeev",
+      "1_Manuel Burger": "Manuel Burger",
+      "2_Polina Leshetkina": "Polina Leshetkina",
+      "3_Vincent Fortuin": "Vincent Fortuin",
+      "4_Gunnar R\u00e4tsch": "Gunnar R\u00e4tsch",
+      "5_Rita Kuznetsova": "Rita Kuznetsova"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/sergeev26a/sergeev26a.pdf",
+    "github_url": "https://github.com/ratschlab/feature-group-discovery",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:167-201,\u00a02026.",
+    "supplemental": ""
+  },
+  "18_PaDISMRI PatchBased Diffusion for DataEfficient RadiologistPreferred MRI Reconstruction": {
+    "title": "PaDIS-MRI: Patch-Based Diffusion for Data-Efficient, Radiologist-Preferred MRI Reconstruction",
+    "abstract": "Magnetic resonance imaging ({MRI}) requires long acquisition times, which raise costs, reduce accessibility, and increase susceptibility to motion artifacts. Diffusion probabilistic models that learn data-driven priors may reduce acquisition time by enabling reconstruction from undersampled k-space measurements. However, they typically require large training datasets that can be prohibitively expensive to collect. Patch-based diffusion models have shown promise in learning effective data-driven priors over small real-valued datasets, but have not yet demonstrated clinical value in {MRI}. We extend the Patch-based Diffusion Inverse Solver ({PaDIS}) to complex-valued, multi-coil {MRI} reconstruction, and compare it against a state-of-the-art whole-image diffusion baseline ({FastMRI-EDM}) for $7\\times$ undersampled {MRI} reconstruction on the {FastMRI} brain dataset. We show that {PaDIS-MRI} models trained on small datasets of as few as 25 k-space images outperform {FastMRI-EDM} on image quality metrics ({PSNR}, {SSIM}, {NRMSE}), pixel-level mask-induced variability, cross-contrast/-modality generalization, and robustness to severe k-space undersampling. In a blinded study with three radiologists, {PaDIS-MRI} reconstructions were chosen as diagnostically superior in 91.7% of cases, compared to baselines (i) {FastMRI-EDM} and (ii) classical convex reconstruction with wavelet sparsity. These findings highlight the potential of patch-based diffusion priors for high-fidelity {MRI} reconstruction in data-scarce clinical settings where diagnostic confidence matters.",
+    "url": "https://proceedings.mlr.press/v297/sanda26a.html",
+    "id": "https://proceedings.mlr.press/v297/sanda26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/sanda26a/sanda26a.pdf",
+    "authors": {
+      "0_Rohan Sanda": "Rohan Sanda",
+      "1_Asad Aali": "Asad Aali",
+      "2_Andrew Johnston": "Andrew Johnston",
+      "3_Eduardo Reis": "Eduardo Reis",
+      "4_Gordon Wetzstein": "Gordon Wetzstein",
+      "5_Sara Fridovich-Keil": "Sara Fridovich-Keil"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/sanda26a/sanda26a.pdf",
+    "github_url": "https://github.com/voilalab/PaDIS-MRI",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1316-1335,\u00a02026.",
+    "supplemental": ""
+  },
+  "19_A Bayesian Model for Multistage Censoring": {
+    "title": "A Bayesian Model for Multi-stage Censoring",
+    "abstract": "Many sequential decision settings in healthcare feature funnel structures characterized by a series of stages, such as screenings or evaluations, where the number of patients who advance to each stage progressively decreases and decisions become increasingly costly. For example, an oncologist may first conduct a breast exam, followed by a mammogram for patients with concerning exams, followed by a biopsy for patients with concerning mammograms. A key challenge is that the ground truth outcome, such as the biopsy result, is only revealed at the end of this funnel. The selective censoring of the ground truth can introduce statistical biases in risk estimation, especially in underserved patient groups, whose outcomes are more frequently censored. We develop a Bayesian model for funnel decision structures, drawing from prior work on selective labels and censoring. We first show in synthetic settings that our model is able to recover the true parameters and predict outcomes for censored patients more accurately than baselines. We then apply our model to a dataset of emergency department visits, where in-hospital mortality is observed only for those who are admitted to either the hospital or ICU. We find that there are gender-based differences in hospital and ICU admissions. In particular, our model estimates that the mortality risk threshold to admit women to the ICU is higher for women (5.1%) than for men (4.5%).",
+    "url": "https://proceedings.mlr.press/v297/sadhuka26a.html",
+    "id": "https://proceedings.mlr.press/v297/sadhuka26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/sadhuka26a/sadhuka26a.pdf",
+    "authors": {
+      "0_Shuvom Sadhuka": "Shuvom Sadhuka",
+      "1_Sophia Lin": "Sophia Lin",
+      "2_Bonnie Berger": "Bonnie Berger",
+      "3_Emma Pierson": "Emma Pierson"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/sadhuka26a/sadhuka26a.pdf",
+    "github_url": "https://github.com/shuvom-s/funnel_model/tree/main",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:792-806,\u00a02026.",
+    "supplemental": ""
+  },
+  "20_Federated Variational Inference for Bayesian Mixture Models": {
+    "title": "Federated Variational Inference for Bayesian Mixture Models",
+    "abstract": "We present a one-shot, unsupervised federated learning approach for Bayesian model-based clustering of large-scale binary and categorical datasets, motivated by the need to identify patient clusters in privacy-sensitive electronic health record ({EHR}) data. We introduce a principled \u2018divide-and-conquer\u2019 inference procedure using variational inference with local merge and delete moves within batches of the data in parallel, followed by global merge moves across batches to find global clustering structures. We show that these merge moves require only summaries of the data in each batch, enabling federated learning across local nodes without requiring the full dataset to be shared. Empirical results on simulated and benchmark datasets demonstrate that our method performs well relative to comparator clustering algorithms. We validate the practical utility of the method by applying it to a large-scale British primary care {EHR} dataset to identify clusters of individuals with common patterns of co-occurring conditions (multimorbidity).",
+    "url": "https://proceedings.mlr.press/v297/rao26a.html",
+    "id": "https://proceedings.mlr.press/v297/rao26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/rao26a/rao26a.pdf",
+    "authors": {
+      "0_Jackie Rao": "Jackie Rao",
+      "1_Francesca L. Crowe": "Francesca L. Crowe",
+      "2_Tom Marshall": "Tom Marshall",
+      "3_Sylvia Richardson": "Sylvia Richardson",
+      "4_Paul D. W. Kirk": "Paul D. W. Kirk"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/rao26a/rao26a.pdf",
+    "github_url": "https://github.com/j-ackierao/FedMerDel-code",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:826-863,\u00a02026.",
+    "supplemental": ""
+  },
+  "21_RadPhi4VisionCXR A Compact Multimodal Assistant for Versatile Radiology Workflows": {
+    "title": "Rad-Phi4-Vision-CXR: A Compact Multimodal Assistant for Versatile Radiology Workflows",
+    "abstract": "The integration of artificial intelligence into radiology underscores the need for efficient models capable of supporting a wide range of clinical tasks. We introduce Rad-Phi4-VisionCXR, a compact multimodal vision-language model designed to seamlessly integrate into radiology workflows for chest X-rays. It supports radiology report generation, fine-grained visual question answering ({VQA}) for abnormalities and tubes/lines (including presence and placement), and grounding capabilities for anatomies, pathologies, and medical devices. Beyond these tasks, we propose a capability for findings generation with causal exploration of radiology findings and differential diagnosis, enabling the model to affirm findings or rule out conditions, thereby enhancing its utility in clinical decision-making. Rad-Phi4-VisionCXR achieves state-of-the-art performance on the ReXrank benchmark for report generation, {VQA}, and grounding. Its compact architecture provides a scalable, high-performance solution for {AI}-driven radiology.",
+    "url": "https://proceedings.mlr.press/v297/ranjit26a.html",
+    "id": "https://proceedings.mlr.press/v297/ranjit26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ranjit26a/ranjit26a.pdf",
+    "authors": {
+      "0_Mercy Prasanna Ranjit": "Mercy Prasanna Ranjit",
+      "1_Anirban Porya": "Anirban Porya",
+      "2_Shaury Srivastav": "Shaury Srivastav",
+      "3_Niharika Vadlamudi": "Niharika Vadlamudi",
+      "4_Nikhilesh Chowdary Eathamukkala": "Nikhilesh Chowdary Eathamukkala",
+      "5_Shashank Udyavar": "Shashank Udyavar",
+      "6_Rahul Kumar": "Rahul Kumar",
+      "7_Tanuja Ganu": "Tanuja Ganu"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ranjit26a/ranjit26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:629-660,\u00a02026.",
+    "supplemental": ""
+  },
+  "22_RELATE Relation Extraction in Biomedical Abstracts with LLMs and Ontology Constraints": {
+    "title": "RELATE: Relation Extraction in Biomedical Abstracts with LLMs and Ontology Constraints",
+    "abstract": "Biomedical knowledge graphs ({KG}s) are vital for drug discovery and clinical decision support but remain incomplete. Large language models ({LLM}s) excel at extracting biomedical relations, yet their outputs lack standardization and alignment with ontologies, limiting {KG} integration with free texts. We introduce {RELATE}, a three-stage pipeline that maps {LLM}-extracted relations to standardized ontology predicates, e.g., the Biolink Model. The pipeline includes: (1) ontology preprocessing with predicate embeddings, (2) similarity-based retrieval enhanced with SapBERT, and (3) {LLM}-based reranking with explicit negation handling. This approach performs relation extraction from free-text outputs to structured, ontology-constrained representations. On the ChemProt benchmark, {RELATE} achieves 52% exact match and 94% accuracy@10, and in 2,400 {HEAL} Project abstracts, it effectively rejects irrelevant associations (0.4%) and identifies negated assertions. {RELATE} captures nuanced biomedical relationships while ensuring quality for {KG} augmentation. By combining vector search with contextual {LLM} reasoning, {RELATE} provides a scalable, semantically accurate framework for converting unstructured biomedical literature into standardized {KG}s.",
+    "url": "https://proceedings.mlr.press/v297/olasunkanmi26a.html",
+    "id": "https://proceedings.mlr.press/v297/olasunkanmi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/olasunkanmi26a/olasunkanmi26a.pdf",
+    "authors": {
+      "0_Olawumi Olasunkanmi": "Olawumi Olasunkanmi",
+      "1_Matthew Satusky": "Matthew Satusky",
+      "2_Hong Yi": "Hong Yi",
+      "3_Chris Bizon": "Chris Bizon",
+      "4_Harlin Lee": "Harlin Lee",
+      "5_Stanley Ahalt": "Stanley Ahalt"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/olasunkanmi26a/olasunkanmi26a.pdf",
+    "github_url": "https://github.com/RENCI-NER/pred-mapping/releases/tag/v1.0",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1178-1193,\u00a02026.",
+    "supplemental": ""
+  },
+  "23_TopoCAM ROIDriven Topological Signatures in 3D Medical Imaging": {
+    "title": "TopoCAM: ROI-Driven Topological Signatures in 3D Medical Imaging",
+    "abstract": "Accurate classification of {3D} medical images is challenging due to the high dimensionality of volumetric data and the scarcity of well-annotated clinical datasets. We propose a hybrid framework that couples explainable deep learning with topological data analysis (TDA). First, we compute layer-weighted Grad-CAM across multiple network layers, upsample and normalize the maps to the input grid, and threshold them to produce a binary region-of-interest (ROI) mask. We then apply this mask to the input volume to obtain a segmented image that suppresses irrelevant anatomy while preserving clinically salient structures. Within these attention-derived ROIs and segmented images, we compute cubical persistent homology to derive compact topological descriptors that capture diagnostically meaningful features. Across both {3D} volumes and {2D} medical imaging benchmarks, this segmentation-guided TDA pipeline surpasses strong {3D} {CNN} and Transformer baselines, yielding higher accuracy and improved robustness in limited-data settings while providing localized, interpretable evidence for clinical decision support.",
+    "url": "https://proceedings.mlr.press/v297/nuwagira26a.html",
+    "id": "https://proceedings.mlr.press/v297/nuwagira26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/nuwagira26a/nuwagira26a.pdf",
+    "authors": {
+      "0_Brighton Nuwagira": "Brighton Nuwagira",
+      "1_Philmore Koung": "Philmore Koung",
+      "2_Baris Coskunuzer": "Baris Coskunuzer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/nuwagira26a/nuwagira26a.pdf",
+    "github_url": "https://github.com/BrightonNuwagira/TopoCAM",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:41-54,\u00a02026.",
+    "supplemental": ""
+  },
+  "24_Boosting Phonocardiogram Classification Performance with Function Generated Data": {
+    "title": "Boosting Phonocardiogram Classification Performance with Function Generated Data",
+    "abstract": "Deep neural networks require large datasets, yet medical phonocardiogram ({PCG}) data are scarce due to privacy and disease rarity. To address this challenge in {PCG} analysis, we present a function-generated {PCG} pipeline that synthesizes {S1}/{S2} heart sounds with modulated noise to emulate aortic stenosis ({AS}), aortic regurgitation ({AR}), and mitral regurgitation ({MR}). Across eight architectures, we compare real-only training, synthetic-only, and synthetic pretraining followed by real fine-tuning ({Syn}$\\to${Real}). {Syn}$\\to${Real} consistently improves {AUROC} with average gains of +15.3% ({AS}), +17.0% ({AR}), +17.1% ({MR}) on {BMD-HS}, and +7.1%, +8.8%, +6.1% on a private cohort (8,564 recordings). Furthermore, we show {Syn}$\\to${Real} is competitive with pretraining on out-of-domain real data, and combining it with multi-stage real fine-tuning yields the best overall performance, highlighting the complementary value of synthetic and real {PCG}s. While synthetic-only training generalizes poorly, pretraining on function-generated {PCG}s consistently improves {PCG} classification over training from scratch, offering a practical path to mitigate data-collection burdens and potentially reduce privacy and ethical exposure.",
+    "url": "https://proceedings.mlr.press/v297/nonaka26a.html",
+    "id": "https://proceedings.mlr.press/v297/nonaka26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/nonaka26a/nonaka26a.pdf",
+    "authors": {
+      "0_Naoki Nonaka": "Naoki Nonaka",
+      "1_Hiroshi Seki": "Hiroshi Seki",
+      "2_Tomohiro Komatsu": "Tomohiro Komatsu",
+      "3_Jun Seita": "Jun Seita"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/nonaka26a/nonaka26a.pdf",
+    "github_url": "https://github.com/seitalab/SynPCG",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:473-524,\u00a02026.",
+    "supplemental": ""
+  },
+  "25_ImmSET SequenceBased Predictor of TCRpMHC Specificity at Scale": {
+    "title": "ImmSET: Sequence-Based Predictor of TCR-pMHC Specificity at Scale",
+    "abstract": "T cells are a critical component of the adaptive immune system, playing a role in infectious disease, autoimmunity, and cancer. T cell function is mediated by the T cell receptor ({TCR}) protein, a highly diverse receptor targeting specific peptides presented by the major histocompatibility complex ({pMHC}s). Predicting the specificity of {TCR}s for their cognate {pMHC}s is central to understanding adaptive immunity and enabling personalized therapies. However, accurate prediction of this protein\u2013protein interaction remains challenging due to the extreme diversity of both {TCR}s and {pMHC}s. Here, we present {ImmSET} (Immune Synapse Encoding Transformer), a novel sequence-based architecture designed to model interactions among sets of variable-length biological sequences. We train this model across a range of dataset sizes and compositions and study the resulting models\u2019 generalization to {pMHC} targets. We describe a failure mode in prior sequence-based approaches that inflates previously reported performance on this task and show that {ImmSET} remains robust under stricter evaluation. In systematically testing the scaling behavior of {ImmSET} with training data, we show that performance scales consistently with data volume across multiple data types and compares favorably with the pre-trained protein language model {ESM2} fine-tuned on the same datasets. Finally, we demonstrate that {ImmSET} can outperform AlphaFold2 and AlphaFold3-based pipelines on {TCR}-{pMHC} specificity prediction when provided sufficient training data. This work establishes {ImmSET} as a scalable modeling paradigm for multi-sequence interaction problems, demonstrated in the {TCR}-{pMHC} setting but generalizable to other biological domains where high-throughput sequence-driven reasoning complements structure prediction and experimental mapping.",
+    "url": "https://proceedings.mlr.press/v297/noceda26a.html",
+    "id": "https://proceedings.mlr.press/v297/noceda26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/noceda26a/noceda26a.pdf",
+    "authors": {
+      "0_Marco Garcia Noceda": "Marco Garcia Noceda",
+      "1_Matthew T. Noakes": "Matthew T. Noakes",
+      "2_Andrew FigPope": "Andrew FigPope",
+      "3_Daniel E. Mattox": "Daniel E. Mattox",
+      "4_Bryan Howie": "Bryan Howie",
+      "5_Harlan Robins": "Harlan Robins"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/noceda26a/noceda26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1047-1074,\u00a02026.",
+    "supplemental": ""
+  },
+  "26_SySDEM  Synthetic and Stratified Degradations for Evaluating Metrics for LongForm Text in Medical Domain": {
+    "title": "SySDEM - Synthetic and Stratified Degradations for Evaluating Metrics for Long-Form Text in Medical Domain",
+    "abstract": "The evaluation of long-form text in the medical domain is increasingly reliant on automated metrics. However, the reliability of these metrics themselves is often assumed rather than rigorously tested, especially when long-form generations are the expected output. We address this gap by proposing {SySDEM} - Synthetic and Stratified Degradations for Evaluating Metrics, a framework to evaluate the quality of reference-based evaluation metrics. Using this framework, we demonstrate a method that iteratively perturbs candidate texts to assess the sensitivity and discrimination power of reference-based text evaluation metrics. Through experiments on the {ACI}-Bench clinical note generation dataset, we demonstrate the importance of evaluating evaluation metrics for long-form text, highlighting the need for robust validation methodologies.",
+    "url": "https://proceedings.mlr.press/v297/nizar26a.html",
+    "id": "https://proceedings.mlr.press/v297/nizar26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/nizar26a/nizar26a.pdf",
+    "authors": {
+      "0_Naveen Jafer Nizar": "Naveen Jafer Nizar",
+      "1_Qinlan Shen": "Qinlan Shen",
+      "2_Sumana Srivatsa": "Sumana Srivatsa",
+      "3_Krishnaram Kenthapadi": "Krishnaram Kenthapadi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/nizar26a/nizar26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1075-1095,\u00a02026.",
+    "supplemental": ""
+  },
+  "27_Balancing Safety and Helpfulness in Healthcare AI Assistants through Iterative Preference Alignment": {
+    "title": "Balancing Safety and Helpfulness in Healthcare AI Assistants through Iterative Preference Alignment",
+    "abstract": "Large Language Models ({LLM}s) are increasingly used in healthcare, yet ensuring their safety and trustworthiness remains a barrier to deployment. Conversational medical assistants must avoid unsafe compliance without over-refusing benign queries. We present an iterative post-deployment alignment framework that applies Kahneman\u2013Tversky Optimization ({KTO}) and Direct Preference Optimization ({DPO}) to refine models against domain-specific safety signals. Using the {CARES}-18K benchmark for adversarial robustness, we evaluate four {LLM}s (Llama-3B/8B, Meditron-8B, Mistral-7B) across multiple cycles. Our results show up to 42% improvement in safety-related metrics for harmful query detection, alongside interesting trade-offs against erroneous refusals, thereby exposing architecture-dependent calibration biases. We also perform ablation studies to identify when self-evaluation is reliable and when external or finetuned judges are necessary to maximize performance gains. Our findings underscore the importance of adopting best practices that balance patient safety, user trust, and clinical utility in the design of conversational medical assistants.",
+    "url": "https://proceedings.mlr.press/v297/nghiem26a.html",
+    "id": "https://proceedings.mlr.press/v297/nghiem26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/nghiem26a/nghiem26a.pdf",
+    "authors": {
+      "0_Huy Nghiem": "Huy Nghiem",
+      "1_Swetasudha Panda": "Swetasudha Panda",
+      "2_Devashish Khatwani": "Devashish Khatwani",
+      "3_Huy V. Nguyen": "Huy V. Nguyen",
+      "4_Krishnaram Kenthapadi": "Krishnaram Kenthapadi",
+      "5_Hal Daum\u00e9 III": "Hal Daum\u00e9 III"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/nghiem26a/nghiem26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:661-696,\u00a02026.",
+    "supplemental": ""
+  },
+  "28_Generating NaturalLanguage Surgical Feedback From Structured Representation to DomainGrounded Evaluation": {
+    "title": "Generating Natural-Language Surgical Feedback: From Structured Representation to Domain-Grounded Evaluation",
+    "abstract": "High-quality intraoperative feedback from a surgical trainer is pivotal for improving trainee performance and long-term skill acquisition. Automating natural, trainer-style feedback promises timely, accessible, and consistent guidance at scale\u2013but requires models that understand clinically relevant representations. We present a structure-aware pipeline that learns a surgical action ontology from real trainer-to-trainee transcripts (33 surgeries) and uses it to condition feedback generation. We contribute by 1) mining Instrument-Action-Target ({IAT}) triplets from real-world feedback text and clustering surface forms into normalized categories, 2) fine-tuning a video-to-{IAT} model that leverages the surgical procedure and task contexts, as well as fine-grained temporal instrument motion (crucial for representing instruments and actions over time), and 3) demonstrating how to effectively leverage {IAT} triplet representation to guide {GPT}-4o in generating clinically-grounded natural, trainer-style feedback. We show that, on Task 1: Video-to-{IAT} recognition, our context injection and temporal tracking deliver consistent {AUC} gains \u2013 Instrument: 0.67 to 0.74, Action: 0.60 to 0.63, Tissue: 0.74 to 0.79. For Task 2: Feedback text generation (1 [opposite/unsafe] - 3 [admissible] - 5 [perfect match] fidelity rubric against human trainer), {GPT}-4o from video alone scores 2.17; {IAT} conditioning reaches 2.44 (+12.4%), increasing the admissible generations with score $\\geq$3: 21% to 42%. Traditional metrics also improve: Word Error Rate ({WER}): 15\u201331% lower and {ROUGE} (phrase/substring overlap): 9\u201364% higher. Grounding generation in explicit {IAT} structure improves fidelity and yields clinician-verifiable rationales, supporting auditable use in surgical training.",
+    "url": "https://proceedings.mlr.press/v297/nasriddinov26a.html",
+    "id": "https://proceedings.mlr.press/v297/nasriddinov26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/nasriddinov26a/nasriddinov26a.pdf",
+    "authors": {
+      "0_Firdavs Nasriddinov": "Firdavs Nasriddinov",
+      "1_Rafal Kocielnik": "Rafal Kocielnik",
+      "2_Anima Anandkumar": "Anima Anandkumar",
+      "3_Andrew J. Hung": "Andrew J. Hung"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/nasriddinov26a/nasriddinov26a.pdf",
+    "github_url": "https://github.com/firdavsn/SurgFBGen",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:952-984,\u00a02026.",
+    "supplemental": ""
+  },
+  "29_Let the Experts Speak Improving Survival Prediction  Calibration via MixtureofExperts Heads": {
+    "title": "Let the Experts Speak: Improving Survival Prediction & Calibration via Mixture-of-Experts Heads",
+    "abstract": "Deep mixture-of-experts models have attracted a lot of attention for survival analysis problems, particularly for their ability to cluster similar patients together. In practice, grouping often comes at the expense of key metrics such as calibration error and predictive accuracy. This is due to the restrictive inductive bias that mixture-of-experts imposes, that predictions for individual patients must look like predictions for the group they are assigned to. Might we be able to discover patient group structure, where it exists, while improving calibration and predictive accuracy? In this work, we introduce several discrete-time deep mixture-of-experts ({MoE}) based architectures for survival analysis problems, one of which achieves all desiderata: clustering, calibration, and predictive accuracy. We show that a key differentiator between this array of {MoE}s is how expressive their experts are. We find that more expressive experts that tailor predictions per patient outperform experts that rely on fixed group prototypes.",
+    "url": "https://proceedings.mlr.press/v297/morrill26a.html",
+    "id": "https://proceedings.mlr.press/v297/morrill26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/morrill26a/morrill26a.pdf",
+    "authors": {
+      "0_Todd Morrill": "Todd Morrill",
+      "1_Aahlad Puli": "Aahlad Puli",
+      "2_Murad Megjhani": "Murad Megjhani",
+      "3_Soojin Park": "Soojin Park",
+      "4_Richard Zemel": "Richard Zemel"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/morrill26a/morrill26a.pdf",
+    "github_url": "https://github.com/ToddMorrill/survival-moe",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:697-720,\u00a02026.",
+    "supplemental": ""
+  },
+  "30_Evaluating Reasoning Faithfulness in Medical VisionLanguage Models using Multimodal Perturbations": {
+    "title": "Evaluating Reasoning Faithfulness in Medical Vision-Language Models using Multimodal Perturbations",
+    "abstract": "Vision-language models ({VLM}s) often produce chain-of-thought ({CoT}) explanations that sound plausible yet fail to reflect the underlying decision process, undermining trust in high-stakes clinical use. Existing evaluations rarely catch this misalignment, prioritizing answer accuracy or adherence to formats. We present a clinically grounded framework for chest X-ray visual question answering ({VQA}) that probes {CoT} faithfulness via controlled text and image modifications across three axes: clinical fidelity, causal attribution, and confidence calibration. In a reader study (n=4), evaluator-radiologist correlations fall within the observed inter-radiologist range for all axes, with strong alignment for attribution (Kendall\u2019s tau-b = 0.670), moderate alignment for fidelity (tau-b = 0.387), and weak alignment for confidence tone (tau-b = 0.091), which we report with caution. Benchmarking six {VLM}s shows that answer accuracy and explanation quality can be decoupled, acknowledging injected cues does not ensure grounding, and text cues shift explanations more than visual cues. While some open-source models match final answer accuracy, proprietary models score higher on attribution (25.0% vs. 1.4%) and often on fidelity (36.1% vs. 31.7%), highlighting deployment risks and the need to evaluate beyond final answer accuracy.",
+    "url": "https://proceedings.mlr.press/v297/moll26a.html",
+    "id": "https://proceedings.mlr.press/v297/moll26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/moll26a/moll26a.pdf",
+    "authors": {
+      "0_Johannes Moll": "Johannes Moll",
+      "1_Markus Graf": "Markus Graf",
+      "2_Tristan Lemke": "Tristan Lemke",
+      "3_Nicolas Lenhart": "Nicolas Lenhart",
+      "4_Daniel Truhn": "Daniel Truhn",
+      "5_Jean-Benoit Delbrouck": "Jean-Benoit Delbrouck",
+      "6_Jiazhen Pan": "Jiazhen Pan",
+      "7_Daniel Rueckert": "Daniel Rueckert",
+      "8_Lisa C. Adams": "Lisa C. Adams",
+      "9_Keno K. Bressem": "Keno K. Bressem"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/moll26a/moll26a.pdf",
+    "github_url": "https://github.com/jomoll/cot-eval",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:424-448,\u00a02026.",
+    "supplemental": ""
+  },
+  "31_Comparing Computational Pathology Foundation Models using Representational Similarity Analysis": {
+    "title": "Comparing Computational Pathology Foundation Models using Representational Similarity Analysis",
+    "abstract": "Foundation models are increasingly developed in computational pathology ({CPath}) given their promise in facilitating many downstream tasks. While recent studies have evaluated task performance across models, less is known about the structure and variability of their learned representations. Here, we systematically analyze the representational spaces of six {CPath} foundation models using techniques popularized in computational neuroscience. The models analyzed span vision-language contrastive learning ({CONCH}, {PLIP}, {KEEP}) and self-distillation ({UNI} (v2), Virchow (v2), Prov-GigaPath) approaches. Through representational similarity analysis using H&E image patches from {TCGA}, we find that {UNI2} and Virchow2 have the most distinct representational structures, whereas Prov-Gigapath has the highest average similarity across models. Having the same training paradigm (vision-only vs. vision-language) did not guarantee higher representational similarity. The representations of all models showed a high slide-dependence, but relatively low disease-dependence. Stain normalization decreased slide-dependence for all models by a range of 5.5% ({CONCH}) to 20.5% ({PLIP}). In terms of intrinsic dimensionality, vision-language models demonstrated relatively compact representations, compared to the more distributed representations of vision-only models. These findings highlight opportunities to improve robustness to slide-specific features, inform model ensembling strategies, and provide insights into how training paradigms shape model representations. Our framework is extendable across medical imaging domains, where probing the internal representations of foundation models can support their effective development and deployment.",
+    "url": "https://proceedings.mlr.press/v297/mishra26a.html",
+    "id": "https://proceedings.mlr.press/v297/mishra26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/mishra26a/mishra26a.pdf",
+    "authors": {
+      "0_Vaibhav Mishra": "Vaibhav Mishra",
+      "1_William Lotter": "William Lotter"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/mishra26a/mishra26a.pdf",
+    "github_url": "https://github.com/lotterlab/cpath_rsa",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1007-1022,\u00a02026.",
+    "supplemental": ""
+  },
+  "32_Classifying Phonotrauma Severity from Vocal Fold Images with Soft Ordinal Regression": {
+    "title": "Classifying Phonotrauma Severity from Vocal Fold Images with Soft Ordinal Regression",
+    "abstract": "Phonotrauma refers to vocal fold tissue damage resulting from exposure to forces during voicing. It occurs on a continuum from mild to severe, and treatment options can vary based on severity. Assessment of severity involves a clinician\u2019s expert judgment, which is costly and can vary widely in reliability. In this work, we present the first method for automatically classifying phonotrauma severity from vocal fold images. To account for the ordinal nature of the labels, we adopt a widely used ordinal regression framework. To account for label uncertainty, we propose a novel modification to ordinal regression loss functions that enables them to operate on soft labels reflecting annotator rating distributions. Our proposed soft ordinal regression method achieves predictive performance approaching that of clinical experts, while producing well-calibrated uncertainty estimates. By providing an automated tool for phonotrauma severity assessment, our work can enable large-scale studies of phonotrauma, ultimately leading to improved clinical understanding and patient care.",
+    "url": "https://proceedings.mlr.press/v297/matton26a.html",
+    "id": "https://proceedings.mlr.press/v297/matton26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/matton26a/matton26a.pdf",
+    "authors": {
+      "0_Katie Matton": "Katie Matton",
+      "1_Purvaja Balaji": "Purvaja Balaji",
+      "2_Hamzeh Ghasemzadeh": "Hamzeh Ghasemzadeh",
+      "3_Jameson Cooper": "Jameson Cooper",
+      "4_Daryush D. Mehta": "Daryush D. Mehta",
+      "5_Jarrad H. Van Stan": "Jarrad H. Van Stan",
+      "6_Robert E. Hillman": "Robert E. Hillman",
+      "7_Rosalind Picard": "Rosalind Picard",
+      "8_John Guttag": "John Guttag",
+      "9_S. Mazdak Abulnaga": "S. Mazdak Abulnaga"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/matton26a/matton26a.pdf",
+    "github_url": "https://github.com/kmatton/soft-ordinal-regression",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1360-1375,\u00a02026.",
+    "supplemental": ""
+  },
+  "33_Pragmatic Policy Development via Interpretable Behavior Cloning": {
+    "title": "Pragmatic Policy Development via Interpretable Behavior Cloning",
+    "abstract": "Offline reinforcement learning ({RL}) holds great promise for deriving optimal policies from observational data, but challenges related to interpretability and evaluation limit its practical use in safety-critical domains. Interpretability is hindered by the black-box nature of unconstrained {RL} policies, while evaluation typically performed off-policy is sensitive to large deviations from the data-collecting behavior policy, especially when using methods based on importance sampling. To address these challenges, we propose a simple yet practical alternative: deriving treatment policies from the most frequently chosen actions in each patient state, as estimated by an interpretable model of the behavior policy. By using a tree-based model, which is specifically designed to exploit patterns in the data, we obtain a natural grouping of states with respect to treatment. The tree structure ensures interpretability by design, while varying the number of most common actions considered controls the degree of overlap with the behavior policy, enabling reliable off-policy evaluation. This pragmatic approach to policy development standardizes frequent treatment patterns, capturing the collective clinical judgment embedded in the data. Using real-world examples in rheumatoid arthritis and sepsis care, we demonstrate that policies derived under this framework can outperform current practice, offering interpretable alternatives to those obtained via offline {RL}.",
+    "url": "https://proceedings.mlr.press/v297/matsson26a.html",
+    "id": "https://proceedings.mlr.press/v297/matsson26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/matsson26a/matsson26a.pdf",
+    "authors": {
+      "0_Anton Matsson": "Anton Matsson",
+      "1_Yaochen Rao": "Yaochen Rao",
+      "2_Heather J. Litman": "Heather J. Litman",
+      "3_Fredrik D. Johansson": "Fredrik D. Johansson"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/matsson26a/matsson26a.pdf",
+    "github_url": "https://github.com/Healthy-AI/ppdev",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:807-825,\u00a02026.",
+    "supplemental": ""
+  },
+  "34_The Paradox of Dissonant Predictions A Central Dilemma of PhysicianAlgorithm Interaction": {
+    "title": "The Paradox of Dissonant Predictions: A Central Dilemma of Physician-Algorithm Interaction",
+    "abstract": "Clinical algorithms have become highly sophisticated and can outperform physicians in many scenarios. Despite the promise of these tools, uptake and appropriate use is variable. One reason may be because superhuman algorithm performance requires it to come in conflict with a physician's judgment. The paradox is that physicians do not know how to effectively incorporate information that conflicts with their existing beliefs or expectations, even if it may steer them toward the right answer. This confusion around how to confront conflicting algorithmic output is a central obstacle to effective physician-algorithm collaboration. Simply providing accurate recommendations is insufficient; algorithms must effectively change physicians' minds when they are incorrect. This requires rethinking algorithmic design, physician training, and physician-algorithm collaborative models. Rethinking the human-algorithm interface through structured interaction protocols may offer a promising approach. Ultimately, optimizing physician-algorithm synergy likely requires addressing the dissonance generated by a strong model to promote effective integration of algorithmic insights into clinical decision-making.",
+    "url": "https://proceedings.mlr.press/v297/marwaha26a.html",
+    "id": "https://proceedings.mlr.press/v297/marwaha26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/marwaha26a/marwaha26a.pdf",
+    "authors": {
+      "0_Jayson S. Marwaha": "Jayson S. Marwaha",
+      "1_Jeff Choi": "Jeff Choi",
+      "2_William Yuan": "William Yuan",
+      "3_Gabriel A. Brat": "Gabriel A. Brat"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/marwaha26a/marwaha26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1632-1636,\u00a02026.",
+    "supplemental": ""
+  },
+  "35_APRIL Annotations for Policy evaluation with Reliable Inference from LLMs": {
+    "title": "APRIL: Annotations for Policy evaluation with Reliable Inference from LLMs",
+    "abstract": "Off-policy evaluation (OPE) estimates the value of a contextual bandit policy prior to deployment. As such, OPE plays a critical role in ensuring safety in high-stakes domains such as healthcare. However, standard OPE approaches are limited by the size and coverage of the behavior dataset. While previous work has explored using expert-labeled counterfactual annotations to enhance dataset coverage, obtaining such annotations is expensive, limiting the scalability of prior approaches. We propose leveraging large language models (LLMs) to generate counterfactual annotations for OPE in medical domains. Our method uses domain knowledge to guide LLMs in predicting how key clinical features evolve under alternate treatments. These predicted features can then be transformed using known reward functions to create counterfactual annotations. We first evaluate the ability of several LLMs to predict clinical features across two patient subsets in MIMIC-IV, finding that state-of-the-art LLMs achieve comparable performance. Building on this capacity to predict clinical features, we generate LLM-based counterfactual annotations and incorporate them into an OPE estimator. Our empirical results analyze the benefits of counterfactual annotations under varying degrees of shift between the behavior and target policies. We find that in most cases, the LLM-based counterfactual annotations significantly improve OPE estimates up to a point. We provide an entropy-based metric to identify when additional annotations cease to be useful. Our results demonstrate that LLM-based counterfactual annotations offer a scalable approach for addressing coverage limitations in healthcare datasets, enabling safer deployment of decision-making policies in clinical settings.",
+    "url": "https://proceedings.mlr.press/v297/mandyam26a.html",
+    "id": "https://proceedings.mlr.press/v297/mandyam26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/mandyam26a/mandyam26a.pdf",
+    "authors": {
+      "0_Aishwarya Mandyam": "Aishwarya Mandyam",
+      "1_Kalyani Limaye": "Kalyani Limaye",
+      "2_Barbara E. Engelhardt": "Barbara E. Engelhardt",
+      "3_Emily Alsentzer": "Emily Alsentzer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/mandyam26a/mandyam26a.pdf",
+    "github_url": "https://github.com/aishwarya-rm/april",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1-22,\u00a02026.",
+    "supplemental": ""
+  },
+  "36_TempoQL A Readable Precise and Portable Query System for Electronic Health Record Data": {
+    "title": "TempoQL: A Readable, Precise, and Portable Query System for Electronic Health Record Data",
+    "abstract": "Electronic health record ({EHR}) data is an essential data source for machine learning for health, but researchers and clinicians face steep barriers in extracting and validating {EHR} data for modeling. Existing tools incur trade-offs between expressivity and usability and are typically specialized to a single data standard, making it difficult to write temporal queries that are ready for modern model-building pipelines and adaptable to new datasets. This paper introduces {TempoQL}, a Python-based toolkit designed to lower these barriers. {TempoQL} provides a simple, human-readable language for temporal queries; support for multiple {EHR} data standards, including {OMOP}, {MEDS}, and others; and an interactive notebook-based query interface with optional large language model ({LLM}) authoring assistance. Through a performance evaluation and two use cases on different datasets, we demonstrate that {TempoQL} simplifies the creation of cohorts for machine learning while maintaining precision, speed, and reproducibility.",
+    "url": "https://proceedings.mlr.press/v297/ma26a.html",
+    "id": "https://proceedings.mlr.press/v297/ma26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ma26a/ma26a.pdf",
+    "authors": {
+      "0_Ziyong Ma": "Ziyong Ma",
+      "1_Richard D. Boyce": "Richard D. Boyce",
+      "2_Adam Perer": "Adam Perer",
+      "3_Venkatesh Sivaraman": "Venkatesh Sivaraman"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ma26a/ma26a.pdf",
+    "github_url": "https://github.com/cmudig/tempo-ql",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:399-423,\u00a02026.",
+    "supplemental": ""
+  },
+  "37_The CRITICAL Records Integrated Standardization Pipeline CRISP EndtoEnd Processing of Largescale Multiinstitutional OMOP CDM Data": {
+    "title": "The CRITICAL Records Integrated Standardization Pipeline (CRISP): End-to-End Processing of Large-scale Multi-institutional OMOP CDM Data",
+    "abstract": "Large-scale critical care datasets have driven major progress in clinical {AI}, yet most remain limited to single institutions. The newly released {CRITICAL} dataset expands this scope, linking 1.95 billion records from 371,365 patients across four {CTSA} sites and capturing longitudinal patient journeys from pre-{ICU} to post-{ICU} care. Its scale and diversity enable more generalizable modeling but introduce significant challenges in data cleaning, vocabulary harmonization, and computational efficiency. We introduce {CRISP} ({CRITICAL} Records Integrated Standardization Pipeline), a scalable framework that transforms the raw {CRITICAL} resource into machine-learning\u2013ready form. {CRISP} performs systematic data validation, cross-vocabulary mapping, and unit standardization while maintaining full auditability. Through parallelized optimization, it processes the entire dataset in under a day on standard computing hardware. The pipeline also provides reproducible baselines across multiple clinical prediction tasks, substantially reducing data preparation time and enabling consistent, multi-institutional evaluation. All code, documentation, and benchmarks are publicly available to support transparent and scalable clinical {AI} research.",
+    "url": "https://proceedings.mlr.press/v297/luo26a.html",
+    "id": "https://proceedings.mlr.press/v297/luo26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/luo26a/luo26a.pdf",
+    "authors": {
+      "0_Xiaolong Luo": "Xiaolong Luo",
+      "1_Michael Lingzhi Li": "Michael Lingzhi Li"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/luo26a/luo26a.pdf",
+    "github_url": "https://github.com/AaronLuo00/CRISP-Pipeline",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1592-1608,\u00a02026.",
+    "supplemental": ""
+  },
+  "38_GPTRagAD Twolayer RetrievalAugmented Multilingual Diagnosis System": {
+    "title": "GPT-RagAD: Two-layer Retrieval-Augmented Multilingual Diagnosis System",
+    "abstract": "We introduce GPT-RagAD, a multilingual, zero-shot automated diagnosis system that achieves high accuracy without relying on real patient data. GPT-RagAD adopts a two-layer Retrieval-Augmented Generation (RAG) architecture: a knowledge graph-based retriever selects disease candidates from 1,058 conditions, and an LLM-based re-ranker applies prompt-based reasoning to refine predictions. Unlike traditional diagnostic models that require supervised training and large clinical datasets, GPT-RagAD is privacy-preserving, scalable, and language-agnostic. Extensive evaluations on three multilingual datasets (Chinese and English) show that GPT-RagAD achieves 40.6% Hit@1 and 56.7% NDCG@10 on the Symptom2Disease benchmark\u2014substantially outperforming embedding-based and direct LLM baselines. Ablation and sensitivity analyses further validate its robustness. GPT-RagAD presents a practical, lightweight solution for clinical triage and pre-diagnosis support.",
+    "url": "https://proceedings.mlr.press/v297/liu26a.html",
+    "id": "https://proceedings.mlr.press/v297/liu26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/liu26a/liu26a.pdf",
+    "authors": {
+      "0_Xinyi Liu": "Xinyi Liu",
+      "1_Dachun Sun": "Dachun Sun",
+      "2_Yi R. Fung": "Yi R. Fung",
+      "3_Dilek Hakkani-T\u00fcr": "Dilek Hakkani-T\u00fcr",
+      "4_Tarek Abdelzaher": "Tarek Abdelzaher"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/liu26a/liu26a.pdf",
+    "github_url": "https://github.com/tracy3057/GPT-RagAD",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:152-166,\u00a02026.",
+    "supplemental": ""
+  },
+  "39_MENSA A MultiEvent Network for Survival Analysis with Trajectorybased Likelihood Estimation": {
+    "title": "MENSA: A Multi-Event Network for Survival Analysis with Trajectory-based Likelihood Estimation",
+    "abstract": "Most existing time-to-event methods focus on either single-event or competing-risks settings, leaving multi-event scenarios relatively underexplored. In many healthcare applications, for example, a patient may experience multiple clinical events, that can be non-exclusive and semi-competing. A common workaround is to train independent single-event models for such multi-event problems, but this approach fails to exploit dependencies and shared structures across events. To overcome these limitations, we propose {MENSA} (Multi-Event Network for Survival Analysis), a deep learning model that jointly learns flexible time-to-event distributions for multiple events, whether competing or co-occurring. In addition, we introduce a novel trajectory-based likelihood term that captures the temporal ordering between events. Across four multi-event datasets, {MENSA} improves predictive performance over many state-of-the-art baselines. Source code is available at https://github.com/thecml/mensa.",
+    "url": "https://proceedings.mlr.press/v297/lillelund26a.html",
+    "id": "https://proceedings.mlr.press/v297/lillelund26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/lillelund26a/lillelund26a.pdf",
+    "authors": {
+      "0_Christian Marius Lillelund": "Christian Marius Lillelund",
+      "1_Ali Hossein Gharari Foomani": "Ali Hossein Gharari Foomani",
+      "2_Weijie Sun": "Weijie Sun",
+      "3_Shi-ang Qi": "Shi-ang Qi",
+      "4_Russell Greiner": "Russell Greiner",
+      "5_The Pooled Resource Open-Access ALS Clinical Trials Consortium (PRO-ACT)": "The Pooled Resource Open-Access ALS Clinical Trials Consortium (PRO-ACT)"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/lillelund26a/lillelund26a.pdf",
+    "github_url": "https://github.com/thecml/mensa",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:543-571,\u00a02026.",
+    "supplemental": ""
+  },
+  "40_KarmaTS A Universal Simulation Platform for Multivariate Time Series with Functional Causal Dynamics": {
+    "title": "KarmaTS: A Universal Simulation Platform for Multivariate Time Series with Functional Causal Dynamics",
+    "abstract": "We introduce {KarmaTS}, an interactive framework for constructing lag-indexed, executable spatiotemporal causal graphical models for multivariate time series ({MTS}) simulation. Motivated by the challenge of access-restricted physiological data, {KarmaTS} generates synthetic {MTS} with known causal dynamics and augments real-world datasets with expert knowledge. The system constructs a discrete-time structural causal process ({DSCP}) by combining expert knowledge and algorithmic proposals in a mixed-initiative, human-in-the-loop workflow. The resulting {DSCP} supports simulation and causal interventions, including those under user-specified distribution shifts. {KarmaTS} handles mixed variable types, contemporaneous and lagged edges, and modular edge functionals ranging from parameterizable templates to neural network models. Together, these features enable flexible validation and benchmarking of causal discovery algorithms through expert-informed simulation.",
+    "url": "https://proceedings.mlr.press/v297/li26b.html",
+    "id": "https://proceedings.mlr.press/v297/li26b.html",
+    "pdf": "https://proceedings.mlr.press/v297/li26b/li26b.pdf",
+    "authors": {
+      "0_Haixin Li": "Haixin Li",
+      "1_Yanke Li": "Yanke Li",
+      "2_Diego Paez-Granados": "Diego Paez-Granados"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/li26b/li26b.pdf",
+    "github_url": "https://github.com/SCAI-Lab/KarmaTS",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1427-1445,\u00a02026.",
+    "supplemental": ""
+  },
+  "41_FeatureEndo4DGS RealTime Deformable Surgical Scene Reconstruction and Segmentation with 4D Gaussian Splatting": {
+    "title": "FeatureEndo-4DGS: Real-Time Deformable Surgical Scene Reconstruction and Segmentation with 4D Gaussian Splatting",
+    "abstract": "Minimally invasive surgery ({MIS}) requires high-fidelity, real-time visual feedback of dynamic and low-texture surgical scenes. To address these requirements, we introduce FeatureEndo-4DGS ({FE-4DGS}), the first real-time pipeline leveraging feature-distilled {4D} Gaussian Splatting for simultaneous reconstruction and semantic segmentation of deformable surgical environments. Unlike prior feature-distilled methods restricted to static scenes, and existing {4D} approaches that lack semantic integration, {FE-4DGS} seamlessly leverages pre-trained {2D} semantic embeddings to produce a unified {4D} representation\u2014where semantics also deform with tissue motion. This unified approach enables the generation of real-time {RGB} and semantic outputs through a single, parallelized rasterization process. Despite the additional complexity from feature distillation, {FE-4DGS} sustains real-time rendering (287.95 {FPS}) with a compact footprint, achieves state-of-the-art rendering fidelity on EndoNeRF (39.1 {PSNR}) and SCARED (27.3 {PSNR}), and delivers competitive EndoVis18 segmentation, matching or exceeding strong {2D} baselines for binary segmentation tasks (0.93 {DSC}) and remaining competitive for multi-label segmentation (0.77 {DSC}).",
+    "url": "https://proceedings.mlr.press/v297/li26a.html",
+    "id": "https://proceedings.mlr.press/v297/li26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/li26a/li26a.pdf",
+    "authors": {
+      "0_Kai Li": "Kai Li",
+      "1_Junhao Wang": "Junhao Wang",
+      "2_William Han": "William Han",
+      "3_Ding Zhao": "Ding Zhao"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/li26a/li26a.pdf",
+    "github_url": "https://github.com/kailathan/FE-4DGS",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1218-1234,\u00a02026.",
+    "supplemental": ""
+  },
+  "42_Investigating RAGbased Approaches in Clinical Trial and Patient Matching": {
+    "title": "Investigating RAG-based Approaches in Clinical Trial and Patient Matching",
+    "abstract": "The task of matching clinical trials and patients involves predicting whether a patient meets the eligibility criteria of a clinical trial, via evidences from patient records, such as clinical notes. Given that both the trial eligibility criteria and the clinical notes of patients are unstructured texts, Large Language Models (LLMs) hold the potential to improve performance on this task. Nevertheless, LLMs come with their own challenges of transparency and accountability. Current methods use Retrieval-Augmented Generation (RAG) in order to predict patient eligibility. In this work, we systematically investigate three aspects of these RAG-based approaches: (i) the complexity of the task, (ii) data retrieval for longitudinal records, and (iii) the effect of abstention on prediction quality. We show that criteria complexity, model abstention and chunking longitudinal patient records have noticeable effects on model performance. We also show that the choice of embedding models and ranking methods has little effect on the evidences retrieved from patient history. We hope that the findings of our study encourage research in improving the transparency and accountability of RAG approaches in clinical decision-making tasks.",
+    "url": "https://proceedings.mlr.press/v297/leon-tramontini26a.html",
+    "id": "https://proceedings.mlr.press/v297/leon-tramontini26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/leon-tramontini26a/leon-tramontini26a.pdf",
+    "authors": {
+      "0_Daniel Le\u00f3n Tramontini": "Daniel Le\u00f3n Tramontini",
+      "1_Shrestha Ghosh": "Shrestha Ghosh",
+      "2_Carsten Eickhoff": "Carsten Eickhoff"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/leon-tramontini26a/leon-tramontini26a.pdf",
+    "github_url": "https://github.com/leontramontini97/clinical_trial-patient_matching",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:76-87,\u00a02026.",
+    "supplemental": ""
+  },
+  "43_SCARE A Benchmark for SQL Correction and Question Answerability Classification for Reliable EHR Question Answering": {
+    "title": "SCARE: A Benchmark for SQL Correction and Question Answerability Classification for Reliable EHR Question Answering",
+    "abstract": "Recent advances in Large Language Models ({LLM}s) have enabled the development of text-to-{SQL} models that allow clinicians to query structured data stored in Electronic Health Records ({EHR}s) using natural language. However, deploying these models for {EHR} question answering ({QA}) systems in safety-critical clinical environments remains challenging: incorrect {SQL} queries\u2014whether caused by model errors or problematic user inputs\u2014can undermine clinical decision-making and jeopardize patient care. While prior work has mainly focused on improving {SQL} generation accuracy or filtering questions before execution, there is a lack of a unified benchmark for evaluating independent post-hoc verification mechanisms (i.e., a component that inspects and validates the generated {SQL} before execution), which is crucial for safe deployment. To fill this gap, we introduce {SCARE}, a benchmark for evaluating methods that function as a post-hoc safety layer in {EHR} {QA} systems. {SCARE} evaluates the joint task of (1) classifying question answerability (i.e., determining whether a question is answerable, ambiguous, or unanswerable) and (2) verifying or correcting candidate {SQL} queries. The benchmark comprises 4,200 triples of questions, candidate {SQL} queries, and expected model outputs, grounded in the {MIMIC-III}, {MIMIC-IV}, and {eICU} databases. It covers a diverse set of questions and corresponding candidate {SQL} queries generated by seven different text-to-{SQL} models, ensuring a realistic and challenging evaluation. Using {SCARE}, we benchmark a range of approaches\u2014from two-stage methods to agentic frameworks. Our experiments reveal a critical trade-off between question classification and {SQL} error correction, highlighting key challenges and outlining directions for future research.",
+    "url": "https://proceedings.mlr.press/v297/lee26b.html",
+    "id": "https://proceedings.mlr.press/v297/lee26b.html",
+    "pdf": "https://proceedings.mlr.press/v297/lee26b/lee26b.pdf",
+    "authors": {
+      "0_Gyubok Lee": "Gyubok Lee",
+      "1_Woosog Chay": "Woosog Chay",
+      "2_Edward Choi": "Edward Choi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/lee26b/lee26b.pdf",
+    "github_url": "https://github.com/glee4810/SCARE",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1446-1466,\u00a02026.",
+    "supplemental": ""
+  },
+  "44_FHIRAgentBench Benchmarking LLM Agents for Realistic Interoperable EHR Question Answering": {
+    "title": "FHIR-AgentBench: Benchmarking LLM Agents for Realistic Interoperable EHR Question Answering",
+    "abstract": "The recent shift toward the Health Level Seven Fast Healthcare Interoperability Resources ({HL7 FHIR}) standard opens a new frontier for clinical {AI}, demanding {LLM} agents to navigate complex, resource-based data models instead of conventional structured health data. However, existing benchmarks have lagged behind this transition, lacking the realism needed to evaluate recent {LLM}s on interoperable clinical data. To bridge this gap, we introduce {FHIR-AgentBench}\u2014a benchmark that grounds 2,931 real-world clinical questions in the {HL7 FHIR} standard. Using this benchmark, we systematically evaluate agentic frameworks, comparing different data retrieval strategies (direct {FHIR} {API} calls vs. specialized tools), interaction patterns (single-turn vs. multi-turn), and reasoning strategies (natural language vs. code generation). Our experiments highlight the practical challenges of retrieving data from intricate {FHIR} resources and the difficulty of reasoning over them\u2014both of which critically affect question answering performance.",
+    "url": "https://proceedings.mlr.press/v297/lee26a.html",
+    "id": "https://proceedings.mlr.press/v297/lee26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/lee26a/lee26a.pdf",
+    "authors": {
+      "0_Gyubok Lee": "Gyubok Lee",
+      "1_Elea Bach": "Elea Bach",
+      "2_Eric Yang": "Eric Yang",
+      "3_Tom Pollard": "Tom Pollard",
+      "4_Alistair Johnson": "Alistair Johnson",
+      "5_Edward Choi": "Edward Choi",
+      "6_Yugang Jia": "Yugang Jia",
+      "7_Jong Ha Lee": "Jong Ha Lee"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/lee26a/lee26a.pdf",
+    "github_url": "https://github.com/glee4810/FHIR-AgentBench",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1297-1315,\u00a02026.",
+    "supplemental": ""
+  },
+  "45_Empowering Health in Aging Populations A Multimodal Vulnerability Tool for Frail Patients": {
+    "title": "Empowering Health in Aging Populations: A Multimodal Vulnerability Tool for Frail Patients",
+    "abstract": "Frailty is a powerful predictor of adverse outcomes in older adults, yet its routine assessment remains limited in acute care settings due to the labor-intensive nature of the clinical Frailty Index ({FI}) scoring, requiring geriatric specialists and meticulous clinical assessment. We developed and externally validated the first automated multimodal vulnerability tool that provides a real-time risk assessment, integrating structured {EHR} data, clinical narratives, and {CT} imaging. Using data from two major Boston hospitals in the Mass General Brigham system, we trained models to predict six outcomes: 3- and 6-month all-cause mortality, 3- and 6-month hospital readmission, 6-month fall risk, and 1-year recurrent fall risk. Our multimodal approach achieved {AUC}s of 0.74\u20130.86, with improvements of up to 4.3% over single-modality models and 8\u201349% over {FI}\u2019s predictive power. Beyond outcome prediction, we also sought to mirror clinical practice, where discrete frailty levels guide care planning. To this end, we developed a four-tier stratification system using k-means clustering and Optimal Policy Trees. This produces interpretable decision rules that assign patients to Non-, Pre-, Moderately-, and Severely- Vulnerable categories, actionable classifications that directly inform interventions, from fall prevention to advance care planning, while adding significantly to the prognostic ability of frailty assessments.",
+    "url": "https://proceedings.mlr.press/v297/kondylis26a.html",
+    "id": "https://proceedings.mlr.press/v297/kondylis26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/kondylis26a/kondylis26a.pdf",
+    "authors": {
+      "0_Joanna G. Kondylis": "Joanna G. Kondylis",
+      "1_Houman Javedan": "Houman Javedan",
+      "2_Dimitris Bertsimas": "Dimitris Bertsimas",
+      "3_Bharti Khurana": "Bharti Khurana"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/kondylis26a/kondylis26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:605-628,\u00a02026.",
+    "supplemental": ""
+  },
+  "46_Perspective Listening to Users when Auditing Medical AI Scribes": {
+    "title": "Perspective: Listening to Users when Auditing Medical AI Scribes",
+    "abstract": "Medical AI scribes are rapidly being adopted to reduce documentation burdens on clinicians, with systems already deployed across millions of patient visits. While these tools offer substantial efficiency benefits and reduced clinician burnout, they pose serious risks through transcription errors and hallucinations. These risks are disproportionately placed on certain demographics of speakers, from patients with speech disorders to psychiatric illnesses. We argue for more principled audits to be conducted on medical AI scribes, analogous to post-marketing surveillance for medical devices. Our framework for doing so involves: (1) collecting diverse, medically-relevant speech datasets representative of real patient and provider populations, (2) developing metric suites that go beyond the singular gold standard of Word Error Rates, and (3) conducting human-centered design research to align functionality with the needs of both medical providers and patients.",
+    "url": "https://proceedings.mlr.press/v297/koenecke26a.html",
+    "id": "https://proceedings.mlr.press/v297/koenecke26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/koenecke26a/koenecke26a.pdf",
+    "authors": {
+      "0_Allison Koenecke": "Allison Koenecke",
+      "1_John-Jose Nunez": "John-Jose Nunez",
+      "2_Ana\u00efs Rameau": "Ana\u00efs Rameau",
+      "3_Irene Y. Chen": "Irene Y. Chen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/koenecke26a/koenecke26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1619-1631,\u00a02026.",
+    "supplemental": ""
+  },
+  "47_Dialogue to Question Generation for Evidencebased Medical Guideline Agent Development": {
+    "title": "Dialogue to Question Generation for Evidence-based Medical Guideline Agent Development",
+    "abstract": "Evidence-based medicine ({EBM}) is central to high-quality care, but remains difficult to implement in fast-paced primary care settings. Physicians face short consultations, increasing patient loads, and lengthy guideline documents that are impractical to consult in real time. To address this gap, we investigate the feasibility of using large language models ({LLM}s) as ambient assistants that surface targeted, evidence-based questions during physician\u2013patient encounters. Our study focuses on question generation rather than question answering, with the aim of scaffolding physician reasoning and integrating guideline-based practice into brief consultations. We implemented two prompting strategies, a zero-shot baseline and a multi-stage reasoning variant, using Gemini 2.5 as the backbone model. We evaluated on a benchmark of 80 de-identified transcripts from real clinical encounters, with six experienced physicians contributing over 90 hours of structured review. Results indicate that while general-purpose {LLM}s are not yet fully reliable, they can produce clinically meaningful and guideline-relevant questions, suggesting significant potential to reduce cognitive burden and make {EBM} more actionable at the point of care.",
+    "url": "https://proceedings.mlr.press/v297/ji26a.html",
+    "id": "https://proceedings.mlr.press/v297/ji26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ji26a/ji26a.pdf",
+    "authors": {
+      "0_Zongliang Ji": "Zongliang Ji",
+      "1_Ziyang Zhang": "Ziyang Zhang",
+      "2_Xincheng Tan": "Xincheng Tan",
+      "3_Matthew Thompson": "Matthew Thompson",
+      "4_Anna Goldenberg": "Anna Goldenberg",
+      "5_Carl Yang": "Carl Yang",
+      "6_Rahul G. Krishnan": "Rahul G. Krishnan",
+      "7_Fan Zhang": "Fan Zhang"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ji26a/ji26a.pdf",
+    "github_url": "https://github.com/Jerryji007/Dialogue2Questions-ML4H2025",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:721-739,\u00a02026.",
+    "supplemental": ""
+  },
+  "48_An Agentic System for Automated Data Curation and Analysis in LargeScale Biobanks": {
+    "title": "An Agentic System for Automated Data Curation and Analysis in Large-Scale Biobanks",
+    "abstract": "The translation of clinical and lifestyle concepts into computable phenotypes is a critical yet manually intensive bottleneck in leveraging large-scale biomedical datasets like the {UK} Biobank. This process is slow, requires deep domain expertise, and suffers from a lack of scalability and reproducibility, especially for clinicians unfamiliar with large-scale data analysis. We propose and develop an autonomous, dual-component agentic system designed to automate the research workflow from hypothesis to report. The first component, the large language model ({LLM})-based data preprocessing framework, systematically searches the {UK} Biobank\u2019s public data dictionary, translating high-level clinical and lifestyle concepts into machine-readable rules. The second component, the Analysis Agent, autonomously executes the statistical analysis plan and synthesizes the findings. The framework is further validated by successfully phenotyping and analyzing several clinical and lifestyle screeners. This work demonstrates a viable end-to-end system that enhances scalability and democratizes complex data analysis with transparency, representing a foundational step toward a new paradigm of {AI}-driven scientific discovery.",
+    "url": "https://proceedings.mlr.press/v297/jeong26a.html",
+    "id": "https://proceedings.mlr.press/v297/jeong26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/jeong26a/jeong26a.pdf",
+    "authors": {
+      "0_Chang-Uk Jeong": "Chang-Uk Jeong",
+      "1_Jaesik Kim": "Jaesik Kim",
+      "2_Jaehyun Joo": "Jaehyun Joo",
+      "3_Byounghan Lee": "Byounghan Lee",
+      "4_Yang-Gyun Kim": "Yang-Gyun Kim",
+      "5_Dokyoon Kim": "Dokyoon Kim"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/jeong26a/jeong26a.pdf",
+    "github_url": "https://github.com/ukjung21/ukb-agent",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1141-1158,\u00a02026.",
+    "supplemental": ""
+  },
+  "49_Identifying treatment response subgroups in observational timetoevent data": {
+    "title": "Identifying treatment response subgroups in observational time-to-event data",
+    "abstract": "Identifying patient subgroups with different treatment responses is an important task to inform medical recommendations, guidelines, and the design of future clinical trials. Existing approaches for treatment effect estimation primarily rely on Randomised Controlled Trials (RCTs), which tend to feature more homogeneous patient groups, making them less relevant for uncovering subgroups in the population encountered in real-world clinical practice. Subgroup analyses established for RCTs suffer from significant statistical biases when applied to observational studies, which benefit from larger and more representative populations. Our work introduces a novel, outcome-guided, subgroup analysis strategy for identifying subgroups of treatment response in both RCTs and observational studies alike. It hence positions itself in-between individualised and average treatment effect estimation to uncover patient subgroups with distinct treatment responses, critical for actionable insights that may influence treatment guidelines. In experiments, our approach significantly outperforms the current state-of-the-art method for subgroup analysis in both randomised and observational treatment regimes.",
+    "url": "https://proceedings.mlr.press/v297/jeanselme26a.html",
+    "id": "https://proceedings.mlr.press/v297/jeanselme26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/jeanselme26a/jeanselme26a.pdf",
+    "authors": {
+      "0_Vincent Jeanselme": "Vincent Jeanselme",
+      "1_Chang Ho Yoon": "Chang Ho Yoon",
+      "2_Fabian Falck": "Fabian Falck",
+      "3_Brian Tom": "Brian Tom",
+      "4_Jessica Barrett": "Jessica Barrett"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/jeanselme26a/jeanselme26a.pdf",
+    "github_url": "https://github.com/Jeanselme/CausalNeuralSurvivalClustering",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:55-75,\u00a02026.",
+    "supplemental": ""
+  },
+  "50_MedVLThinker Simple Baselines for Multimodal Medical Reasoning": {
+    "title": "MedVLThinker: Simple Baselines for Multimodal Medical Reasoning",
+    "abstract": "Large Reasoning Models ({LRM}s) have introduced a new paradigm in {AI} by enabling models to \u201cthink before responding\u201d via chain-of-thought reasoning. However, the absence of open and reproducible recipes for building reasoning-centric medical {LMM}s hinders community-wide research, analysis, and comparison. In this paper, we present MedVLThinker, a suite of simple yet strong baselines. Our fully open recipe consists of: (1) systematic data curation for both text-only and image-text medical data, filtered according to varying levels of reasoning difficulty, and (2) two training paradigms: Supervised Fine-Tuning ({SFT}) on distilled reasoning traces and Reinforcement Learning with Verifiable Rewards ({RLVR}) based on final answer correctness. Across extensive experiments on the Qwen2.5-{VL} model family (3B, 7B) and six medical {QA} benchmarks, we find that {RLVR} consistently and significantly outperforms {SFT}. Additionally, under the {RLVR} framework, a key, counterintuitive finding is that training on our curated text-only reasoning data provides a more substantial performance boost than training on multimodal image-text data. Our best open 7B model, trained using the {RLVR} recipe on text-only data, establishes a new state-of-the-art on existing public {VQA} benchmarks, surpassing all previous open-source medical {LMM}s. Furthermore, scaling our model to 32B achieves performance on par with the proprietary {GPT}-4o. We release all curated data, models, and code to provide the community with a strong, open foundation for future research in multimodal medical reasoning.",
+    "url": "https://proceedings.mlr.press/v297/huang26b.html",
+    "id": "https://proceedings.mlr.press/v297/huang26b.html",
+    "pdf": "https://proceedings.mlr.press/v297/huang26b/huang26b.pdf",
+    "authors": {
+      "0_Xiaoke Huang": "Xiaoke Huang",
+      "1_Juncheng Wu": "Juncheng Wu",
+      "2_Hui Liu": "Hui Liu",
+      "3_Xianfeng Tang": "Xianfeng Tang",
+      "4_Yuyin Zhou": "Yuyin Zhou"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/huang26b/huang26b.pdf",
+    "github_url": "https://github.com/UCSC-VLAA/MedVLThinker",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:384-398,\u00a02026.",
+    "supplemental": ""
+  },
+  "51_m1 Unleash the Potential of TestTime Scaling for Medical Reasoning with Large Language Models": {
+    "title": "m1: Unleash the Potential of Test-Time Scaling for Medical Reasoning with Large Language Models",
+    "abstract": "Test-time scaling has emerged as a powerful technique for enhancing the reasoning capabilities of large language models ({LLM}s). However, its effectiveness in medical reasoning remains uncertain, as the medical domain fundamentally differs from mathematical tasks in terms of knowledge representation and decision-making processes. In this paper, we provide the first comprehensive investigation of test-time scaling for medical reasoning and present m1, a simple yet effective approach that increases a model\u2019s medical reasoning capability at inference. Our evaluation across diverse medical tasks demonstrates that test-time scaling (by increasing the \u201cthinking\u201d token budget) consistently enhances medical reasoning, enabling lightweight fine-tuned models under 10B parameters to establish new state-of-the-art performance, while our 32B model achieves results comparable to previous 70B-scale medical {LLM}s. However, we identify an optimal reasoning token budget of approximately 4K, beyond which performance may degrade due to overthinking. Budget forcing, which extends test-time computation through iterative prompts (e.g., appending \u201cWait\u201d), helps models double-check answers but does not necessarily improve the overall medical {QA} performance and, in some cases, even introduces errors into previously correct responses. Taken together, our case-by-case analysis further identifies insufficient medical knowledge as a key bottleneck that prevents further performance gains through test-time scaling. To overcome this constraint, we find that increasing data scale, improving data quality, and expanding model capacity consistently enhance medical knowledge grounding, enabling continued performance improvements\u2014particularly on challenging medical benchmarks where smaller models reach saturation. These findings underscore fundamental differences between medical and mathematical reasoning in {LLM}s, highlighting that enriched medical knowledge, other than increased reasoning depth alone, is essential for fully realizing the benefits of test-time scaling.",
+    "url": "https://proceedings.mlr.press/v297/huang26a.html",
+    "id": "https://proceedings.mlr.press/v297/huang26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/huang26a/huang26a.pdf",
+    "authors": {
+      "0_Xiaoke Huang": "Xiaoke Huang",
+      "1_Juncheng Wu": "Juncheng Wu",
+      "2_Hui Liu": "Hui Liu",
+      "3_Xianfeng Tang": "Xianfeng Tang",
+      "4_Yuyin Zhou": "Yuyin Zhou"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/huang26a/huang26a.pdf",
+    "github_url": "https://github.com/UCSC-VLAA/m1",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:369-383,\u00a02026.",
+    "supplemental": ""
+  },
+  "52_ContextAware Filtering of Unstructured Radiology Reports by Anatomical Region": {
+    "title": "Context-Aware Filtering of Unstructured Radiology Reports by Anatomical Region",
+    "abstract": "Radiology reports contain essential clinical information but often remain in unstructured, free-text formats. Notably, multiple imaging examinations performed simultaneously (such as {CT} head, facial bones, and cervical spine in trauma cases) may be bundled into a single report that consolidates findings from all studies into one free-text document, written jointly. Because individual sentences may reference ambiguous or overlapping anatomy (e.g., \u201cthere is a fracture\u201d), sentence-level anatomic classification\u2014filtering a report to retain only findings relevant to a specific anatomical region\u2014is essential for downstream tasks such as structured label extraction and for creating clean, bijective training data for radiology report generation models. While formatting differs across reports, the clinical language remains precise. Using that fact, we develop context-aware classical models with feature engineering that surpass trained neural networks and pre-trained language models. We show that the learned model weights generalize effectively to {MIMIC}-{IV} radiology reports and that our approach achieves near-optimal performance with only a small amount of labeled training data. Together, these results make our approach practical and reproducible for new settings.",
+    "url": "https://proceedings.mlr.press/v297/heile26a.html",
+    "id": "https://proceedings.mlr.press/v297/heile26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/heile26a/heile26a.pdf",
+    "authors": {
+      "0_Zakk Heile": "Zakk Heile",
+      "1_Pranav Manjunath": "Pranav Manjunath",
+      "2_Brian Lerner": "Brian Lerner",
+      "3_Samuel Berchuck": "Samuel Berchuck",
+      "4_Monica Agrawal": "Monica Agrawal",
+      "5_Timothy W. Dunn": "Timothy W. Dunn"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/heile26a/heile26a.pdf",
+    "github_url": "https://github.com/zakk-h/ContextAwareFiltering",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:864-885,\u00a02026.",
+    "supplemental": ""
+  },
+  "53_Joint Progression Modeling JPM A Probabilistic Framework for MixedPathology Progression": {
+    "title": "Joint Progression Modeling (JPM): A Probabilistic Framework for Mixed-Pathology Progression",
+    "abstract": "Event-based models ({EBM}s) infer disease progression from cross-sectional data, and standard {EBM}s assume a single underlying disease per individual. In contrast, mixed pathologies are common in neurodegeneration. We introduce the Joint Progression Model ({JPM}), a probabilistic framework that treats single-disease trajectories as partial rankings and builds a prior over joint progressions. We study several {JPM} variants (Pairwise, Bradley\u2013Terry, Plackett\u2013Luce, and Mallows) and analyze three properties: (i) calibration\u2013whether lower model energy predicts smaller distance to the ground truth ordering; (ii) separation\u2013the degree to which sampled rankings are distinguishable from random permutations; and (iii) sharpness\u2013the stability of sampled aggregate rankings. All variants are calibrated, and all achieve near-perfect separation; sharpness varies by variant and is well-predicted by simple features of the input partial rankings (number and length of rankings, conflict, and overlap). In synthetic experiments, {JPM} improves ordering accuracy by roughly 21% over a strong {EBM} baseline ({SA}-{EBM}) that treats the joint disease as a single condition. Finally, using {NACC}, we find that the Mallows variant of {JPM} and the baseline model ({SA}-{EBM}) have results that are more consistent with prior literature on the possible disease progression of the mixed pathology of {AD} and {VaD}.",
+    "url": "https://proceedings.mlr.press/v297/hao26b.html",
+    "id": "https://proceedings.mlr.press/v297/hao26b.html",
+    "pdf": "https://proceedings.mlr.press/v297/hao26b/hao26b.pdf",
+    "authors": {
+      "0_Hongtao Hao": "Hongtao Hao",
+      "1_Joseph L. Austerweil": "Joseph L. Austerweil",
+      "2_the Alzheimer\u2019s Disease Neuroimaging Initiative": "the Alzheimer\u2019s Disease Neuroimaging Initiative"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/hao26b/hao26b.pdf",
+    "github_url": "https://github.com/hongtaoh/jpm",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1467-1515,\u00a02026.",
+    "supplemental": ""
+  },
+  "54_Bayesian EventBased Model for Disease Subtype and Stage Inference": {
+    "title": "Bayesian Event-Based Model for Disease Subtype and Stage Inference",
+    "abstract": "Chronic diseases often progress differently across patients. Rather than randomly varying, there are typically a small number of subtypes for how a disease progresses across patients. To capture this structured heterogeneity, the Subtype and Stage Inference Event-Based Model (SuStaIn) estimates the number of subtypes, the order of disease progression for each subtype, and assigns each patient to a subtype from primarily cross-sectional data. It has been widely applied to uncover the subtypes of many diseases and inform our understanding of them. But how robust is its performance? In this paper, we develop a principled Bayesian subtype variant of the event-based model (bebms) and compare its performance to SuStaIn in a variety of synthetic data experiments with varied levels of model misspecification. BebmS substantially outperforms SuStaIn across ordering, staging, and subtype assignment tasks. Further, we apply bebms and SuStaIn to a real-world Alzheimer\u2019s data set. We find BebmS has results that are more consistent with the scientific consensus of Alzheimer\u2019s disease progression than SuStaIn.",
+    "url": "https://proceedings.mlr.press/v297/hao26a.html",
+    "id": "https://proceedings.mlr.press/v297/hao26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/hao26a/hao26a.pdf",
+    "authors": {
+      "0_Hongtao Hao": "Hongtao Hao",
+      "1_Joseph L. Austerweil": "Joseph L. Austerweil"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/hao26a/hao26a.pdf",
+    "github_url": "https://github.com/hongtaoh/bebms",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:88-119,\u00a02026.",
+    "supplemental": ""
+  },
+  "55_AI Psychiatrist Assistant An LLMbased MultiAgent System for Depression Assessment from Clinical Interviews": {
+    "title": "AI Psychiatrist Assistant: An LLM-based Multi-Agent System for Depression Assessment from Clinical Interviews",
+    "abstract": "Depression is one of the most common mental disorders yet remains underdiagnosed. Large language models ({LLM}s) have shown promise in their ability to understand the semantic meaning behind medical text and automate clinical workflows through collaborative agents. Here, we propose an {LLM}-based multi-agent system to diagnose depression symptoms from clinical interview transcripts. Our system integrates four agents: (1) a qualitative assessment agent that identifies symptoms and risk factors, (2) a judge agent that evaluates qualitative assessment through iterative self-refinement, (3) a quantitative assessment agent that predicts clinical scores using a novel embedding-based few-shot prompting approach, and (4) a meta-review agent that integrates outputs into a comprehensive overview of a patient\u2019s mental state. The qualitative assessment agent provided coherent, specific, and reasonably accurate assessment, as evaluated by both the human expert and the judge agent. The quantitative assessment agent with few-shot prompting showed an average mean absolute error of 0.619 for symptom prediction versus 0.796 in zero-shot prompting, while the meta-review agent achieved a binary classification accuracy of 78%, comparable to that of a human expert. Our system could serve as a consultant for psychiatrists and psychologists, offering an alternative perspective on patients\u2019 mental health conditions, and thus establishing a foundation for future work on agent-aided clinical support.",
+    "url": "https://proceedings.mlr.press/v297/greene26a.html",
+    "id": "https://proceedings.mlr.press/v297/greene26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/greene26a/greene26a.pdf",
+    "authors": {
+      "0_Adam Greene": "Adam Greene",
+      "1_Neviah Blair": "Neviah Blair",
+      "2_Samin Mahdipour Aghabagher": "Samin Mahdipour Aghabagher",
+      "3_Simmi Kumari": "Simmi Kumari",
+      "4_Michael W. Schlund": "Michael W. Schlund",
+      "5_Alex Fedorov": "Alex Fedorov",
+      "6_Vince D. Calhoun": "Vince D. Calhoun",
+      "7_Xinhui Li": "Xinhui Li",
+      "8_Rogers F. Silva": "Rogers F. Silva"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/greene26a/greene26a.pdf",
+    "github_url": "https://github.com/trendscenter/ai-psychiatrist",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:525-542,\u00a02026.",
+    "supplemental": ""
+  },
+  "56_Beyond Diagnosis Evaluating Multimodal LLMs for Pathology Localization in Chest Radiographs": {
+    "title": "Beyond Diagnosis: Evaluating Multimodal LLMs for Pathology Localization in Chest Radiographs",
+    "abstract": "Recent work has shown promising performance of frontier large language models ({LLM}s) and their multimodal counterparts in medical quizzes and diagnostic tasks, highlighting their potential for broad clinical utility given their accessible, general-purpose nature. However, beyond diagnosis, a fundamental aspect of medical image interpretation is the ability to localize pathological findings. Evaluating localization not only has clinical and educational relevance but also provides insight into a model\u2019s spatial understanding of anatomy and disease. Here, we systematically assess two general-purpose {MLLM}s (GPT-4 and GPT-5) and a domain-specific model (MedGemma) in their ability to localize pathologies on chest radiographs, using a prompting pipeline that overlays a spatial grid and elicits coordinate-based predictions. Averaged across nine pathologies in the CheXlocalize dataset, GPT-5 exhibited a localization accuracy of 49.7%, followed by GPT-4 (39.1%) and MedGemma (17.7%), all lower than a task-specific {CNN} baseline (59.9%) and a radiologist benchmark (80.1%). Despite modest performance, error analysis revealed that GPT-5\u2019s predictions were largely in anatomically plausible regions, just not always precisely localized. GPT-4 performed well on pathologies with fixed anatomical locations, but struggled with spatially variable findings and exhibited anatomically implausible predictions more frequently. MedGemma demonstrated the lowest performance on all pathologies, but showed improvements when provided examples through few shot prompting. Our findings highlight both the promise and limitations of current {MLLM}s in medical imaging and underscore the importance of integrating them with task-specific tools for reliable use.",
+    "url": "https://proceedings.mlr.press/v297/gosai26a.html",
+    "id": "https://proceedings.mlr.press/v297/gosai26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/gosai26a/gosai26a.pdf",
+    "authors": {
+      "0_Advait Gosai": "Advait Gosai",
+      "1_Arun Kavishwar": "Arun Kavishwar",
+      "2_Stephanie L. McNamara": "Stephanie L. McNamara",
+      "3_Soujanya Samineni": "Soujanya Samineni",
+      "4_Renato Umeton": "Renato Umeton",
+      "5_Alexander Chowdhury": "Alexander Chowdhury",
+      "6_William Lotter": "William Lotter"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/gosai26a/gosai26a.pdf",
+    "github_url": "https://github.com/lotterlab/mllm_localization",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:572-587,\u00a02026.",
+    "supplemental": ""
+  },
+  "57_xMADD A Unified Diffusion Framework for Conditioned Synthesis of Medical Images and Waveforms": {
+    "title": "xMADD: A Unified Diffusion Framework for Conditioned Synthesis of Medical Images and Waveforms",
+    "abstract": "Diffusion models have shown remarkable success in generating high-quality perceptual data, but their use for controlled generation in biomedicine remains limited. We introduce {xMADD} (cross-Modal cross-Attention Denoising Diffusion), a conditional diffusion framework for producing diverse, high-resolution medical data, including cardiac {MRI}, brain {MRI}, and {ECG} waveforms, guided by clinical phenotypes, demographics, and multimodal signals. By incorporating cross-attention over conditional embeddings, {xMADD} enables control over generation. Compared to existing generative approaches, {xMADD} achieves superior image fidelity and stability, while accurately reflecting conditioning phenotypes across modalities. Our results highlight the potential of controlled diffusion-based generation to expand biomedical datasets and facilitate data-sharing without compromising sensitive patient data.",
+    "url": "https://proceedings.mlr.press/v297/friedman26a.html",
+    "id": "https://proceedings.mlr.press/v297/friedman26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/friedman26a/friedman26a.pdf",
+    "authors": {
+      "0_Sam Freesun Friedman": "Sam Freesun Friedman",
+      "1_Sana Tonekaboni": "Sana Tonekaboni",
+      "2_Arash A. Nargesi": "Arash A. Nargesi",
+      "3_Caroline Uhler": "Caroline Uhler",
+      "4_Mahnaz Maddah": "Mahnaz Maddah"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/friedman26a/friedman26a.pdf",
+    "github_url": "https://github.com/broadinstitute/ml4h",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:588-604,\u00a02026.",
+    "supplemental": ""
+  },
+  "58_EmbeddingSpace Data Augmentation to Prevent Membership Inference Attacks in Clinical Time Series Forecasting": {
+    "title": "Embedding-Space Data Augmentation to Prevent Membership Inference Attacks in Clinical Time Series Forecasting",
+    "abstract": "Balancing strong privacy guarantees with high predictive performance is critical for time series forecasting ({TSF}) tasks involving Electronic Health Records ({EHR}). In this study, we explore how data augmentation can mitigate Membership Inference Attacks ({MIA}) on {TSF} models. We show that retraining with synthetic data can substantially reduce the effectiveness of loss-based {MIA}s by reducing the attacker\u2019s true-positive to false-positive ratio. The key challenge is generating synthetic samples that closely resemble the original training data to confuse the attacker, while also introducing enough novelty to enhance the model\u2019s ability to generalize to unseen data. We examine multiple augmentation strategies \u2014 Zeroth-Order Optimization ({ZOO}), a variant of {ZOO} constrained by Principal Component Analysis ({ZOO-PCA}), and {MixUp} \u2014 to strengthen model resilience without sacrificing accuracy. Our experimental results show that {ZOO-PCA} yields the best reductions in {TPR/FPR} ratio for {MIA} attacks without sacrificing performance on test data.",
+    "url": "https://proceedings.mlr.press/v297/fracarolli26a.html",
+    "id": "https://proceedings.mlr.press/v297/fracarolli26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/fracarolli26a/fracarolli26a.pdf",
+    "authors": {
+      "0_Marius Fracarolli": "Marius Fracarolli",
+      "1_Michael Staniek": "Michael Staniek",
+      "2_Stefan Riezler": "Stefan Riezler"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/fracarolli26a/fracarolli26a.pdf",
+    "github_url": "https://github.com/MariusFracarolli/ML4H_2025_Data-Augmentation-to-Prevent-MIA-in-TSF/",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1412-1426,\u00a02026.",
+    "supplemental": ""
+  },
+  "59_PhysioJEPA Joint Embedding Representations of Physiological Signals for Real Time Risk Estimation in the Intensive Care Unit": {
+    "title": "PhysioJEPA: Joint Embedding Representations of Physiological Signals for Real Time Risk Estimation in the Intensive Care Unit",
+    "abstract": "Self-supervised learning of multi-modal, high-frequency physiological signals is largely unexplored, despite its potential for critical care applications. We present PhysioJEPA, a Joint Embedding Predictive Architecture (JEPA) designed for multi-modal physiological signals from critical care bedside monitoring devices. PhysioJEPA learns representations from 30-minute segments of physiological signals from three channels: arterial blood pressure, electrocardiography lead II, and photoplethysmography. Trained on over 10.7 million minutes of data from 4,282 intensive care unit stays (N=2,631 patients) in the Medical Information Mart for Intensive Care-III (MIMIC-III) Waveform Database, the learned, frozen representations of PhysioJEPA can be used to estimate 5-minute risk of hypotension (AUROC = 0.83 [Confidence Interval or CI 0.83\u20130.84]) and shock index (AUROC = 0.95 [0.95\u20130.96]), with comparable performance to a self-supervised Patch Time Series Transformer framework (AUROC = 0.87 [0.86\u20130.87] and 0.96 [0.96\u20130.96]), better performance compared to another JEPA physiological signal model, ECG-JEPA (AUROC = 0.73 [0.72\u20130.74] and 0.92 [0.92\u20130.93]), and better performance compared to a supervised convolutional model (AUROC = 0.78 [0.78\u20130.78] and 0.95 [0.95\u20130.95]). Notably, it can generalize to an independent healthcare system (AUROC = 0.78 [0.78\u20130.78] and 0.92 [0.92\u20130.93]) better than all comparison models. These results suggest that self-supervised JEPA representation learning is a promising approach for multi-modal bedside monitoring signal data.",
+    "url": "https://proceedings.mlr.press/v297/fox26a.html",
+    "id": "https://proceedings.mlr.press/v297/fox26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/fox26a/fox26a.pdf",
+    "authors": {
+      "0_Benjamin Fox": "Benjamin Fox",
+      "1_Dung Hoang": "Dung Hoang",
+      "2_Joy Jiang": "Joy Jiang",
+      "3_Pushkala Jayaraman": "Pushkala Jayaraman",
+      "4_Ankit Parekh": "Ankit Parekh",
+      "5_Girish N. Nadkarni": "Girish N. Nadkarni",
+      "6_Ankit Sakhuja": "Ankit Sakhuja"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/fox26a/fox26a.pdf",
+    "github_url": "https://github.com/benmfox/PhysioJEPA",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:120-135,\u00a02026.",
+    "supplemental": ""
+  },
+  "60_ConceptEnhanced Automatic ICD Coding using Large Language Models": {
+    "title": "Concept-Enhanced Automatic ICD Coding using Large Language Models",
+    "abstract": "Automatic {ICD} coding is a task which assigns disease or procedure codes to clinical notes from patients\u2019 electronic health record data. Large language models have been explored for this task, but none of the existing approaches have shown stronger performance than traditional deep learning models due to limited ability to model concepts. Existing methods for {ICD} coding often utilize the code descriptions or synonyms to enhance performance. In this paper, we propose to use concepts to expand the label space. Utilizing the hierarchy of {ICD} codes, we construct concepts associated with the codes at different levels, and employ fine-tuned large language models to obtain concept scores, which are then used for code prediction. Experiments conducted on {MIMIC}-{III}-50, and {MIMIC}-{III}-rare50 datasets demonstrate that our models achieve excellent performance and largely outperform previous state-of-the-art models. While the current evaluation is constrained in scope and computational tractability, the results provide strong evidence for the potential of concept-driven {LLM} frameworks to advance automated medical coding.",
+    "url": "https://proceedings.mlr.press/v297/fatemi26a.html",
+    "id": "https://proceedings.mlr.press/v297/fatemi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/fatemi26a/fatemi26a.pdf",
+    "authors": {
+      "0_Md Shahrar Fatemi": "Md Shahrar Fatemi",
+      "1_Zhan Shi": "Zhan Shi",
+      "2_Joel Saltz": "Joel Saltz",
+      "3_Klaus Mueller": "Klaus Mueller",
+      "4_Tengfei Ma": "Tengfei Ma"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/fatemi26a/fatemi26a.pdf",
+    "github_url": "https://github.com/shahrarfatemi/CEC",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:921-935,\u00a02026.",
+    "supplemental": ""
+  },
+  "61_Coefficient of Variation Masking A VolatilityAware Strategy for EHR Foundation Models": {
+    "title": "Coefficient of Variation Masking: A Volatility-Aware Strategy for EHR Foundation Models",
+    "abstract": "Masked autoencoders ({MAE}s) are increasingly applied to electronic health records ({EHR}) for learning general-purpose representations that support diverse clinical tasks. However, existing approaches typically rely on uniform random masking, implicitly assuming all features are equally predictable. In reality, laboratory tests exhibit substantial heterogeneity in volatility: some biomarkers (e.g., sodium) remain stable, while others (e.g., lactate) fluctuate considerably and are more difficult to model. Clinically, volatile biomarkers often signal acute pathophysiology and require more sophisticated modeling to capture their complex temporal patterns. We propose a volatility-aware pretraining strategy, Coefficient of Variation Masking ({CV}-Masking), that adaptively adjusts masking probabilities according to the intrinsic variability of each feature. Combined with a value-only masking objective aligned with clinical workflows, {CV}-Masking yields systematic improvements over random and variance-based strategies. Experiments on a large panel of laboratory tests show that {CV}-Masking enhances reconstruction, improves downstream predictive performance, and accelerates convergence, producing more robust and clinically meaningful {EHR} representations.",
+    "url": "https://proceedings.mlr.press/v297/fani26a.html",
+    "id": "https://proceedings.mlr.press/v297/fani26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/fani26a/fani26a.pdf",
+    "authors": {
+      "0_Rajna Fani": "Rajna Fani",
+      "1_Rafi Al Attrach": "Rafi Al Attrach",
+      "2_David Restrepo": "David Restrepo",
+      "3_Yugang Jia": "Yugang Jia",
+      "4_Leo Anthony Celi": "Leo Anthony Celi",
+      "5_Peter Sch\u00fcffler": "Peter Sch\u00fcffler"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/fani26a/fani26a.pdf",
+    "github_url": "https://github.com/rajna-fani/meds-triplet-mae",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1376-1391,\u00a02026.",
+    "supplemental": ""
+  },
+  "62_Leveraging Foundation Models for Histological Grading in Cutaneous Squamous Cell Carcinoma using PathFMTools": {
+    "title": "Leveraging Foundation Models for Histological Grading in Cutaneous Squamous Cell Carcinoma using PathFMTools",
+    "abstract": "Despite the promise of computational pathology foundation models, adapting them to specific clinical tasks remains challenging due to the complexity of whole-slide image ({WSI}) processing, the opacity of learned features, and the wide range of potential adaptation strategies. To address these challenges, we introduce PathFMTools, a lightweight, extensible Python package that enables efficient execution, analysis, and visualization of pathology foundation models. We use this tool to interface with and evaluate two state-of-the-art vision-language foundation models, CONCH and MUSK, on the task of histological grading in cutaneous squamous cell carcinoma ({cSCC}), a critical criterion that informs {cSCC} staging and patient management. Using a cohort of 440 {cSCC} H&E {WSI}s, we benchmark multiple adaptation strategies, demonstrating trade-offs across prediction approaches and validating the potential of using foundation model embeddings to train small specialist models. These findings underscore the promise of pathology foundation models for real-world clinical applications, with PathFMTools enabling efficient analysis and validation.",
+    "url": "https://proceedings.mlr.press/v297/diab26a.html",
+    "id": "https://proceedings.mlr.press/v297/diab26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/diab26a/diab26a.pdf",
+    "authors": {
+      "0_Abdul Rahman Diab": "Abdul Rahman Diab",
+      "1_Emily E. Karn": "Emily E. Karn",
+      "2_Renchin Wu": "Renchin Wu",
+      "3_Emily S. Ruiz": "Emily S. Ruiz",
+      "4_William Lotter": "William Lotter"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/diab26a/diab26a.pdf",
+    "github_url": "https://github.com/lotterlab/pathfmtools",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:936-951,\u00a02026.",
+    "supplemental": ""
+  },
+  "63_An Agentic Approach to Phenotype Mapping from Rare Disease Surveys": {
+    "title": "An Agentic Approach to Phenotype Mapping from Rare Disease Surveys",
+    "abstract": "Rare disease patients worldwide often experience years-long diagnostic delays, in part due to fragmented and unstructured phenotypic information. Patient-reported surveys provide valuable insights but are typically unstructured and hard to integrate with structured data. We present GenOMA (Geneial Ontology Mapping Agent), a Large Language Model ({LLM}) agent built on the LangGraph framework and integrated with a Unified Medical Language System ({UMLS}) {API} for precise extraction and ontology mapping of phenotypic terms. Using a modular, node-based architecture for context-aware extraction, iterative refinement, candidate ranking, and semantic validation, GenOMA maps data to standardized Human Phenotype Ontology ({HPO}) codes without local ontology deployment. We evaluate GenOMA on the question fields of three rare disease surveys, mapping them to {HPO} terms, and compare its performance with other leading methods. On the Xia-Gibbs Syndrome ({XGS}) Registry, GenOMA achieved 0.92 accuracy, 0.94 precision, 0.97 recall, and 0.96 F1. On the Down Syndrome Phenotyping Acute Leukemia Study ({DS-PALS}) dataset, it obtained 0.92 accuracy, 0.93 precision, 0.98 recall, and 0.96 F1. Finally, on the GenomeConnect ({GC}) dataset, it obtained 0.91 accuracy, 0.91 precision, 1.0 recall, and 0.96 F1. In all tasks, GenOMA outperformed MetaMap, PhenoTagger, PhenoBERT, cTAKES, and {GPT-5}. These results show that GenOMA effectively converts unstructured survey data to structured phenotype information. To our knowledge, this is the first ontology mapping system specifically designed for patient-reported rare disease surveys, a critical but underexplored data modality.",
+    "url": "https://proceedings.mlr.press/v297/di26a.html",
+    "id": "https://proceedings.mlr.press/v297/di26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/di26a/di26a.pdf",
+    "authors": {
+      "0_Jipeng Di": "Jipeng Di",
+      "1_Julie Renee Vaughn": "Julie Renee Vaughn",
+      "2_Joshua Proulx": "Joshua Proulx",
+      "3_Sadie Nordstrand": "Sadie Nordstrand",
+      "4_Bryce Daines": "Bryce Daines",
+      "5_Katrisa Madeline Ward": "Katrisa Madeline Ward",
+      "6_Philip J. Lupo": "Philip J. Lupo",
+      "7_Jianhong Hu": "Jianhong Hu",
+      "8_Mullai Murugan": "Mullai Murugan",
+      "9_Adam W. Hansen": "Adam W. Hansen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/di26a/di26a.pdf",
+    "github_url": "https://github.com/geneialco/GenOMA-Geneial-Ontology-Mapping-Agent",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1253-1268,\u00a02026.",
+    "supplemental": ""
+  },
+  "64_Enhancing Surgical Documentation through Multimodal VisualTemporal Transformers and Generative AI": {
+    "title": "Enhancing Surgical Documentation through Multimodal Visual-Temporal Transformers and Generative AI",
+    "abstract": "Automatic summarization of surgical videos is critical for improving procedural documentation, supporting surgical training, and facilitating post-operative analysis. Despite recent advances in computer vision and natural language processing, most existing methods either focus on tool detection or clip-level captioning, lacking an integrated approach that produces full, clinically meaningful reports. We introduce a multimodal framework that leverages visual transformers and large language models to generate comprehensive surgical video summaries. The method unfolds in three stages: (i) extraction of frame-level features to capture tools, tissues, and surgical actions, (ii) integration of temporal context through a {ViViT}-based encoder combined with frame-level captions, and (iii) synthesis of clip-level descriptions into structured surgical reports using a dedicated {LLM}. We evaluate the framework on the CholecT50 dataset of 50 laparoscopic videos, achieving 96% precision in tool detection and a {BERT} score of 0.74 for temporal summarization. These results demonstrate the potential of combining computer vision and language models to advance {AI}-assisted reporting, offering a step toward reliable, interpretable, and efficient clinical documentation.",
+    "url": "https://proceedings.mlr.press/v297/cosentino26a.html",
+    "id": "https://proceedings.mlr.press/v297/cosentino26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/cosentino26a/cosentino26a.pdf",
+    "authors": {
+      "0_Cristian Cosentino": "Cristian Cosentino",
+      "1_Hugo Georgenthum": "Hugo Georgenthum",
+      "2_Fabrizio Marozzo": "Fabrizio Marozzo",
+      "3_Pietro Li\u00f2": "Pietro Li\u00f2"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/cosentino26a/cosentino26a.pdf",
+    "github_url": "https://github.com/criscose/Enhancing-Surgical-Documentation-through-Multimodal-Visual-Temporal-Transformers-and-Generative-AI",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:350-368,\u00a02026.",
+    "supplemental": ""
+  },
+  "65_From ZeroShot to Bedside A Practical Playbook for Adapting OpenSource Large Language Models to Clinical Symptom Extraction": {
+    "title": "From Zero-Shot to Bedside: A Practical Playbook for Adapting Open-Source Large Language Models to Clinical Symptom Extraction",
+    "abstract": "Large language models ({LLM}s) are increasingly applied to clinical notes, but guidance on how to adapt open-source models to specific tasks and manage annotation quality at scale is limited. We present a playbook for fine-tuning {LLM}s on de-identified clinical notes from patients with pancreatic cancer, spanning both pre-diagnosis and on-treatment settings. We evaluate prompting strategies, contrast open-source models with {GPT}-4o, and explore disease-level versus task-specific adaptation. A key contribution is an {LLM}-assisted adjudication workflow in which models flag notes where predictions consistently conflict with initial human labels. This approach concentrated expert review on a small fraction of cases while identifying many true annotation errors, ultimately improving downstream model performance. We further examine the use of machine-generated annotations to augment limited expert labels, showing that balanced mixtures of synthetic and human data can enhance fine-tuned models. Our findings provide practical guidance for deploying open-source {LLM}s in clinical contexts, offering strategies to improve accuracy, reduce annotation burden, and enable privacy-preserving, site-adapted clinical natural language processing ({NLP}).",
+    "url": "https://proceedings.mlr.press/v297/chen26a.html",
+    "id": "https://proceedings.mlr.press/v297/chen26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/chen26a/chen26a.pdf",
+    "authors": {
+      "0_Li-Ching Chen": "Li-Ching Chen",
+      "1_Travis Zack": "Travis Zack",
+      "2_Divneet Mandair": "Divneet Mandair",
+      "3_Aditya Mahadevan": "Aditya Mahadevan",
+      "4_Arvind Suresh": "Arvind Suresh",
+      "5_Yuta Ishiyama": "Yuta Ishiyama",
+      "6_Yiping Li": "Yiping Li",
+      "7_Julian C. Hong": "Julian C. Hong",
+      "8_Atul J. Butte": "Atul J. Butte"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/chen26a/chen26a.pdf",
+    "github_url": "https://github.com/lichingcat/From-Zero-Shot-to-Bedside-A-Practical-Playbook",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1023-1046,\u00a02026.",
+    "supplemental": ""
+  },
+  "66_Toward Valid Generative Clinical Trial Data with Survival Endpoints": {
+    "title": "Toward Valid Generative Clinical Trial Data with Survival Endpoints",
+    "abstract": "Clinical trials face mounting challenges: fragmented patient populations, slow enrollment, and unsustainable costs, particularly for late phase trials in oncology and rare diseases. While external control arms built from real-world data have been explored, a promising alternative is the generation of synthetic control arms using generative {AI}. A central challenge is the generation of time-to-event outcomes, which constitute primary endpoints in oncology and rare disease trials, but are difficult to model under censoring and small sample sizes. Existing generative approaches, largely {GAN}-based, are data-hungry, unstable, and rely on strong assumptions such as independent censoring. We introduce a variational autoencoder ({VAE}) that jointly generates mixed-type covariates and survival outcomes within a unified latent variable framework, without assuming independent censoring. Across synthetic and real trial datasets, we evaluate our model in two realistic scenarios: (i) data sharing under privacy constraints, where synthetic controls substitute for original data, and (ii) control-arm augmentation, where synthetic patients mitigate imbalances between treated and control groups. Our method outperforms {GAN} baselines on fidelity, utility, and privacy metrics, while revealing systematic miscalibration of type {I} error and power. We propose a post-generation selection procedure that improves calibration, highlighting both progress and open challenges for generative survival modeling.",
+    "url": "https://proceedings.mlr.press/v297/chassat26a.html",
+    "id": "https://proceedings.mlr.press/v297/chassat26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/chassat26a/chassat26a.pdf",
+    "authors": {
+      "0_Perrine Chassat": "Perrine Chassat",
+      "1_Van Tuan Nguyen": "Van Tuan Nguyen",
+      "2_Lucas Ducrot": "Lucas Ducrot",
+      "3_Emilie Lanoy": "Emilie Lanoy",
+      "4_Agathe Guilloux": "Agathe Guilloux"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/chassat26a/chassat26a.pdf",
+    "github_url": "https://github.com/aguilloux/survgen-clinical-trials",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:759-791,\u00a02026.",
+    "supplemental": ""
+  },
+  "67_What do LLMs value An evaluation framework for revealing subjective tradeoffs in assessment of glycemic control": {
+    "title": "What do LLMs value? An evaluation framework for revealing subjective trade-offs in assessment of glycemic control",
+    "abstract": "Clinical decisions often require balancing conflicting priorities rather than simply selecting a single \u201ccorrect\u201d answer. We present an evaluation framework that probes the value judgments embedded in large language models ({LLM}s) by testing how they assess quality of glycemic control from continuous glucose monitoring ({CGM}) data. Using synthetic type 1 diabetes profiles, we asked five commercial {LLM}s to perform pairwise comparisons of {CGM} summary statistics and derived a percentile ranking for each profile. We then quantified alignment with two reference metrics: time in range ({TIR}) and the expert-derived Glycemia Risk Index ({GRI}), which was developed with clinician input regarding preferences across glycemic ranges. Across three insulin therapy modalities, newer models showed stronger correlation with {GRI} than older models, suggesting a generational shift toward expert consensus. However, a perturbation analysis revealed instances of disagreement around the weighting of mild hypoglycemia and mild hyperglycemia relative to the {GRI}. These results demonstrate that high average agreement with clinical metrics can mask clinically meaningful misalignments in how {LLM}s prioritize risks. Our proposed framework reveals how {LLM} outputs reflect competing priorities in clinical contexts.",
+    "url": "https://proceedings.mlr.press/v297/chandak26a.html",
+    "id": "https://proceedings.mlr.press/v297/chandak26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/chandak26a/chandak26a.pdf",
+    "authors": {
+      "0_Payal Chandak": "Payal Chandak",
+      "1_Elizabeth Healey": "Elizabeth Healey",
+      "2_Maria F. Villa-Tamayo": "Maria F. Villa-Tamayo",
+      "3_Agatha F. Scheideman": "Agatha F. Scheideman",
+      "4_Mandy M. Shao": "Mandy M. Shao",
+      "5_Chiara Fabris": "Chiara Fabris",
+      "6_Kenneth D. Mandl": "Kenneth D. Mandl",
+      "7_Isaac Kohane": "Isaac Kohane",
+      "8_David C. Klonoff": "David C. Klonoff"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/chandak26a/chandak26a.pdf",
+    "github_url": "https://github.com/lizhealey/LLMGRI",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:136-151,\u00a02026.",
+    "supplemental": ""
+  },
+  "68_Topoformer TopologyInfused Transformers for Medical Imaging": {
+    "title": "Topoformer: Topology-Infused Transformers for Medical Imaging",
+    "abstract": "Deep learning has transformed 2D medical imaging, but scaling to 3D volumes remains difficult due to high compute, scarce annotations, and the loss of global context in patch-based pipelines. We present Topoformer, a transformer framework that makes 3D classification both data- and compute-efficient by integrating topological priors. First, we introduce a sliding-band cubical filtration that replaces a single global persistent-homology pass with overlapping intensity bands, yielding an ordered sequence of Betti tokens (components, tunnels, cavities). These tokens act as transformer inputs, enabling multi-scale topological reasoning without early saturation. Second, we propose Topological Supervised Contrastive Learning (TopoSupCon), which treats the image and its label-preserving topological view as complementary modalities, reducing reliance on brittle geometric or generative augmentations. A lightweight TopoGate further lets the image softly weight multiple band widths per case. On 3D brain MRI tumor grading and chest CT benchmarks in low-data regimes, Topoformer achieves consistent gains over strong 3D CNN and ViT baselines, including improvements up to 12 AUC points and 8 accuracy points. Our results show that sequential, topology-aware representations provide a powerful inductive bias for volumetric medical image analysis.",
+    "url": "https://proceedings.mlr.press/v297/chakraborty26a.html",
+    "id": "https://proceedings.mlr.press/v297/chakraborty26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/chakraborty26a/chakraborty26a.pdf",
+    "authors": {
+      "0_Sayoni Chakraborty": "Sayoni Chakraborty",
+      "1_Philmore Koung": "Philmore Koung",
+      "2_Baris Coskunuzer": "Baris Coskunuzer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/chakraborty26a/chakraborty26a.pdf",
+    "github_url": "https://github.com/philmorefkoung/Topoformer",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:23-40,\u00a02026.",
+    "supplemental": ""
+  },
+  "69_Visual Medical Entity Linking with VELCRO": {
+    "title": "Visual Medical Entity Linking with VELCRO",
+    "abstract": "We study a visual entity linking ({VEL}) problem in which a user selects a region of interest ({RoI}) in an image (e.g., a brain tumour) and queries a textual knowledge base ({KB}) for information about the {RoI}. To solve this problem using cross-modal embeddings such as {CLIP}, we can encode the {KB} entries, then either encode the whole image or just the cropped {RoI}, and run a similarity search between the query and the {KB} embeddings. However, using the entire image as the query may retrieve {KB} entries related to other aspects of the image beyond the {RoI}, whereas using the {RoI} alone as the query ignores context, which is critical for recognizing and linking complex entities in medical images. To address these shortcomings, we propose {VELCRO} \u2013 visual entity linking with contrastive {RoI} alignment \u2013 which adapts an image segmentation model to {VEL} by aligning the contextual embeddings produced by its decoder with the {KB} using contrastive learning. This strategy preserves the information contained in the surrounding image while focusing {KB} alignment on the {RoI}. Experiments on medical {VEL} show that {VELCRO} achieves 95.3% linking accuracy compared to 83.9% or lower for baselines.",
+    "url": "https://proceedings.mlr.press/v297/carbone26a.html",
+    "id": "https://proceedings.mlr.press/v297/carbone26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/carbone26a/carbone26a.pdf",
+    "authors": {
+      "0_Kathryn Carbone": "Kathryn Carbone",
+      "1_Liam Hebert": "Liam Hebert",
+      "2_Robin Cohen": "Robin Cohen",
+      "3_Lukasz Golab": "Lukasz Golab"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/carbone26a/carbone26a.pdf",
+    "github_url": "https://github.com/carbonkat/VELCRO",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1126-1140,\u00a02026.",
+    "supplemental": ""
+  },
+  "70_Offline Surgical QA with Decomposed Retrieval and Synthesis for ResourceConstrained Settings": {
+    "title": "Offline Surgical QA with Decomposed Retrieval and Synthesis for Resource-Constrained Settings",
+    "abstract": "Digital access to critical medical knowledge in resource-limited settings is often hindered by a lack of internet connectivity and the computational demands of {AI} systems. This paper introduces the Surgical Information Assistant, a fully deployable, large language model ({LLM})-driven multi-agent system designed to provide reliable surgical information in offline, resource-constrained environments. Our system is powered by a workflow that orchestrates question decomposition, information retrieval, grounded generation, and information synthesis to perform complex reasoning on consumer-grade hardware. Grounded in the Open Manual of Surgery for Resource-Limited Settings, we evaluated DeRetSyn on a new question-answer ({QA}) dataset of over 14,000 surgical question-answer pairs. We compare our system to other alternatives, perform ablation experiments on components of the agentic system, and interrogate sensitivity to retrieval parameters. The results show that our agentic orchestration enables a compact 3B Llama model to achieve 63% top-1 accuracy, significantly outperforming both a baseline GPT-4o (42.5%) and a larger 8B Llama model with conventional {RAG} (53%). We further test whether this performance enhancement from agentic orchestration for information retrieval generalizes to the PubMedQA dataset. Additionally, the entire system consumes <3.5 GB of RAM and generates responses within 8\u201315 seconds working on a consumer laptop. Our work serves as a practical blueprint for how agent-based systems can empower small, efficient models for medical domain information retrieval and synthesis, offering a tangible application of {AI} technology that could help advance health equity. We will release our dataset, code base, and prompts to foster further research in deployable and responsible clinical {AI}.",
+    "url": "https://proceedings.mlr.press/v297/bhattacharyya26a.html",
+    "id": "https://proceedings.mlr.press/v297/bhattacharyya26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/bhattacharyya26a/bhattacharyya26a.pdf",
+    "authors": {
+      "0_Kiran Bhattacharyya": "Kiran Bhattacharyya"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/bhattacharyya26a/bhattacharyya26a.pdf",
+    "github_url": "https://github.com/MiningMyBusiness/surgical-information-assistant",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:449-472,\u00a02026.",
+    "supplemental": ""
+  },
+  "71_PrivacyPreserving Generative Modeling and Clinical Validation of Longitudinal Health Records for Chronic Disease": {
+    "title": "Privacy-Preserving Generative Modeling and Clinical Validation of Longitudinal Health Records for Chronic Disease",
+    "abstract": "Data privacy is a critical challenge in modern medical workflows as the adoption of electronic patient records has grown rapidly. Stringent data protection regulations limit access to clinical records for training and integrating machine learning models that have shown promise in improving diagnostic accuracy and personalized care outcomes. Synthetic data offers a promising alternative; however, current generative models either struggle with time-series data or lack formal privacy guaranties. In this paper, we enhance a state-of-the-art time-series generative model to better handle longitudinal clinical data while incorporating quantifiable privacy safeguards. Using real data from chronic kidney disease and ICU patients, we evaluate our method through statistical tests, a Train-on-Synthetic-Test-on-Real ({TSTR}) setup, and expert clinical review. Our non-private model (Augmented TimeGAN) outperforms transformer- and flow-based models on statistical metrics in several datasets, while our private model ({DPTimeGAN}) maintains a mean authenticity of 0.778 on the {CKD} dataset, outperforming existing state-of-the-art models on the privacy\u2013utility frontier. Both models achieve performance comparable to real data in clinician evaluations, providing robust input data necessary for developing models for complex chronic conditions without compromising data privacy.",
+    "url": "https://proceedings.mlr.press/v297/ballyk26a.html",
+    "id": "https://proceedings.mlr.press/v297/ballyk26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ballyk26a/ballyk26a.pdf",
+    "authors": {
+      "0_Benjamin D. Ballyk": "Benjamin D. Ballyk",
+      "1_Ankit Gupta": "Ankit Gupta",
+      "2_Sujay Konda": "Sujay Konda",
+      "3_Kavitha Subramanian": "Kavitha Subramanian",
+      "4_Chris Landon": "Chris Landon",
+      "5_Ahmed Ammar Naseer": "Ahmed Ammar Naseer",
+      "6_Georg Maierhofer": "Georg Maierhofer",
+      "7_Sumanth Swaminathan": "Sumanth Swaminathan",
+      "8_Vasudevan Venkateshwaran": "Vasudevan Venkateshwaran"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ballyk26a/ballyk26a.pdf",
+    "github_url": "https://github.com/Vironix-Science/ppehcrgen",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:985-1006,\u00a02026.",
+    "supplemental": ""
+  },
+  "72_RadGame An AIPowered Platform for Radiology Education": {
+    "title": "RadGame: An AI-Powered Platform for Radiology Education",
+    "abstract": "We introduce {RadGame}, an {AI}-powered gamified platform for radiology education that targets two core skills: localizing findings and generating reports. Traditional radiology training is based on passive exposure to cases or active practice with real-time input from supervising radiologists, limiting opportunities for immediate and scalable feedback. {RadGame} addresses this gap by combining gamification with large-scale public datasets and automated, {AI}-driven feedback that provides clear, structured guidance to human learners. In {RadGame} {Localize}, players draw bounding boxes around abnormalities, which are automatically compared to radiologist-drawn annotations from public datasets, and visual explanations are generated by vision-language models for user missed findings. In {RadGame} {Report}, players compose findings given a chest X-ray, patient age and indication, and receive structured {AI} feedback based on radiology report generation metrics, highlighting errors and omissions compared to a radiologist\u2019s written ground truth report from public datasets, producing a final performance and style score. In a prospective evaluation, participants using {RadGame} demonstrated a 68% improvement in localization accuracy compared to 17% with traditional passive methods and a 31% improvement in report-writing accuracy compared to 4% with traditional methods after seeing the same cases. {RadGame} highlights the potential of {AI}-driven gamification to deliver scalable, feedback-rich radiology training and reimagines the application of medical {AI} resources in education.",
+    "url": "https://proceedings.mlr.press/v297/baharoon26a.html",
+    "id": "https://proceedings.mlr.press/v297/baharoon26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/baharoon26a/baharoon26a.pdf",
+    "authors": {
+      "0_Mohammed Baharoon": "Mohammed Baharoon",
+      "1_Siavash Raissi": "Siavash Raissi",
+      "2_John S. Jun": "John S. Jun",
+      "3_Thibault Heintz": "Thibault Heintz",
+      "4_Mahmoud Alabbad": "Mahmoud Alabbad",
+      "5_Ali Alburkani": "Ali Alburkani",
+      "6_Sung Eun Kim": "Sung Eun Kim",
+      "7_Kent Kleinschmidt": "Kent Kleinschmidt",
+      "8_Abdulrahman O. Alhumaydhi": "Abdulrahman O. Alhumaydhi",
+      "9_Mohannad Mohammed G. Alghamdi": "Mohannad Mohammed G. Alghamdi",
+      "10_Jeremy Francis Palacio": "Jeremy Francis Palacio",
+      "11_Mohammed Bukhaytan": "Mohammed Bukhaytan",
+      "12_Noah Michael Prudlo": "Noah Michael Prudlo",
+      "13_Rithvik Akula": "Rithvik Akula",
+      "14_Brady Chrisler": "Brady Chrisler",
+      "15_Benjamin Galligos": "Benjamin Galligos",
+      "16_Mohammed O. Almutairi": "Mohammed O. Almutairi",
+      "17_Mazeen Mohammed Alanazi": "Mazeen Mohammed Alanazi",
+      "18_Nasser M. Alrashdi": "Nasser M. Alrashdi",
+      "19_Joel Jihwan Hwang": "Joel Jihwan Hwang",
+      "20_Sri Sai Dinesh Jaliparthi": "Sri Sai Dinesh Jaliparthi",
+      "21_Luke David Nelson": "Luke David Nelson",
+      "22_Nathaniel Nguyen": "Nathaniel Nguyen",
+      "23_Sathvik Suryadevara": "Sathvik Suryadevara",
+      "24_Steven Kim": "Steven Kim",
+      "25_Mohammed F. Mohammed": "Mohammed F. Mohammed",
+      "26_Yevgeniy R. Semenov": "Yevgeniy R. Semenov",
+      "27_Kun-Hsing Yu": "Kun-Hsing Yu",
+      "28_Abdulrhman Aljouie": "Abdulrhman Aljouie",
+      "29_Hassan AlOmaish": "Hassan AlOmaish",
+      "30_Adam Rodman": "Adam Rodman",
+      "31_Pranav Rajpurkar": "Pranav Rajpurkar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/baharoon26a/baharoon26a.pdf",
+    "github_url": "https://github.com/siavashraissi/RadGame",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:898-920,\u00a02026.",
+    "supplemental": ""
+  },
+  "73_ProstateVarBench A Benchmark with Interpretable TabNet Framework for Prostate Cancer Variant Classification": {
+    "title": "Prostate-VarBench: A Benchmark with Interpretable TabNet Framework for Prostate Cancer Variant Classification",
+    "abstract": "Variants of Uncertain Significance ({VUS}) limit the clinical utility of prostate cancer genomics by delaying diagnosis and therapy when evidence for pathogenicity or benignity is incomplete. Progress is further limited by inconsistent annotations across sources and the absence of a prostate-specific benchmark for fair comparison. We introduce Prostate-VarBench, a curated pipeline for creating prostate-specific benchmarks that integrates {COSMIC} (somatic cancer mutations), ClinVar (expert-curated clinical variants), and {TCGA}-{PRAD} (prostate tumor genomics from The Cancer Genome Atlas) into a harmonized dataset of 193,278 variants supporting patient- or gene-aware splits to prevent data leakage. To ensure data integrity, we corrected a Variant Effect Predictor ({VEP}) issue that merged multiple transcript records, introducing ambiguity in clinical significance fields. We then standardized 56 interpretable features across eight clinically relevant tiers, including population frequency, variant type, and clinical context. AlphaMissense pathogenicity scores were incorporated to enhance missense variant classification and reduce {VUS} uncertainty. Building on this resource, we trained an interpretable TabNet model to classify variant pathogenicity, whose step-wise sparse masks provide per-case rationales consistent with molecular tumor board review practices. On the held-out test set, the model achieved 89.9% accuracy with balanced class metrics and the {VEP} correction yields an 6.5% absolute reduction in {VUS}.",
+    "url": "https://proceedings.mlr.press/v297/arellano-tavara26a.html",
+    "id": "https://proceedings.mlr.press/v297/arellano-tavara26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/arellano-tavara26a/arellano-tavara26a.pdf",
+    "authors": {
+      "0_Abraham Francisco Arellano Tavara": "Abraham Francisco Arellano Tavara",
+      "1_Umesh Kumar": "Umesh Kumar",
+      "2_Jathurshan Pradeepkumar": "Jathurshan Pradeepkumar",
+      "3_Jimeng Sun": "Jimeng Sun"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/arellano-tavara26a/arellano-tavara26a.pdf",
+    "github_url": "https://github.com/AbrahamArellano/uiuc-cancer-research/",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:886-897,\u00a02026.",
+    "supplemental": ""
+  },
+  "74_ClinPath A GeneralPurpose Knowledge Graph with LLM Reasoning For Understanding Clinical Interactions": {
+    "title": "ClinPath: A General-Purpose Knowledge Graph with LLM Reasoning For Understanding Clinical Interactions",
+    "abstract": "We present ClinPath, a holistic multimodal framework that combines knowledge graph modeling with large language model ({LLM}) reasoning to comprehensively represent and analyze longitudinal patient clinical journeys. Built on the {MIMIC-IV} database, ClinPath introduces ClinKG, a large-scale clinical knowledge graph that integrates diagnoses, symptoms, medications, procedures, demographics, and provider interactions into a unified representation of patient care. Unlike prior work that constructs narrow, diagnosis-centered graphs, ClinKG captures the full spectrum of patient\u2013provider interactions across time and care settings. The {LLM} reasoning layer demonstrates ClinPath\u2019s versatility through two key applications: (1) patient similarity analysis, where this pipeline significantly improved performance on our custom benchmark, ClinPath-SimBench, and (2) provider behavior analysis, a novel downstream task. Together, these results illustrate how combining graph-structured representations with {LLM}-based reasoning yields clinically meaningful, multi-perspective insights.",
+    "url": "https://proceedings.mlr.press/v297/ankireddy26a.html",
+    "id": "https://proceedings.mlr.press/v297/ankireddy26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/ankireddy26a/ankireddy26a.pdf",
+    "authors": {
+      "0_Sahithi Ankireddy": "Sahithi Ankireddy",
+      "1_Purvi Sehgal": "Purvi Sehgal",
+      "2_Adam Wierman": "Adam Wierman"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/ankireddy26a/ankireddy26a.pdf",
+    "github_url": "https://github.com/sahithiankireddy14/ClinPath",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1609-1618,\u00a02026.",
+    "supplemental": ""
+  },
+  "75_GroupSparse ManifoldAware Integrated Gradients for Multimodal Transformers on EHR Trajectories": {
+    "title": "Group-Sparse Manifold-Aware Integrated Gradients for Multimodal Transformers on EHR Trajectories",
+    "abstract": "Integrated Gradients ({IG}) is a popular method for explaining clinical deep models\u2014including widely used multimodal, pretrained Transformers\u2014but its utility on {EHR} code sequences is hampered by (i) the lack of principled baselines for sequence of discrete tokens and (ii) dense, hard-to-interpret generated attributions. To address both, first, we introduce a manifold-aware baseline: the mean input embedding (computed on the validation set), which keeps {IG}\u2019s interpolated points close to typical sequences in embedding space. Second, we introduce {GS-IG}, which preserves the straight path geometry but re-parameterizes the schedule $\\alpha(t) = t^\\theta$ and selects $\\theta$ per input by minimizing a token-level $\\ell_{2,1}$ (group-sparsity) objective, producing concise, practitioner-friendly explanations. On {MIMIC-IV} (incident heart failure) and {MDC} (early mortality), the manifold-aware baseline improves faithfulness (higher Comprehensiveness, lower Sufficiency), and {GS-IG} reduces token-level $\\ell_{2,1}$ by 9\u201318% with negligible change in those metrics on the manifold-aware baseline. The method is lightweight and yields faithful, sparse, and actionable explanations.",
+    "url": "https://proceedings.mlr.press/v297/amirahmadi26a.html",
+    "id": "https://proceedings.mlr.press/v297/amirahmadi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/amirahmadi26a/amirahmadi26a.pdf",
+    "authors": {
+      "0_Ali Amirahmadi": "Ali Amirahmadi",
+      "1_Farzaneh Etminani": "Farzaneh Etminani",
+      "2_Mattias Ohlsson": "Mattias Ohlsson"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/amirahmadi26a/amirahmadi26a.pdf",
+    "github_url": "https://github.com/ali-amirahmadii/Group-Sparse-IG",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:740-758,\u00a02026.",
+    "supplemental": ""
+  },
+  "76_Faithful or Just Plausible Evaluating the Faithfulness of ClosedSource LLMs in Medical Reasoning": {
+    "title": "Faithful or Just Plausible? Evaluating the Faithfulness of Closed-Source LLMs in Medical Reasoning",
+    "abstract": "Closed-source large language models ({LLM}s), such as ChatGPT and Gemini, are increasingly consulted for medical advice, yet their explanations may appear plausible while failing to reflect the model\u2019s underlying reasoning process. This gap poses serious risks as patients and clinicians may trust coherent but misleading explanations. We conduct a systematic black-box evaluation of faithfulness in medical reasoning among three widely used closed-source {LLM}s. Our study consists of three perturbation-based probes: (1) causal ablation, testing whether stated chain-of-thought ({CoT}) reasoning causally influences predictions; (2) positional bias, examining whether models create post-hoc justifications for answers driven by input positioning; and (3) hint injection, testing susceptibility to external suggestions. We complement these quantitative probes with a small-scale human evaluation of model responses to patient-style medical queries to examine concordance between physician assessments of explanation faithfulness and layperson perceptions of trustworthiness. We find that {CoT} reasoning steps often do not causally drive predictions, and models readily incorporate external hints without acknowledgment. In contrast, positional biases showed minimal impact in this setting. These results underscore that faithfulness, not just accuracy, must be central in evaluating {LLM}s for medicine, to ensure both public protection and safe clinical deployment.",
+    "url": "https://proceedings.mlr.press/v297/afolabi26a.html",
+    "id": "https://proceedings.mlr.press/v297/afolabi26a.html",
+    "pdf": "https://proceedings.mlr.press/v297/afolabi26a/afolabi26a.pdf",
+    "authors": {
+      "0_Halimat Afolabi": "Halimat Afolabi",
+      "1_Zainab Afolabi": "Zainab Afolabi",
+      "2_Elizabeth Friel": "Elizabeth Friel",
+      "3_Jude Roberts": "Jude Roberts",
+      "4_Antonio Ji-Xu": "Antonio Ji-Xu",
+      "5_Lloyd Chen": "Lloyd Chen",
+      "6_Egheosa Ogbomo": "Egheosa Ogbomo",
+      "7_Emiliomo Imevbore": "Emiliomo Imevbore",
+      "8_Phil Eneje": "Phil Eneje",
+      "9_Wissal El Ouahidi": "Wissal El Ouahidi",
+      "10_Aaron Sohal": "Aaron Sohal",
+      "11_Alisa Kennan": "Alisa Kennan",
+      "12_Shreya Srivastava": "Shreya Srivastava",
+      "13_Anirudh Vairavan": "Anirudh Vairavan",
+      "14_Laura Napitu": "Laura Napitu",
+      "15_Katie McClure": "Katie McClure"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v297/main/assets/afolabi26a/afolabi26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the Fifth Machine Learning for Health Symposium,\u00a0PMLR 297:1562-1591,\u00a02026.",
+    "supplemental": ""
+  }
+}
