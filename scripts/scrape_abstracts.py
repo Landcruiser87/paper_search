@@ -23,7 +23,7 @@ def request_conf(conference:str, year:int=None, version:str=""):
     Returns:
         results (dict): Dictionary of papers from each conference
     """    
-    chrome_version = np.random.randint(120, 132)
+    chrome_version = np.random.randint(120, 152)
     conf_dict={
         "NEURIPS":{
             "name":"Conference and Workshop on Neural Information Processing Systems",
@@ -37,7 +37,7 @@ def request_conf(conference:str, year:int=None, version:str=""):
                 "accept":"*/*",
                 "accept-encoding":"gzip,deflate,br,zstd",
                 "accept-language":"en-US,en;q=0.9",
-                "referer":f"https://neurips.cc/virtual/{year}/papers.html?filter=titles",
+                "referer":f"https://neurips.cc/virtual/{year}/papers.html?layout=detail",
                 "sec-ch-ua":f'"Chromium";v="{chrome_version}", "Not(A:Brand";v="24", "Google Chrome";v="{chrome_version}"',
                 "sec-ch-ua-Mobile":"?0",
                 "sec-ch-ua-platform":"Windows",
@@ -55,12 +55,12 @@ def request_conf(conference:str, year:int=None, version:str=""):
             "headers":{
                 "authority":f"https://icml.cc/static/virtual/data/icml-{year}-orals-posters.json",
                 "method":"GET",
-                "path":f"/static/virtual/data/neurips-{year}-orals-posters.json",
+                "path":f"/static/virtual/data/icml-{year}-orals-posters.json",
                 "scheme":"https",
                 "accept":"*/*",
                 "accept-encoding":"gzip,deflate,br,zstd",
                 "accept-language":"en-US,en;q=0.9",
-                "referer":f"https://icml.cc/virtual/{year}/papers.html?filter=titles",
+                "referer":f"https://icml.cc/virtual/{year}/papers.html?layout=detail",
                 "sec-ch-ua":f'"Chromium";v="{chrome_version}", "Not(A:Brand";v="24", "Google Chrome";v="{chrome_version}"',
                 "sec-ch-ua-Mobile":"?0",
                 "sec-ch-ua-platform":"Windows",
@@ -79,7 +79,7 @@ def request_conf(conference:str, year:int=None, version:str=""):
                 "Accept": "*/*",
                 "Accept-Language": "en-US,en;q=0.9",
                 "Connection": "keep-alive",
-                "Referer": f"https://iclr.cc/virtual/{year}/papers.html?filter=titles",
+                "Referer": f"https://iclr.cc/virtual/{year}/papers.html?layout=detail",
                 "Sec-Fetch-Dest": "empty",
                 "Sec-Fetch-Mode": "cors",
                 "Sec-Fetch-Site": "same-origin",
@@ -157,7 +157,7 @@ def request_conf(conference:str, year:int=None, version:str=""):
             # If there's an error, log it and return no data for that conference
             logger.warning(f"Status code: {resp.status_code}")
             logger.warning(f"Reason: {resp.reason}")
-            results = None
+            return None
         else:
             logger.debug(f"request successful for {url}, parsing data")
             #If its the overall scrape of PLMR
@@ -167,6 +167,7 @@ def request_conf(conference:str, year:int=None, version:str=""):
             elif conference in MAIN_CONFERENCES:
                 resp_json = resp.json()
                 results = extract_json(resp_json, url)
+                results = get_abstracts(results, headers, url)
             #If its a sub conference
             else:
                 results = parse_conf(resp.content)
@@ -240,6 +241,45 @@ def extract_json(json_data:json, url:str)->dict:
 
     return base_dict
 
+def get_abstracts(json_data:json, headers:dict, url:str) -> dict:
+    """They split the abstracts into another JSON call at some point with the major conferences.
+    This will make an additional request to grab those abstracts and align them by ID. 
+
+    Args:
+        json_data (json): returned abstracts 
+        headers (dict): headeres used in previous request
+        url (str): url to be modified for abstracts
+
+    Returns:
+        results (dict): Dictionary of updated results with abstracts
+    """
+    try:
+        url = url.replace("orals-posters", "abstracts")
+        resp = requests.get(url, headers=headers)
+        if resp.status_code != 200:
+            # If there's an error, log it and return no data for that conference
+            logger.warning(f"Status code: {resp.status_code}")
+            logger.warning(f"Reason: {resp.reason}")
+            return json_data
+
+    except Exception as e:
+        logger.warning(f"Error extracting {url} {e}")
+        return json_data
+
+    logger.debug(f"request successful for {url}, parsing data")
+    abstracts = resp.json()
+    abstract_ids = [str(y) for y in abstracts.keys()]
+    for j_name in json_data.keys():
+        j_id = str(json_data[j_name].get("id", None))
+        if j_id in abstract_ids:
+            json_data[j_name]["abstract"] = abstracts.get(j_id)
+
+    return json_data
+    
+    #Make abstracts request
+    #Find the id 
+    #iterate id's of abstracts,  lineup with 
+
 def parse_all(xml:str, year_limit:int=2010) -> dict:
     """parses xml from initial RSS feed of possible conferences
 
@@ -249,7 +289,7 @@ def parse_all(xml:str, year_limit:int=2010) -> dict:
 
     Returns:
         dict: Returns dictionary of PMLR data. Order + Paper title == key
-    """    
+    """
     results = {}
     root = ET.fromstring(xml)
     for paper in root.findall("channel/item"):
@@ -327,7 +367,7 @@ def parse_paper(page_text:str):
 @log_time
 def main():
     """Main driver code for program"""
-    years = range(2025, 2027)
+    years = range(2026, 2027)
     logger.debug("searching PMLR")
     PMLR = request_conf("PMLR", year=years.start)
     global prog, task
