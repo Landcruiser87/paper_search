@@ -1,0 +1,711 @@
+{
+  "0_OpenEnded Clinical Text Generation for Acute Care Applying Reinforcement Learning with Clinically Grounded Rewards": {
+    "title": "Open-Ended Clinical Text Generation for Acute Care: Applying Reinforcement Learning with Clinically Grounded Rewards",
+    "abstract": "Acute care clinicians generate critical clinical text\u2014diagnoses, treatment plans, discharge instructions\u2014under time pressure where errors can be life-threatening. Large proprietary AI models raise privacy concerns, while smaller models lack clinical quality. We extend reinforcement learning with verifiable rewards (RLVR) to open-ended clinical text generation using two generalizable reward patterns: equivalence-based rewards for medical synonymy and diagnosis matching, as well as rubric-based rewards for multi-dimensional quality assessment. Using group relative policy optimization, we trained compact 7\u20138 billion parameter models on diagnosis generation (MIMIC-III), discharge instructions (DischargeMe), and treatment planning (MTSamples). Trained models achieve clinical quality across tasks (best results: F1 0.48, 4.28/5.0, 4.47/5.0 respectively), matching or surpassing the performance of large proprietary GPT-based models, while enabling on-premise deployment, sub-second inference, and full privacy. Physician review confirmed superior content comprehensiveness and fewer dangerous errors versus base models. This demonstrates a practical pathway for deploying clinical text generation in acute care with generalizable reward design patterns.",
+    "url": "https://proceedings.mlr.press/v333/wang26d.html",
+    "id": "https://proceedings.mlr.press/v333/wang26d.html",
+    "pdf": "https://proceedings.mlr.press/v333/wang26d/wang26d.pdf",
+    "authors": {
+      "0_Minjia Wang": "Minjia Wang",
+      "1_Luyang Luo": "Luyang Luo",
+      "2_Sung Eun Kim": "Sung Eun Kim",
+      "3_Fang Cao": "Fang Cao",
+      "4_David A Kim": "David A Kim",
+      "5_Pranav Rajpurkar": "Pranav Rajpurkar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/wang26d/wang26d.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:966-984,\u00a02026.",
+    "supplemental": ""
+  },
+  "1_Revisiting Performance Claims for Chest XRay Models Using Clinical Context": {
+    "title": "Revisiting Performance Claims for Chest X-Ray Models Using Clinical Context",
+    "abstract": "Public datasets of Chest X-Rays (CXRs) have long been a popular benchmark for developing machine learning (ML) computer vision models in healthcare. However, the reported strong average-case performance of these models do not necessarily reflect their actual utility when used in heterogeneous clinical settings, potentially masking weaker performance in medically significant scenarios. In this work we use clinical context to provide a more holistic evaluation of models for CXR diagnosis. In particular, we use discharge summaries, recorded prior to each CXR, to derive a \u201cpre-CXR\u201d probability of each CXR label, as a proxy for existing contextual knowledge available to clinicians when interpreting CXRs. We use this measure to probe model performance along two dimensions:  First, using a stratified analysis, we show that models tend to have lower performance (as measured by AUROC and other metrics) among individuals with higher pre-CXR probability.  Second, by controlling for pre-CXR probability via matching and re-weighting, we demonstrate that performance degrades when the correlation is broken between prior context and the current CXR label, suggesting that model performance is highly sensitive to the underlying distribution of clinical context. Specifically, cases with high pre-test probabilities present a fundamentally more difficult visual classification task, highlighting a gap in clinical utility when models are applied to high-risk cohorts.",
+    "url": "https://proceedings.mlr.press/v333/wang26c.html",
+    "id": "https://proceedings.mlr.press/v333/wang26c.html",
+    "pdf": "https://proceedings.mlr.press/v333/wang26c/wang26c.pdf",
+    "authors": {
+      "0_Andrew Wang": "Andrew Wang",
+      "1_Jiashuo Zhang": "Jiashuo Zhang",
+      "2_Michael Oberst": "Michael Oberst"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/wang26c/wang26c.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:493-536,\u00a02026.",
+    "supplemental": ""
+  },
+  "2_ReXSonoVQA A Video QA Benchmark for ProcedureCentric Ultrasound Understanding": {
+    "title": "ReXSonoVQA: A Video QA Benchmark for Procedure-Centric Ultrasound Understanding",
+    "abstract": "Ultrasound acquisition requires skilled probe manipulation and real-time adjustments. Vision-language models (VLMs) could enable autonomous ultrasound systems, but existing benchmarks evaluate only static images, not dynamic procedural understanding. We introduce ReXSonoVQA, a video QA benchmark with 514 video clips and 514 questions (249 MCQ, 265 free-response) targeting three competencies: Action-Goal Reasoning, Artifact Resolution & Optimization, and Procedure Context & Planning. Zero-shot evaluation of Gemini 3 Pro, Qwen3.5-397B, LLaVA-Video-72B, and Seed 2.0 Pro shows VLMs can extract some procedural information, but troubleshooting questions remain challenging with minimal gains over text-only baselines, exposing limitations in causal reasoning. ReXSonoVQA enables developing perception systems for ultrasound training, guidance, and robotic automation.",
+    "url": "https://proceedings.mlr.press/v333/wang26b.html",
+    "id": "https://proceedings.mlr.press/v333/wang26b.html",
+    "pdf": "https://proceedings.mlr.press/v333/wang26b/wang26b.pdf",
+    "authors": {
+      "0_Xucheng Wang": "Xucheng Wang",
+      "1_Xiaoman Zhang": "Xiaoman Zhang",
+      "2_Ankit Pal": "Ankit Pal",
+      "3_Pranav Rajpurkar": "Pranav Rajpurkar"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/wang26b/wang26b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:427-447,\u00a02026.",
+    "supplemental": ""
+  },
+  "3_Adaptive TestTime Scaling for ZeroShot Respiratory Audio Classification": {
+    "title": "Adaptive Test-Time Scaling for Zero-Shot Respiratory Audio Classification",
+    "abstract": "Automated respiratory audio analysis promises scalable, non-invasive disease screening, yet progress is limited by scarce labeled data and costly expert annotation. Zero-shot inference eliminates task-specific supervision, but existing methods apply uniform computation to every input regardless of difficulty. We introduce TRIAGE, a tiered zero-shot framework that adaptively scales test-time compute by routing each audio sample through progressively richer reasoning stages: fast label-cosine scoring in a joint audio-text embedding space (Tier-L), structured matching with clinician-style descriptors (Tier-M), and retrieval-augmented large language model reasoning (Tier-H). A confidence-based router finalizes easy predictions early while allocating additional computation to ambiguous inputs, enabling nearly half of all samples to exit at the cheapest tier. Across nine respiratory classification tasks without task-specific training, TRIAGE achieves a mean AUROC of 0.744, outperforming prior zero-shot methods and matching or exceeding supervised baselines on multiple tasks. Our analysis shows that test-time scaling concentrates gains where they matter: uncertain cases see up to 19% relative improvement while confident predictions remain unchanged at minimal cost.",
+    "url": "https://proceedings.mlr.press/v333/wang26a.html",
+    "id": "https://proceedings.mlr.press/v333/wang26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/wang26a/wang26a.pdf",
+    "authors": {
+      "0_Tsai-Ning Wang": "Tsai-Ning Wang",
+      "1_Herman Teun den Dekker": "Herman Teun den Dekker",
+      "2_Lin-Lin Chen": "Lin-Lin Chen",
+      "3_Neil Zeghidour": "Neil Zeghidour",
+      "4_Aaqib Saeed": "Aaqib Saeed"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/wang26a/wang26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:278-294,\u00a02026.",
+    "supplemental": ""
+  },
+  "4_DeconDTNToolkit A Library for Evaluation and Enhancement of Robustness to Provenance Shift": {
+    "title": "DeconDTN-Toolkit: A Library for Evaluation and Enhancement of Robustness to Provenance Shift",
+    "abstract": "Despite the burgeoning body of work on distribution shifts, provenance shift\u2014where the relationship between data source and label changes at deployment\u2014remains poorly understood and under-addressed. In this paper, we establish a formal connection between provenance shift, counterfactual invariance, and invariant learning to derive a learning objective for robustness. We then introduce DeconDTN-Toolkit, a specialized evaluation and remediation suite designed to simulate provenance shifts of varying degrees while maintaining the training protocol and the infrastructure of existing benchmarks. We reveal the vulnerability of Empirical Risk Minimization under provenance shift, introduce a robust out-of-distribution performance indicator, and conduct a comprehensive evaluation on existing algorithms. Our work provides both the theoretical grounding and the practical tools necessary to characterize the problem of confounding by provenance, and implementations of methods to mitigate it.",
+    "url": "https://proceedings.mlr.press/v333/tan26a.html",
+    "id": "https://proceedings.mlr.press/v333/tan26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/tan26a/tan26a.pdf",
+    "authors": {
+      "0_Yongsen Tan": "Yongsen Tan",
+      "1_Zhecheng Sheng": "Zhecheng Sheng",
+      "2_Xiruo Ding": "Xiruo Ding",
+      "3_Serguei V S Pakhomov": "Serguei V S Pakhomov",
+      "4_Trevor Cohen": "Trevor Cohen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/tan26a/tan26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:721-753,\u00a02026.",
+    "supplemental": ""
+  },
+  "5_Can Language Models Identify Side Effects of Breast Cancer Radiation Treatments": {
+    "title": "Can Language Models Identify Side Effects of Breast Cancer Radiation Treatments?",
+    "abstract": "Accurately communicating the side effects of cancer treatments to cancer survivors is critical, particularly in settings such as informed consent, where clinicians must clearly and comprehensively convey potential treatment toxicities. However, this task remains challenging due to clinical knowledge deficits about adverse treatment effects and fragmentation across electronic health record (EHR) systems. Large language models (LLMs) have the potential to assist in this task, though their reliability in oncology survivorship contexts remains poorly understood. We present a deployment-oriented stress-testing framework for evaluating LLM-generated radiation side effect lists in breast cancer treatment and survivorship care. Using 21 breast cancer patient profiles, we construct paired patient clinical scenarios that differ only in radiotherapy regimens to evaluate seven instruction-tuned LLMs under multiple prompting regimes. We then compare LLM outputs to a clinician-curated reference derived from informed consent documents at two major academic medical centers and developed by a team including more than seven breast radiation oncologists. The reference maps radiation dose-fractionation, fields, and locations to associated toxicities, broken down by frequency and temporal onset. Across models, we reveal sensitivity to minor documentation changes, trade-offs between precision and recall, and systematic under-recall of rare and long-term side effects. When used alone, constraints on the number of side effects generated reduce precision, and grounding outputs in clinician-curated side effect lists substantially improves reliability and robustness. These findings highlight important limitations of LLM use in oncology and suggest practical design choices for safer and more informative survivorship-focused applications.",
+    "url": "https://proceedings.mlr.press/v333/seah26a.html",
+    "id": "https://proceedings.mlr.press/v333/seah26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/seah26a/seah26a.pdf",
+    "authors": {
+      "0_Natalie Seah": "Natalie Seah",
+      "1_Danielle S Bitterman": "Danielle S Bitterman",
+      "2_Daphna Spiegel": "Daphna Spiegel",
+      "3_Thomas Hartvigsen": "Thomas Hartvigsen"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/seah26a/seah26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:537-551,\u00a02026.",
+    "supplemental": ""
+  },
+  "6_Mechanistically Guided LoRA Improves Paraphrase Consistency in Medical VisionLanguage Models": {
+    "title": "Mechanistically Guided LoRA Improves Paraphrase Consistency in Medical Vision-Language Models",
+    "abstract": "Medical vision-language models can give different yes or no answers to rephrasings of the same clinical question. We study this in MedGemma-4B using PSF-Med, which provides paraphrase pairs for systematic consistency evaluation on medical VQA. On MIMIC-CXR binary questions ($n=158$), the baseline flip rate is 14.6% and mean margin difference is 1.63 logits. We validate that Gemma Scope 2 Sparse Autoencoders (SAEs) transfer to MedGemma activations, achieving $R^2 \\approx 0.997$ on both medical and general text ($n=100$ prompts each, $p<0.001$ for exceeding a 0.95 threshold). We then fine-tune Low-Rank Adaptation (LoRA) adapters with a combined loss that balances paraphrase consistency with answer accuracy. This combined approach prevents mode collapse that occurs with pure consistency training while reducing flip rate from 14.6% to 4.4% ($p=0.002$, two-proportion z-test) and margin difference from 1.63 to 0.33 (79.5% reduction). Accuracy remains stable at 84.2% baseline versus 82.3% after training (-1.9pp, not significant). On PadChest Balanced ($n=250$), flip rate drops from 13.6% to 7.8%, mean margin difference drops from 1.08 to 0.35 (67.9% reduction), and accuracy increases from 66.4% to 69.4%. A layer-range ablation shows that early layers reduce margin differences more than mechanistically selected middle layers.",
+    "url": "https://proceedings.mlr.press/v333/sadanandan26a.html",
+    "id": "https://proceedings.mlr.press/v333/sadanandan26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/sadanandan26a/sadanandan26a.pdf",
+    "authors": {
+      "0_Binesh Sadanandan": "Binesh Sadanandan",
+      "1_Vahid Behzadan": "Vahid Behzadan"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/sadanandan26a/sadanandan26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:703-720,\u00a02026.",
+    "supplemental": ""
+  },
+  "7_TrainingFree Adaptation of NewGeneration LLMs using Legacy Clinical Models": {
+    "title": "Training-Free Adaptation of New-Generation LLMs using Legacy Clinical Models",
+    "abstract": "Adapting language models to the clinical domain through continued pretraining and instruction tuning requires costly retraining for each new model generation. We propose Cross-Architecture Proxy Tuning (CAPT), a model-ensembling approach that enables training-free adaptation of state-of-the-art general-domain models using existing clinical models. CAPT supports models with disjoint vocabularies, leveraging contrastive decoding to selectively inject clinically relevant signals while preserving the general-domain model\u2019s reasoning and fluency. On six clinical classification and text-generation tasks, CAPT with a new-generation general-domain model and an older-generation clinical model consistently outperforms both models individually and state-of-the-art ensembling approaches (average +17.6% over UniTE, +41.4% over proxy tuning across tasks). Through token-level analysis and physician case studies, we demonstrate that CAPT amplifies clinically actionable language, reduces context errors, and increases clinical specificity. This technique especially benefits healthcare institutions with constrained computational capacity that cannot support iterative clinical training and want to adopt emerging general-domain model advances.",
+    "url": "https://proceedings.mlr.press/v333/ronaghi26a.html",
+    "id": "https://proceedings.mlr.press/v333/ronaghi26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/ronaghi26a/ronaghi26a.pdf",
+    "authors": {
+      "0_Sasha Ronaghi": "Sasha Ronaghi",
+      "1_Chloe Stanwyck": "Chloe Stanwyck",
+      "2_Asad Aali": "Asad Aali",
+      "3_Amir Ronaghi": "Amir Ronaghi",
+      "4_Miguel Angel Fuentes Hernandez": "Miguel Angel Fuentes Hernandez",
+      "5_Tina Hernandez-Boussard": "Tina Hernandez-Boussard",
+      "6_Emily Alsentzer": "Emily Alsentzer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/ronaghi26a/ronaghi26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:354-388,\u00a02026.",
+    "supplemental": ""
+  },
+  "8_Bridging the Reliability Gap INT8 Quantization Effects on Discrimination and Calibration in Medical Imaging": {
+    "title": "Bridging the Reliability Gap: INT8 Quantization Effects on Discrimination and Calibration in Medical Imaging",
+    "abstract": "Deploying medical imaging classifiers often requires reduced-precision inference for practical latency and memory budgets, yet the impact of quantization on discrimination and calibration varies across tasks and architectures. We evaluate three public medical imaging datasets (BrainMRI, ChestXray, SkinCancer) and eight ImageNet-pretrained backbones under FP32, FP16, INT8 post-training quantization (PTQ), and INT8 quantization-aware training (QAT). We report macro one-vs-rest ROC-AUC and AUPRC, calibration metrics (ECE, Brier score), and efficiency metrics (throughput, p50 and p99 batch latency) measured on GPU and CPU. FP16 closely matches FP32 across datasets, while INT8-PTQ can introduce substantial and architecture-dependent degradation and calibration shifts. INT8-QAT largely recovers floating-point behavior while enabling integer inference. These results motivate evaluating accuracy, calibration, and efficiency together when selecting quantization strategies for clinical deployment.",
+    "url": "https://proceedings.mlr.press/v333/ozdemir26a.html",
+    "id": "https://proceedings.mlr.press/v333/ozdemir26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/ozdemir26a/ozdemir26a.pdf",
+    "authors": {
+      "0_Okan Bilge Ozdemir": "Okan Bilge Ozdemir",
+      "1_Ruowang Li": "Ruowang Li"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/ozdemir26a/ozdemir26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:952-965,\u00a02026.",
+    "supplemental": ""
+  },
+  "9_SurveyAware Machine Learning A Guideline for Valid Population Health Inference based on Scoping Review": {
+    "title": "Survey-Aware Machine Learning: A Guideline for Valid Population Health Inference based on Scoping Review",
+    "abstract": "Machine Learning (ML) models trained on complex health surveys such as the National Health and Nutrition Examination Survey (NHANES) often ignore primary sampling units, stratification variables, and sampling weights. This practice violates the independence assumptions of standard evaluation methods. As a result, estimates become biased, uncertainty is underestimated, and fairness assessments fail to reflect population-level disparities. We propose Survey-aware Machine Learning (SaML), a nine-step guideline that incorporates survey design metadata across the ML lifecycle. Through a scoping review of 16 methodological papers, we summarize existing work on weighted model training, design-based cross-validation, and survey-adjusted performance evaluation. We also identify gaps in hyperparameter tuning and deployment. We provide task-specific guidance that clarifies which steps are required for different analytical objectives. SaML provides a checklist for valid population inference from survey data.",
+    "url": "https://proceedings.mlr.press/v333/oh26a.html",
+    "id": "https://proceedings.mlr.press/v333/oh26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/oh26a/oh26a.pdf",
+    "authors": {
+      "0_YongKyung Oh": "YongKyung Oh",
+      "1_Henry W Zheng": "Henry W Zheng",
+      "2_Jeffrey Feng": "Jeffrey Feng",
+      "3_Alex A T Bui": "Alex A T Bui"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/oh26a/oh26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:198-220,\u00a02026.",
+    "supplemental": ""
+  },
+  "10_Reconstructing Sepsis Trajectories from Clinical Case Reports using LLMs the Textual Time Series Corpus for Sepsis": {
+    "title": "Reconstructing Sepsis Trajectories from Clinical Case Reports using LLMs: the Textual Time Series Corpus for Sepsis",
+    "abstract": "Clinical case reports and discharge summaries may be the most complete and accurate summarization of patient encounters, yet they are finalized, i.e., timestamped after the encounter. Complementary structured data streams become available sooner but suffer from incompleteness. To train models and algorithms on more complete and temporally fine-grained data, we construct a pipeline to phenotype, extract, and annotate time-localized findings within case reports using large language models. We apply our pipeline to generate an open-access textual time series corpus for Sepsis-3 comprising 2,139 case reports from the PubMed-Open Access (PMOA) Subset. To validate our system, we apply it to PMOA and timeline annotations from i2b2/MIMIC-IV and compare the results to physician-expert annotations. We show high recovery rates of clinical findings (event match rates: GPT-5\u20130.93, Llama 3.3 70B Instruct\u20130.76) and strong temporal ordering (concordance: GPT-5\u20130.965, Llama 3.3 70B Instruct\u20130.908). Our work characterizes the ability of LLMs to time-localize clinical findings in text, illustrating the limitations of LLM use for temporal reconstruction and providing several potential avenues of improvement via multimodal integration.",
+    "url": "https://proceedings.mlr.press/v333/noroozizadeh26a.html",
+    "id": "https://proceedings.mlr.press/v333/noroozizadeh26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/noroozizadeh26a/noroozizadeh26a.pdf",
+    "authors": {
+      "0_Shahriar Noroozizadeh": "Shahriar Noroozizadeh",
+      "1_Jeremy Weiss": "Jeremy Weiss"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/noroozizadeh26a/noroozizadeh26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:10-51,\u00a02026.",
+    "supplemental": ""
+  },
+  "11_MAM Multinomial Attention Masking for Foundation Models on Sparse SingleCell RNAseq Data": {
+    "title": "MAM: Multinomial Attention Masking for Foundation Models on Sparse Single-Cell RNA-seq Data",
+    "abstract": "Single-cell RNA sequencing (scRNA-seq) has transformed biology by enabling the measurement of gene expression across millions of individual cells, revealing cellular heterogeneity that underlies development, disease progression, and treatment response. This has made scRNA-seq a central data modality in modern biology and drug discovery. Recently, transformer-based foundation models (FMs) have shown strong potential for scRNA-seq analysis, but they often rely on random masking during training. Due to the extreme sparsity of scRNA-seq datasets, conventional uniform masking samples genes without considering their biological importance. In this work, we propose Multinomial Attention Masking (MAM), a module that learns which gene positions are most informative to mask at each training step. We define a set of trainable latent vectors that attend over gene embeddings to produce attention maps, from which a multinomial sampler selects the highest-scoring positions for masking. We show MAM improves FMs pretraining performance and consistently outperforms uniform masking on cell-type classification tasks, while adding negligible computational overhead. Our work benefits researchers building FMs for sparse data and those rely on accurate scRNA-seq analysis to study cell types and disease. ",
+    "url": "https://proceedings.mlr.press/v333/naziri26a.html",
+    "id": "https://proceedings.mlr.press/v333/naziri26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/naziri26a/naziri26a.pdf",
+    "authors": {
+      "0_Amirreza Naziri": "Amirreza Naziri",
+      "1_Arash Asgari": "Arash Asgari",
+      "2_Aijun An": "Aijun An",
+      "3_Eleftherios Sachlos": "Eleftherios Sachlos",
+      "4_Laleh Seyyed-Kalantari": "Laleh Seyyed-Kalantari"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/naziri26a/naziri26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:295-311,\u00a02026.",
+    "supplemental": ""
+  },
+  "12_LUNGUAGE A Benchmark for Structured and Sequential Chest Xray Interpretation": {
+    "title": "LUNGUAGE: A Benchmark for Structured and Sequential Chest X-ray Interpretation",
+    "abstract": "Radiology reports convey detailed clinical observations and capture diagnostic reasoning that evolves over time. However, existing evaluation methods are limited to single-report settings and rely on coarse metrics that fail to capture fine-grained clinical semantics and temporal dependencies. We introduce LUNGUAGE, a benchmark dataset for structured radiology report generation that supports both single-report evaluation and longitudinal patient-level assessment across multiple studies. It contains 1,473 annotated chest X-ray reports, each reviewed by experts, and 186 of them contain longitudinal annotations to capture disease progression and inter-study intervals, also reviewed by experts. Using this benchmark, we develop a two-stage structuring framework that transforms generated reports into fine-grained, schema-aligned structured reports, enabling longitudinal interpretation. We also propose LUNGUAGESCORE, an interpretable metric that compares structured outputs at the entity, relation, and attribute level while modeling temporal consistency across patient timelines. These contributions establish the first benchmark dataset, structuring framework, and evaluation metric for sequential radiology reporting, with empirical results demonstrating that LUNGUAGESCORE effectively supports structured report evaluation.",
+    "url": "https://proceedings.mlr.press/v333/moon26a.html",
+    "id": "https://proceedings.mlr.press/v333/moon26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/moon26a/moon26a.pdf",
+    "authors": {
+      "0_Jong Hak Moon": "Jong Hak Moon",
+      "1_Geon Choi": "Geon Choi",
+      "2_Paloma Rabaey": "Paloma Rabaey",
+      "3_Min Gwan Kim": "Min Gwan Kim",
+      "4_Jung-Oh Lee": "Jung-Oh Lee",
+      "5_Hyuk Gi Hong": "Hyuk Gi Hong",
+      "6_Eun Woo Doe": "Eun Woo Doe",
+      "7_Hangyul Yoon": "Hangyul Yoon",
+      "8_Jiyoun Kim": "Jiyoun Kim",
+      "9_Harshita Sharma": "Harshita Sharma",
+      "10_Daniel C Castro": "Daniel C Castro",
+      "11_Javier Alvarez-Valle": "Javier Alvarez-Valle",
+      "12_Edward Choi": "Edward Choi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/moon26a/moon26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:148-197,\u00a02026.",
+    "supplemental": ""
+  },
+  "13_Proto4DME Interpretable Cell Counting via Additive Prototype Density Decomposition and OptimalTransport Coverage": {
+    "title": "Proto4DME: Interpretable Cell Counting via Additive Prototype Density Decomposition and Optimal-Transport Coverage",
+    "abstract": "Cell counting via density map estimation predicts a per-pixel density. Summing the density yields the final count, a common readout in clinical diagnostics and disease monitoring. Yet these models are often hard to audit when errors occur. We present Proto4DME, an interpretable density map estimator with faithful explanations by construction. The predicted density (and thus the count) is an additive, non-negative combination of contributions from learned visual patterns (prototypes). Prior prototype-based counting uses signed aggregation, which permits cancellation. In contrast, Proto4DME provides non-canceling attributions, in which increasing a prototype\u2019s activation can only increase the predicted density. So prototype heatmaps correspond to positive contributions for the count. Proto4DME learns spatial prototype activation maps from backbone features and selects a compact set of prototypes using sparsity-inducing Hard-Concrete gates. To encourage diverse foreground coverage and prevent prototype collapse, we introduce an entropically-regularized optimal-transport coverage objective. It allocates ground-truth density mass across prototypes under capacity constraints and induces competition among prototypes. Across three microscopy benchmarks (MBM, ADI, and DCC), Proto4DME achieves competitive mean absolute error (MAE) while producing compact, auditable explanations that support error analysis and model debugging.",
+    "url": "https://proceedings.mlr.press/v333/mohammed26a.html",
+    "id": "https://proceedings.mlr.press/v333/mohammed26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/mohammed26a/mohammed26a.pdf",
+    "authors": {
+      "0_Abdurahman Ali Mohammed": "Abdurahman Ali Mohammed",
+      "1_Wallapak Tavanapong": "Wallapak Tavanapong"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/mohammed26a/mohammed26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:688-702,\u00a02026.",
+    "supplemental": ""
+  },
+  "14_CANDOR Counterfactual ANnotated DOubly Robust OffPolicy Evaluation": {
+    "title": "CANDOR: Counterfactual ANnotated DOubly Robust Off-Policy Evaluation",
+    "abstract": "Off-policy evaluation (OPE) is critical for applying contextual bandit algorithms to high-stakes decision-making settings such as healthcare, where new treatment policies must be evaluated prior to deployment. Unfortunately, OPE techniques are inherently limited by the breadth of the available data, which may not be sufficient to evaluate the performance of a new policy. Recent work attempts to improve dataset coverage by adding expert-annotated counterfactual samples. However, such annotations are often imperfect and can lead to worse estimator performance than using no annotations at all. To better leverage imperfect annotations, we propose a family of OPE estimators grounded in the doubly robust (DR) framework, which combines importance sampling (IS) with a reward model (direct method, DM) for better statistical guarantees. We study three ways of incorporating counterfactual annotations. Under mild assumptions, we prove that using annotations within just the DM component yields the most desirable theoretical results. Experiments on multiple healthcare tasks, including real-world electronic health records (EHR) data, show that this strategy is most robust under misspecified reward models and inaccurate annotations. By addressing the challenges posed by imperfect annotations, this work broadens the applicability of OPE methods and facilitates safer deployment of decision-making policies in healthcare.",
+    "url": "https://proceedings.mlr.press/v333/mandyam26a.html",
+    "id": "https://proceedings.mlr.press/v333/mandyam26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/mandyam26a/mandyam26a.pdf",
+    "authors": {
+      "0_Aishwarya Mandyam": "Aishwarya Mandyam",
+      "1_Shengpu Tang": "Shengpu Tang",
+      "2_Jiayu Yao": "Jiayu Yao",
+      "3_Jenna Wiens": "Jenna Wiens",
+      "4_Barbara E Engelhardt": "Barbara E Engelhardt"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/mandyam26a/mandyam26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:644-687,\u00a02026.",
+    "supplemental": ""
+  },
+  "15_An Empirical Analysis of Calibration and Selective Prediction in Multimodal Clinical Condition Classification": {
+    "title": "An Empirical Analysis of Calibration and Selective Prediction in Multimodal Clinical Condition Classification",
+    "abstract": "As artificial intelligence systems move toward clinical deployment, ensuring reliable prediction behavior is fundamental for safety-critical decision-making tasks. One proposed safeguard is selective prediction, where models can defer uncertain predictions to human experts for review. In this work, we empirically evaluate the reliability of uncertainty-based selective prediction in multilabel clinical condition classification using multimodal ICU data. Across a range of state-of-the-art unimodal and multimodal models, we find that selective prediction can substantially degrade performance despite strong standard evaluation metrics. This failure is driven by severe class-dependent miscalibration, whereby models assign high uncertainty to correct predictions and low uncertainty to incorrect ones, particularly for underrepresented clinical conditions. Our results show that commonly used aggregate metrics can obscure these effects, limiting their ability to assess selective prediction behavior in this setting. Taken together, our findings characterize a task-specific failure mode of selective prediction in multimodal clinical condition classification and highlight the need for calibration-aware evaluation to provide strong guarantees of safety and robustness in clinical AI.",
+    "url": "https://proceedings.mlr.press/v333/lopez26a.html",
+    "id": "https://proceedings.mlr.press/v333/lopez26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/lopez26a/lopez26a.pdf",
+    "authors": {
+      "0_L Julian Lechuga Lopez": "L Julian Lechuga Lopez",
+      "1_Farah E Shamout": "Farah E Shamout",
+      "2_Tim G J Rudner": "Tim G J Rudner"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/lopez26a/lopez26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:794-833,\u00a02026.",
+    "supplemental": ""
+  },
+  "16_Generation of Bilingual Synthetic Clinical Notes for Realistic Data Augmentation": {
+    "title": "Generation of Bilingual Synthetic Clinical Notes for Realistic Data Augmentation",
+    "abstract": "Synthetic clinical notes offer a promising solution to data scarcity and privacy constraints in clinical natural language processing. However, existing generation approaches often prioritize semantic accuracy while not adequately reproducing the linguistic and structural (i.e., surface) characteristics of real-world clinical documentation, limiting their utility for downstream clinical tasks. In this study, we propose an expert-informed prompt with feedback-loop generation framework to improve the fidelity of synthetic clinical notes across both semantic and surface-level dimensions. Using individual case safety reports from FAERS, we formulated synthetic note generation as a controlled text generation task conditioned on adverse drug reaction descriptions and clinical narratives. We evaluated the performance of the proposed approach by comparing it with other generation strategies (in-context learning and multi-agent generation) and prompting methods (base and expert-informed) under a unified experimental condition. Generation quality was assessed using embedding-based semantic similarity, surface-level statistical and distributional metrics, and blinded human evaluation. The feedback-loop generation framework achieved superior performance across semantic (mean clinical BERTScore = 0.885) and surface-level distributional metrics (token-level Jensen-Shannon divergence = 0.344), producing synthetic clinical notes that more closely resembled real-world clinical notes than other approaches. Expert-informed prompting further improved semantic fidelity and lexical diversity.",
+    "url": "https://proceedings.mlr.press/v333/lee26b.html",
+    "id": "https://proceedings.mlr.press/v333/lee26b.html",
+    "pdf": "https://proceedings.mlr.press/v333/lee26b/lee26b.pdf",
+    "authors": {
+      "0_David Seung U Lee": "David Seung U Lee",
+      "1_Seeun Park": "Seeun Park",
+      "2_Seoyoon Jang": "Seoyoon Jang",
+      "3_Sunyoung Lee": "Sunyoung Lee",
+      "4_Chaeyoung Chang": "Chaeyoung Chang",
+      "5_Sungwook Choi": "Sungwook Choi",
+      "6_Howard Lee": "Howard Lee"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/lee26b/lee26b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:834-879,\u00a02026.",
+    "supplemental": ""
+  },
+  "17_HAdminSim A MultiAgent Simulator for Realistic Hospital Administrative Workflows with FHIR Integration": {
+    "title": "H-AdminSim: A Multi-Agent Simulator for Realistic Hospital Administrative Workflows with FHIR Integration",
+    "abstract": "Hospital administration departments handle a wide range of operational tasks and, in large hospitals, process over 10,000 requests per day, driving growing interest in LLM-based automation.  However, prior work has focused primarily on patient\u2013physician interactions or isolated administrative subtasks, failing to capture the complexity of real administrative workflows. To address this gap, we propose H-AdminSim, a comprehensive simulation framework that combines realistic data generation with multi-agent\u2013based simulation of hospital administrative workflows. These tasks are quantitatively evaluated using detailed rubrics, enabling systematic comparison of LLMs. Through FHIR integration, H-AdminSim provides a unified and interoperable environment for testing administrative workflows across heterogeneous hospital settings, serving as a standardized testbed for assessing the feasibility and performance of LLM-driven administrative automation.",
+    "url": "https://proceedings.mlr.press/v333/lee26a.html",
+    "id": "https://proceedings.mlr.press/v333/lee26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/lee26a/lee26a.pdf",
+    "authors": {
+      "0_Jun-Min Lee": "Jun-Min Lee",
+      "1_Meong Hi Son": "Meong Hi Son",
+      "2_Edward Choi": "Edward Choi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/lee26a/lee26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:572-613,\u00a02026.",
+    "supplemental": ""
+  },
+  "18_Evaluating Robustness of LLMBased Ambient Scribes for SOAP Note Generation": {
+    "title": "Evaluating Robustness of LLM-Based Ambient Scribes for SOAP Note Generation",
+    "abstract": "Clinical documentation is a major driver of clinician workload and burnout, motivating the adoption of ambient AI scribes that transcribe clinician-patient conversations into clinical notes. Safe deployment requires both transcript-grounded fidelity and robustness to upstream Automatic Speech Recognition (ASR) noise-properties not captured by traditional ROUGE-like metrics. We propose a clinically grounded evaluation framework that decomposes notes into atomic, QNOTE-structured facts and applies a two-phase triangulated protocol: (1) align generated facts to clinician-authored gold notes to measure coverage, omission, contradiction, and candidate additions; (2) verify gold-absent generated facts against transcripts to distinguish valid elaborations from unsupported content. Across eight LLM-based note generators, we find that omissions are the primary source of contextual degradation (8.5%\u201324.0%), while contradictions remain relatively stable (6.2%\u20137.9%). A large majority of content initially flagged as \u201cadded\u201d relative to gold is supported by the transcript (92%), highlighting the importance of transcript verification. Robustness analysis with controlled transcript-level perturbations shows that conversational redundancy often mitigates errors (38.6% recovery), whereas substitution errors (e.g., negation flips, medical homophones) are more likely to propagate when redundancy is absent. These results provide a structured approach for evaluating fidelity and robustness in clinical note generation and suggest practical considerations for safer deployment.",
+    "url": "https://proceedings.mlr.press/v333/latif26a.html",
+    "id": "https://proceedings.mlr.press/v333/latif26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/latif26a/latif26a.pdf",
+    "authors": {
+      "0_Ehsan Latif": "Ehsan Latif",
+      "1_Aleema Faisal": "Aleema Faisal",
+      "2_Shaheer Hammad": "Shaheer Hammad",
+      "3_Dayyan Ali Akhtar": "Dayyan Ali Akhtar",
+      "4_Agha Ali Raza": "Agha Ali Raza",
+      "5_Ihsan Ayyub Qazi": "Ihsan Ayyub Qazi"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/latif26a/latif26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:448-467,\u00a02026.",
+    "supplemental": ""
+  },
+  "19_A Multidimensional Framework for Evaluating Generalization in EEG Foundation Models": {
+    "title": "A Multi-dimensional Framework for Evaluating Generalization in EEG Foundation Models",
+    "abstract": "Evaluating foundation models under appropriate adaptation settings is essential for understanding the quality and transferability of the learned representations. Recent EEG foundation models have demonstrated promising transfer capabilities across tasks and datasets, motivating their growing use in neurotechnology and clinical applications. However, these models are typically evaluated under full fine-tuning on well-curated downstream datasets, a setting that does not reflect biomedical domain constraints such as limited labeled data, reduced sensor coverage, or parameter-efficient adaptation. In this work, we propose a multi-dimensional evaluation framework for assessing EEG models under realistic low-resource conditions. Empirical analysis of both supervised EEG models and recent EEG foundation models, including LaBraM, CSBrain, and CBraMod, across 6 different datasets is performed under the proposed multi-dimensional evaluation framework. We find that EEG foundation models consistently provide performance gains on long-context tasks such as sleep stage prediction and mental health state classification.  In contrast, for short-window Brain Computer Interface style tasks, supervised models achieve comparable performance despite having substantially fewer parameters. Additional analyses demonstrate that current foundation models provide limited robustness to short-window tasks and channel constrained settings. Together, these findings motivate the use of multi-dimensional evaluation protocols that characterize model behavior under realistic use constraints.",
+    "url": "https://proceedings.mlr.press/v333/kommineni26a.html",
+    "id": "https://proceedings.mlr.press/v333/kommineni26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/kommineni26a/kommineni26a.pdf",
+    "authors": {
+      "0_Aditya Kommineni": "Aditya Kommineni",
+      "1_Emily Zhou": "Emily Zhou",
+      "2_Kleanthis Avramidis": "Kleanthis Avramidis",
+      "3_Tiantian Feng": "Tiantian Feng",
+      "4_Shrikanth Narayanan": "Shrikanth Narayanan"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/kommineni26a/kommineni26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:221-244,\u00a02026.",
+    "supplemental": ""
+  },
+  "20_Structured Treatment Modeling in Deep Survival Analysis via Hazard Factorization": {
+    "title": "Structured Treatment Modeling in Deep Survival Analysis via Hazard Factorization",
+    "abstract": "Deep learning models trained on electronic health records are increasingly used for clinical risk prediction, yet modeling heterogeneous treatment effects remains challenging. Most approaches treat treatment as an undifferentiated covariate (S-Learner), conflating treatment effects with baseline risk, while training separate models for treated and untreated patients (T-Learner) suffers from treatment imbalance and sparsity. We propose a structured hazard factorization that decomposes the hazard into a shared baseline component and a treatment-specific hazard ratio network, enabling direct estimation of time-varying, covariate-dependent hazard ratios without post-hoc computation. By sharing a baseline while isolating treatment effects, the framework acts as a hybrid between S- and T-Learners, improving efficiency and reducing majority-group dominance under imbalance. We further extend the model with differentiable subgroup assignment for regularized treatment effect estimation and inverse propensity weighting to adjust for confounding. In simulations with known ground truth, our approach improves hazard ratio recovery while maintaining competitive survival prediction, and the subgroup extension recovers latent heterogeneity when assumptions hold. On two real-world clinical cohorts from the UK Clinical Practice Research Datalink, the framework produces time-varying hazard ratios and identifies subgroups characterized by established risk factors. Our results demonstrate that explicit hazard factorization provides useful inductive bias for incorporating treatment into deep survival models, bridging flexible neural architectures with hazard ratio estimation familiar to clinical practice.",
+    "url": "https://proceedings.mlr.press/v333/hong26a.html",
+    "id": "https://proceedings.mlr.press/v333/hong26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/hong26a/hong26a.pdf",
+    "authors": {
+      "0_Natalia Hong": "Natalia Hong",
+      "1_Krishnarajah Nirantharakumar": "Krishnarajah Nirantharakumar",
+      "2_Christopher Yau": "Christopher Yau"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/hong26a/hong26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:74-91,\u00a02026.",
+    "supplemental": ""
+  },
+  "21_Learning Under Extreme Label Imbalance in EHRs A DependencyAware Loss for MultiLabel Classification": {
+    "title": "Learning Under Extreme Label Imbalance in EHRs: A Dependency-Aware Loss for Multi-Label Classification",
+    "abstract": "Extreme multi-label next-visit diagnosis forecasting from electronic health records is dominated by label sparsity. Each visit contains only a handful of positive ICD-10 codes among thousands of candidates, yet codes are strongly correlated through comorbidity structure. In this regime, standard element-wise objectives (such as focal, and class-balanced loss) often maximize sensitivity at the cost of severe precision degradation, producing clinically impractical alert volumes. We propose an architecture-compatible dependency-aware ranking loss that (i) reweights per-code correctness under severe imbalance, (ii) aggregates errors with rank-based emphasis on the hardest labels, and (iii) regularizes predictions with a learned pairwise dependency term in the output space. Using an EHR Transformer backbone, we evaluate on the CPRD cohort ($V{=}1{,}538$ codes), benchmarking loss functions on 200{,}000 patients and validating scalability up to 3.2 million. The proposed objective shifts the precision\u2013recall trade-off toward fewer false positives while maintaining competitive sensitivity, and preserves overall ranking quality (PRC\u2013AUC comparable to weighted BCE). In addition, it yields an auditable population-level dependency matrix summarizing learned co-occurrence structure. These results suggest that explicit output-space structure can improve the precision\u2013recall trade-off in sparse, high-dimensional next-visit diagnosis prediction from EHRs.",
+    "url": "https://proceedings.mlr.press/v333/ho26a.html",
+    "id": "https://proceedings.mlr.press/v333/ho26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/ho26a/ho26a.pdf",
+    "authors": {
+      "0_Iris Szu-Szu Ho": "Iris Szu-Szu Ho",
+      "1_Lars Werne": "Lars Werne",
+      "2_Konrad Rawlik": "Konrad Rawlik",
+      "3_Bruce Guthrie": "Bruce Guthrie",
+      "4_Sohan Seth": "Sohan Seth"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/ho26a/ho26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:880-904,\u00a02026.",
+    "supplemental": ""
+  },
+  "22_Conference on Health Inference and Learning CHIL 2026": {
+    "title": "Conference on Health, Inference, and Learning (CHIL) 2026",
+    "abstract": "The Conference on Health, Inference, and Learning (CHIL) focuses on advancing machine learning for health, bringing together clinicians and researchers, across both industry and academia. Since 2022, CHIL has been an official conference of the Association for Health Learning and Inference (AHLI). This volume contains proceedings of the seventh annual CHIL conference, held at the Seattle Children\u2019s Research Institute in the US.",
+    "url": "https://proceedings.mlr.press/v333/healey26a.html",
+    "id": "https://proceedings.mlr.press/v333/healey26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/healey26a/healey26a.pdf",
+    "authors": {
+      "0_Elizabeth Healey": "Elizabeth Healey",
+      "1_Jason Fries": "Jason Fries",
+      "2_Tom Pollard": "Tom Pollard",
+      "3_Shengpu Tang": "Shengpu Tang",
+      "4_Anna Zink": "Anna Zink",
+      "5_Tom Hartvigsen": "Tom Hartvigsen",
+      "6_Monica Agrawal": "Monica Agrawal",
+      "7_Sam Finlayson": "Sam Finlayson",
+      "8_Benjamin Glicksberg": "Benjamin Glicksberg",
+      "9_Brett Beaulieu-Jones": "Brett Beaulieu-Jones",
+      "10_Kai Wang": "Kai Wang",
+      "11_Daseyra Fontalvo": "Daseyra Fontalvo",
+      "12_Tasmie Sarker": "Tasmie Sarker",
+      "13_Irene Chen": "Irene Chen",
+      "14_Emily Alsentzer": "Emily Alsentzer"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/healey26a/healey26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:1-9,\u00a02026.",
+    "supplemental": ""
+  },
+  "23_A MultiDataset Benchmark of Multiple Instance Learning for 3D Neuroimage Classification": {
+    "title": "A Multi-Dataset Benchmark of Multiple Instance Learning for 3D Neuroimage Classification",
+    "abstract": "Despite being resource-intensive to train, 3D convolutional neural networks (CNNs) have been the standard approach to classify CT and MRI scans. Recent work suggests that deep multiple instance learning (MIL) may be a more efficient alternative for 3D brain scans, especially when the pre-trained image encoder used to embed each 2D slice is frozen and only the pooling operation and classifier are trained. In this paper, we systematically compare simple MIL, attention-based MIL, 3D CNNs, and 3D ViTs across three CT and four MRI datasets, including two large datasets of at least 10,000 scans. Our goal is to help resource-constrained practitioners understand which neural networks work well for 3D neuroimages and why. We further compare design choices for MIL, including different encoders, pooling operations, and architectural orderings. We find that simple mean pooling MIL, without any learnable attention, matches or outperforms recent MIL or 3D NN alternatives on 4 of 6 moderate-sized tasks. This baseline remains competitive on two large datasets while being 25x faster to train. To explain mean pooling\u2019s success, we examine per-slice attention quality and a semi-synthetic dataset where we can derive the best possible classifier via a Bayes estimator. This analysis reveals the limits of existing MIL approaches and suggests routes for future improvements.",
+    "url": "https://proceedings.mlr.press/v333/harvey26a.html",
+    "id": "https://proceedings.mlr.press/v333/harvey26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/harvey26a/harvey26a.pdf",
+    "authors": {
+      "0_Ethan Harvey": "Ethan Harvey",
+      "1_Dennis Johan Loevlie": "Dennis Johan Loevlie",
+      "2_Amir Ali Satani": "Amir Ali Satani",
+      "3_Wansu Chen": "Wansu Chen",
+      "4_David M Kent": "David M Kent",
+      "5_Michael C Hughes": "Michael C Hughes"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/harvey26a/harvey26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:114-133,\u00a02026.",
+    "supplemental": ""
+  },
+  "24_TEMPO Transformers for Temporal Disease Progression from CrossSectional Data": {
+    "title": "TEMPO: Transformers for Temporal Disease Progression from Cross-Sectional Data",
+    "abstract": "Event-Based Models (EBMs) infer biomarker progression from cross-sectional data but typically only as ordinal sequences and rely on rigid model assumptions. We propose Tempo, a Transformer architecture that learns both ordinal and continuous event sequences through simulation-based supervised learning. Tempo uses two Transformer modules: one treats biomarkers as tokens to infer event sequencing; the other treats patients as tokens, representing each by their per-biomarker abnormality profile, to infer patients\u2019 disease stages. On synthetic benchmarks, Tempo reduces normalized Kendall\u2019s Tau distance by 52.89% and staging MAE by 25.33% compared to state-of-the-art SA-EBM, with larger reductions in high-dimensional settings (58.88% and 61.10%). Applied to ADNI, Tempo recovers a biologically plausible Alzheimer\u2019s progression: early medial temporal atrophy, followed by amyloid accumulation and cognitive decline, and late-stage tau pathology with terminal acceleration of global neurodegeneration\u2014broadly consistent with established disease models. Tempo also eliminates the need to derive custom inference algorithms and enables rapid empirical comparison of generative hypotheses.",
+    "url": "https://proceedings.mlr.press/v333/hao26a.html",
+    "id": "https://proceedings.mlr.press/v333/hao26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/hao26a/hao26a.pdf",
+    "authors": {
+      "0_Hongtao Hao": "Hongtao Hao",
+      "1_Joseph L Austerweil": "Joseph L Austerweil",
+      "2_Alzheimer\u2019s Disease Neuroimaging Initiative": "Alzheimer\u2019s Disease Neuroimaging Initiative"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/hao26a/hao26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:614-643,\u00a02026.",
+    "supplemental": ""
+  },
+  "25_MLPowered Triage and Queue Optimization for ResourceConstrained Free Clinics": {
+    "title": "ML-Powered Triage and Queue Optimization for Resource-Constrained Free Clinics",
+    "abstract": "Free clinics serve about 1.7 million uninsured Americans annually in the US, yet operate under severe resource constraints that lead to missed urgent cases, inefficient patient flow, and long waits. Our machine learning (ML)-powered triage and queue optimization system is designed as a decision support tool specifically for resource-constrained free clinics. Our system combines a Random Forest (RF) classifier trained on MIMIC-IV-ED data with a multi-objective queue optimization algorithm presented via a staff-facing interface. Our triage model, when simulating free clinic deployment without vital sign equipment, achieves an 83.6% critical case detection rate and no dangerous misses on the test set (0.012% on holdout); optimizing for patient safety over raw accuracy. Monte Carlo simulation across 1,000 clinic sessions demonstrates a 72% reduction in wait times ($p<0.001$) for critical patients compared to first-come-first-served (FCFS) queue ordering. Unlike commercial triage systems that can be prohibitively expensive, our solution is built entirely on free and free-tier tools and designed for volunteer-staffed environments lacking trained intake nurses, vital sign monitors, and electronic health records (EHR). We developed the system as a tablet-optimized web application with real-time queue updates and physician queue overrides. Our work is entirely retrospective evaluation and simulation. Prospective studies in free clinic settings, in collaboration with clinicians and domain experts, are planned as a next step.",
+    "url": "https://proceedings.mlr.press/v333/grewal26a.html",
+    "id": "https://proceedings.mlr.press/v333/grewal26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/grewal26a/grewal26a.pdf",
+    "authors": {
+      "0_Armaan Grewal": "Armaan Grewal"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/grewal26a/grewal26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:905-923,\u00a02026.",
+    "supplemental": ""
+  },
+  "26_Generating synthetic electronic health record data using agentbased models to evaluate machine learning robustness under mass casualty incidents": {
+    "title": "Generating synthetic electronic health record data using agent-based models to evaluate machine learning robustness under mass casualty incidents",
+    "abstract": "Machine learning (ML) models in healthcare are typically evaluated using curated real-world electronic health record (EHR) data. A key limitation of such evaluations is that they may fail to assess the robustness of ML models to changes in the data at deployment, which is a common issue because EHR data used for ML model development cannot capture all such changes. Mass casualty incidents (MCIs) caused by disasters are critical instances where this will be an issue, as they induce rare, uncertain, and novel changes to routine system conditions. Because real-world EHR data from MCIs are often limited or unavailable, assessing ML robustness under such conditions before deployment remains challenging. Here, we propose an agent-based modelling approach for generating synthetic EHR data to evaluate the robustness of ML models under MCI scenarios. We use real-world EHR data to develop and calibrate an agent-based model (ABM) of an emergency department (ED) that explicitly models patient arrivals, resource capacity, and clinical workflow. By changing these system conditions to reflect plausible MCI scenarios, the ED model generates synthetic versions of the real-world EHR data that exhibit shifts in system behaviour. Using these synthetic data, we test ML models for predicting length of stay. We observed consistent declines in recall under MCI conditions relative to baseline system conditions, resulting in an increase in the number of patients with prolonged length of stay that were missed by the ML models. These results highlight the impact of changes in system conditions on patient outcomes, EHR data, and ML model performance. Our work establishes ABM-based synthetic EHR data generation as a proactive and systematic approach for evaluating the robustness of ML models under MCI or other system conditions not captured in real-world EHR data, supporting the safer and more effective deployment of ML models in healthcare systems. ",
+    "url": "https://proceedings.mlr.press/v333/delos-reyes26a.html",
+    "id": "https://proceedings.mlr.press/v333/delos-reyes26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/delos-reyes26a/delos-reyes26a.pdf",
+    "authors": {
+      "0_Roben Delos Reyes": "Roben Delos Reyes",
+      "1_Daniel Capurro": "Daniel Capurro",
+      "2_Nicholas Geard": "Nicholas Geard"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/delos-reyes26a/delos-reyes26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:134-147,\u00a02026.",
+    "supplemental": ""
+  },
+  "27_MSnet A deep neural network based on piecewiseconstant proposals within MultiState event history analysis": {
+    "title": "MSnet: A deep neural network based on piecewise-constant proposals within Multi-State event history analysis",
+    "abstract": "Multi-state models are essential to represent realistic disease trajectories in oncology, yet most existing survival and deep-learning approaches either rely on restrictive Markov assumptions or fail to provide subject-specific transition risks. We propose MSnet, a deep learning framework for progressive semi-Markov multi-state processes with right-censoring. MSnet models transition-specific cumulative risks as functions of sojourn time using a multi-task architecture that flexibly integrates high-dimensional clinical and omics data. Experiments on simulated data and two real-world breast cancer cohorts show that MSnet improves predictive performance while yielding clinically interpretable transition dynamics, extending deep learning\u2013based survival analysis to more realistic, patient-centered disease processes.",
+    "url": "https://proceedings.mlr.press/v333/cottin26a.html",
+    "id": "https://proceedings.mlr.press/v333/cottin26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/cottin26a/cottin26a.pdf",
+    "authors": {
+      "0_Aziliz Cottin": "Aziliz Cottin",
+      "1_Marine Zulian": "Marine Zulian",
+      "2_Sandrine Katsahian": "Sandrine Katsahian",
+      "3_Agathe Guilloux": "Agathe Guilloux"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/cottin26a/cottin26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:245-277,\u00a02026.",
+    "supplemental": ""
+  },
+  "28_ASCENT A Benchmark for Evaluating and Advancing Stepwise Diagnostic Reasoning in Large Language Models on Common Clinical Scenarios": {
+    "title": "ASCENT: A Benchmark for Evaluating and Advancing Stepwise Diagnostic Reasoning in Large Language Models on Common Clinical Scenarios",
+    "abstract": "Large language models (LLMs) excel at medical question answering yet are rarely evaluated on the stepwise diagnostic reasoning that defines real clinical workflows, where impressions are revised as information accumulates. We build Annotated Stepwise Clinical rEasoning for NaturalisTic Diagnosis (ASCENT), a clinician-annotated benchmark and training resource of 3{,}078 stepwise problems derived from MedQA-USMLE that decomposes each vignette into EMR-aligned steps (Findings, Impression, supporting Rationale), enabling evaluation of intermediate reasoning under incomplete information. Experiments and training with ASCENT revealed insights into how current LLMs handle stepwise diagnostic reasoning. Even strong reasoning models that perform well on MedQA-USMLE leave substantial headroom on ASCENT, and general-purpose frontier models trail further\u2014exposing a persistent gap between fully informed and stepwise diagnosis. Fine-tuning Qwen2.5-7B and 32B on ASCENT yields measurable F1 gains over both pre-trained and HuatuoGPT-o1 CoT-trained baselines, with gains driven primarily by precision. Complementary robustness analyses (counterfactual perturbation, format-vs-content control, judge agreement, and rollout) further show that ASCENT-fine-tuned models rely on the diagnostic content of prior impressions rather than imitating their output format, while error propagation under rollout remains a key challenge for clinical deployment.",
+    "url": "https://proceedings.mlr.press/v333/choi26a.html",
+    "id": "https://proceedings.mlr.press/v333/choi26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/choi26a/choi26a.pdf",
+    "authors": {
+      "0_Yera Choi": "Yera Choi",
+      "1_Yeong Hwa Kim": "Yeong Hwa Kim",
+      "2_JaeDeok Lee": "JaeDeok Lee",
+      "3_Taekang Kim": "Taekang Kim",
+      "4_Sangdoo Yun": "Sangdoo Yun",
+      "5_Seong-Eun Moon": "Seong-Eun Moon"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/choi26a/choi26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:404-426,\u00a02026.",
+    "supplemental": ""
+  },
+  "29_Does Where You Live Affect How You Feel Causal Evidence from an Integrated Econometric and Machine Learning Framework": {
+    "title": "Does Where You Live Affect How You Feel? Causal Evidence from an Integrated Econometric and Machine Learning Framework",
+    "abstract": "We investigate whether residential relocation causally improves subjective wellbeing by leveraging household relocations in the UK Household Longitudinal Survey as natural experiments. An integrated framework combining a difference-in-differences and synthetic control ensemble with a causal forest model is applied to nearly a decade of panel data. Relocation causes an immediate and sustained improvement of 8% in subjective wellbeing; a change in the built environment type (e.g. suburb to city) adds a further 5%. We demonstrate the complementarity and interoperability of canonical econometric and machine learning methods for causal inference on subjective panel data.",
+    "url": "https://proceedings.mlr.press/v333/chen26b.html",
+    "id": "https://proceedings.mlr.press/v333/chen26b.html",
+    "pdf": "https://proceedings.mlr.press/v333/chen26b/chen26b.pdf",
+    "authors": {
+      "0_Jerry Chen": "Jerry Chen",
+      "1_Li Wan": "Li Wan"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/chen26b/chen26b.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:389-403,\u00a02026.",
+    "supplemental": ""
+  },
+  "30_ALMo Interactive AimLimitDefined MultiObjective System for Personalized HighDoseRate Brachytherapy Treatment Planning and Visualization for Cervical Cancer": {
+    "title": "ALMo: Interactive Aim-Limit-Defined, Multi-Objective System for Personalized High-Dose-Rate Brachytherapy Treatment Planning and Visualization for Cervical Cancer",
+    "abstract": "In complex clinical decision-making, clinicians must often track a variety of competing metrics defined by \u201caim\u201d (ideal) and \u201climit\u201d (strict) thresholds. Sifting through these high-dimensional tradeoffs to infer the optimal patient-specific strategy is cognitively demanding and historically prone to variability. In this paper, we address this challenge within the context of High-Dose-Rate (HDR) brachytherapy for cervical cancer, where planning requires strictly managing radiation hot spots while balancing tumor coverage against organ sparing. We present ALMo (Aim-Limit-defined Multi-Objective system), an interactive decision support system designed to infer and operationalize clinician intent. ALMo employs a novel optimization framework that minimizes manual input through automated parameter setup and enables flexible control over toxicity risks. Crucially, the system allows clinicians to navigate the Pareto surface of dosimetric tradeoffs by directly manipulating intuitive aim and limit values. In a retrospective evaluation of 25 clinical cases, ALMo generated treatment plans that consistently met or exceeded manual planning quality, with 65% of cases demonstrating dosimetric improvements. Furthermore, the system significantly enhanced efficiency, reducing average planning time to approximately 17 minutes, compared to the conventional 30\u201360 minutes. While validated in brachytherapy, ALMo demonstrates a generalized framework for streamlining interaction in multi-criteria clinical decision-making.",
+    "url": "https://proceedings.mlr.press/v333/chen26a.html",
+    "id": "https://proceedings.mlr.press/v333/chen26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/chen26a/chen26a.pdf",
+    "authors": {
+      "0_Edward Chen": "Edward Chen",
+      "1_Natalie Dullerud": "Natalie Dullerud",
+      "2_Pang Wei Koh": "Pang Wei Koh",
+      "3_Thomas Niedermayr": "Thomas Niedermayr",
+      "4_Elizabeth Kidd": "Elizabeth Kidd",
+      "5_Sanmi Koyejo": "Sanmi Koyejo",
+      "6_Carlos Guestrin": "Carlos Guestrin"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/chen26a/chen26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:92-113,\u00a02026.",
+    "supplemental": ""
+  },
+  "31_Enhancing Extubation Failure Prediction with LLMDerived Features from Respiratory Therapy Clinical Notes": {
+    "title": "Enhancing Extubation Failure Prediction with LLM-Derived Features from Respiratory Therapy Clinical Notes",
+    "abstract": "Invasive mechanical ventilation is a lifesaving therapy, but timely, safe discontinuation is essential to preventing extubation failure (EF) and related risks to health. We present a novel approach to EF prediction that leverages features classified in free-text respiratory therapy notes using a large language model and logistic regression pipeline. Applied to a patient cohort from University of Washington Medicine, our method identifies clinically meaningful EF-related features that improve EF prediction performance when included alongside structured patient data. We further highlight how differences in target populations in prior EF prediction studies, such as heterogenous inclusion criteria and EF definition, can lead to systematic differences in model performance and hinder generalizability between studies.",
+    "url": "https://proceedings.mlr.press/v333/chaiken26a.html",
+    "id": "https://proceedings.mlr.press/v333/chaiken26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/chaiken26a/chaiken26a.pdf",
+    "authors": {
+      "0_Izzy Chaiken": "Izzy Chaiken",
+      "1_Aditya Khowal": "Aditya Khowal",
+      "2_Neha A Sathe": "Neha A Sathe",
+      "3_Mark M Wurfel": "Mark M Wurfel",
+      "4_Lucy Lu Wang": "Lucy Lu Wang"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/chaiken26a/chaiken26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:468-492,\u00a02026.",
+    "supplemental": ""
+  },
+  "32_Videobased Disease Progression Simulation": {
+    "title": "Video-based Disease Progression Simulation",
+    "abstract": "Modeling disease progression is crucial for improving the quality and efficacy of clinical diagnosis and prognosis, but it is often hindered by a lack of longitudinal medical image monitoring for individual patients. To address this challenge, we propose MedDream, the first video-based disease progression framework that enables controlled manipulation of disease-related image and video features, allowing precise, and personalized simulations of disease progression. Our approach begins by disease trajectory description recaptioning. Next, a controllable multi-round diffusion model simulates the disease progression state for each patient, creating realistic intermediate disease state sequences. Finally, a diffusion-based video transition generation model interpolates disease progression between these states. We validate our framework across three medical imaging domains: chest X-ray, fundus photography, and skin image. Our results demonstrate that MedDream significantly outperforms baseline models in generating coherent and clinically plausible disease trajectories. Two user studies by veteran physicians provide further validation into the clinical relevance of the generated sequences. MedDream has the potential to assist healthcare providers in modeling disease trajectories, interpolating missing medical image data, and enhancing medical education through realistic, dynamic visualizations of disease progression.",
+    "url": "https://proceedings.mlr.press/v333/cao26a.html",
+    "id": "https://proceedings.mlr.press/v333/cao26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/cao26a/cao26a.pdf",
+    "authors": {
+      "0_Xu Cao": "Xu Cao",
+      "1_Kaizhao Liang": "Kaizhao Liang",
+      "2_Kuei-Da Liao": "Kuei-Da Liao",
+      "3_Tianren Gao": "Tianren Gao",
+      "4_Zhiguang Ding": "Zhiguang Ding",
+      "5_Jianguo Cao": "Jianguo Cao",
+      "6_Zheng Chen": "Zheng Chen",
+      "7_Jintai Chen": "Jintai Chen",
+      "8_James M Rehg": "James M Rehg",
+      "9_Jimeng Sun": "Jimeng Sun"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/cao26a/cao26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:924-951,\u00a02026.",
+    "supplemental": ""
+  },
+  "33_ALPACA A Reinforcement Learning Environment for Medication Repurposing and Treatment Optimization in Alzheimers Disease": {
+    "title": "ALPACA: A Reinforcement Learning Environment for Medication Repurposing and Treatment Optimization in Alzheimer\u2019s Disease",
+    "abstract": "Evaluating personalized, sequential treatment strategies for Alzheimer\u2019s disease (AD) using clinical trials is often impractical due to long disease horizons and substantial inter-patient heterogeneity. To address these constraints, we present the Alzheimer\u2019s Learning Platform for Adaptive Care Agents (ALPACA), an open-source, Gym-compatible reinforcement learning (RL) environment for systematically exploring personalized treatment strategies using existing therapies. ALPACA is powered by the Continuous Action-conditioned State Transitions (CAST) model trained on longitudinal trajectories from the Alzheimer\u2019s Disease Neuroimaging Initiative (ADNI), enabling medication-conditioned simulation of disease progression under alternative treatment decisions. We show that CAST autoregressively generates realistic medication-conditioned trajectories and that RL policies trained in ALPACA outperform no-treatment and behavior-cloned clinician baselines on memory-related outcomes. Interpretability analyses further indicated that the learned policies relied on clinically meaningful patient features when selecting actions. Overall, ALPACA provides a reusable in silico testbed for studying individualized sequential treatment decision-making for AD.",
+    "url": "https://proceedings.mlr.press/v333/brady26a.html",
+    "id": "https://proceedings.mlr.press/v333/brady26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/brady26a/brady26a.pdf",
+    "authors": {
+      "0_Nolan Brady": "Nolan Brady",
+      "1_Tom Yeh": "Tom Yeh"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/brady26a/brady26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:329-353,\u00a02026.",
+    "supplemental": ""
+  },
+  "34_Towards the Anonymization of Masked Language Modeling": {
+    "title": "Towards the Anonymization of Masked Language Modeling",
+    "abstract": "Rapid advances in Natural Language Processing (NLP) have revolutionized many fields, including healthcare. However, these advances raise significant privacy concerns, especially when pre-trained models, fine-tuned and specialized on sensitive data, can memorize and then expose and regurgitate personal information. This paper presents a privacy-preserving language modeling approach to address the problem of anonymization of language models, and thus promote their sharing. Specifically, we propose a Masked Language Modeling (MLM) methodology to specialize a BERT-like language model that prevents the model from memorizing direct and indirect identifying information present in the training data. We comprehensively evaluated our approach on several models using a medical dataset and a corpus of legal texts, and compared it to different baselines.  Our results indicate that by avoiding memorizing both direct and indirect identifiers during model specialization, our masked language modeling schemes offer a good tradeoff for maintaining high privacy while retaining high utility.",
+    "url": "https://proceedings.mlr.press/v333/boutet26a.html",
+    "id": "https://proceedings.mlr.press/v333/boutet26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/boutet26a/boutet26a.pdf",
+    "authors": {
+      "0_Antoine Boutet": "Antoine Boutet",
+      "1_Lucas Magnana": "Lucas Magnana",
+      "2_Juliette Senechal": "Juliette Senechal"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/boutet26a/boutet26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:985-1002,\u00a02026.",
+    "supplemental": ""
+  },
+  "35_LapDDPM Spectral Perturbation Diffusion for Robust SingleCell Manifold Generation": {
+    "title": "LapDDPM: Spectral Perturbation Diffusion for Robust Single-Cell Manifold Generation",
+    "abstract": "Generating high-fidelity and biologically plausible synthetic single-cell RNA sequencing (scRNA-seq) data is a critical challenge in computational biology, driven by the need to model high-dimensional, sparse, and non-linear cellular manifolds. Existing generative models often fail to capture the complex topology of cellular differentiation or lack robustness against technical noise and structural variability. We introduce LapDDPM, a novel conditional Graph Diffusion Probabilistic Model designed for robust manifold learning and high-fidelity generation. LapDDPM integrates graph-based inductive biases with score-based generative modeling, enhanced by a novel spectral adversarial perturbation mechanism. By systematically perturbing graph edge weights along principal spectral modes during training, our method acts as a Distributionally Robust Optimization (DRO) framework, enforcing invariance to structural noise. We further extend LapDDPM to spatial transcriptomics and multi-modal data, treating generation as a robust inverse problem on cellular graphs. Extensive experiments on diverse datasets, including PBMC3K, Dentate Gyrus, HLCA, Visium, and 10x Multiome, demonstrate that LapDDPM significantly outperforms state-of-the-art baselines in distribution matching, manifold preservation, and downstream utility, generating biologically coherent cell states.",
+    "url": "https://proceedings.mlr.press/v333/bini26a.html",
+    "id": "https://proceedings.mlr.press/v333/bini26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/bini26a/bini26a.pdf",
+    "authors": {
+      "0_Lorenzo Bini": "Lorenzo Bini",
+      "1_Stephane Marchand-Maillet": "Stephane Marchand-Maillet"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/bini26a/bini26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:312-328,\u00a02026.",
+    "supplemental": ""
+  },
+  "36_SocialLM Social Signal Processing of PatientProvider Communication using LLMs and Contextual Aggregation": {
+    "title": "SocialLM: Social Signal Processing of Patient-Provider Communication using LLMs and Contextual Aggregation",
+    "abstract": "Effective patient-provider communication is difficult to assess at scale. We examine whether large language models (LLMs) can track 20 social behaviors from clinical transcripts without fine-tuning. Across three model families and multiple prompting strategies, LLMs reliably detect social signals, though performance varies by patient race and visit segment. To address this variability under query-only API constraints, we introduce an agreement-weighted ensemble using group-level agreement patterns. This approach improves both accuracy and stability over the best individual model, demonstrating a practical pathway for scalable social signal tracking in clinical conversations.",
+    "url": "https://proceedings.mlr.press/v333/bedmutha26a.html",
+    "id": "https://proceedings.mlr.press/v333/bedmutha26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/bedmutha26a/bedmutha26a.pdf",
+    "authors": {
+      "0_Manas Satish Bedmutha": "Manas Satish Bedmutha",
+      "1_Feng Chen": "Feng Chen",
+      "2_Andrea L Hartzler": "Andrea L Hartzler",
+      "3_Trevor Cohen": "Trevor Cohen",
+      "4_Nadir Weibel": "Nadir Weibel"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/bedmutha26a/bedmutha26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:754-777,\u00a02026.",
+    "supplemental": ""
+  },
+  "37_Toward Improving Diagnostic Reasoning for Spina Bifida Care Benchmarking LLMPatient Interactions": {
+    "title": "Toward Improving Diagnostic Reasoning for Spina Bifida Care: Benchmarking LLM\u2013Patient Interactions",
+    "abstract": "Spina Bifida (SB) is a complex neural tube defect that presents multifaceted healthcare challenges requiring multidisciplinary management. While advances in foundation models (FMs) offer promising avenues for enhancing SB care through intelligent, context-aware support, existing models struggle to accurately identify and reason about SB\u2019s diverse symptoms. This study benchmarks eight widely used large language models (LLMs) through qualitative and quantitative evaluations, focusing on their ability to address the unique medical challenges of SB. This study presents an \\textit{inverse prompting} technique aimed at guiding LLMs through a step-by-step diagnostic process. By incorporating a predefined set of symptoms relevant to SB, this approach prevents premature conclusions and enhances diagnostic reasoning, starting to address the Problem of Inclusion-Exclusion (PIE) as formulated in this study. Our evaluations reveal significant limitations in the LLMs\u2019 abilities to accurately diagnose SB-related conditions, underscoring the need for specialized approaches. Building on these findings, this study proposes a novel framework that integrates a structured, symptom-based knowledge base specific to SB, enhancing the models\u2019 contextual understanding and reasoning capabilities. This work highlights the potential of tailored AI solutions in improving access to care for individuals with SB, particularly in populations where gaps in knowledgeable providers persist. By addressing the shortcomings of general-purpose LLMs, our suggested framework aims to streamline SB care and improve patient outcomes, paving the way for more effective AI-assisted healthcare interventions in complex chronic conditions.",
+    "url": "https://proceedings.mlr.press/v333/azhar26a.html",
+    "id": "https://proceedings.mlr.press/v333/azhar26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/azhar26a/azhar26a.pdf",
+    "authors": {
+      "0_Asfandyar Azhar": "Asfandyar Azhar",
+      "1_Shaurjya Mandal": "Shaurjya Mandal",
+      "2_Zaid Khan": "Zaid Khan",
+      "3_Nidhish Shah": "Nidhish Shah",
+      "4_Curtis Langlotz": "Curtis Langlotz",
+      "5_Brad Dicianno": "Brad Dicianno"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/azhar26a/azhar26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:552-571,\u00a02026.",
+    "supplemental": ""
+  },
+  "38_AgentRx A Benchmark Study of LLM Agents for Multimodal Clinical Prediction Tasks": {
+    "title": "AgentRx: A Benchmark Study of LLM Agents for Multimodal Clinical Prediction Tasks",
+    "abstract": "Building effective clinical decision support systems requires the synthesis of complex heterogeneous multimodal data. Such modalities include temporal electronic health records data, medical images, radiology reports, and clinical notes. Large language model (LLM)\u2013based agents have shown impressive performance in various healthcare tasks, especially those involving textual modalities. Considering the fragmentation of healthcare data across hospital systems, collaborative agent frameworks present a promising direction to mitigate data sharing challenges. However, the effectiveness of LLM agents for multimodal clinical risk prediction remains largely unexamined. In this work, we conduct a systematic evaluation of LLM-based agents for clinical prediction tasks using large-scale real-world data. We assess performance in unimodal and multimodal settings and quantify performance gaps between single agent and multi-agent systems. Our findings highlight that single agent frameworks outperform naive multi-agent systems, are better at handling multimodal data, and are better calibrated. This underscores a critical need for improving multi-agent collaboration to better handle heterogeneous inputs. By open-sourcing our code and evaluation framework, this work offers a new benchmark to support future developments relating to agentic systems in healthcare. ",
+    "url": "https://proceedings.mlr.press/v333/al-jorf26a.html",
+    "id": "https://proceedings.mlr.press/v333/al-jorf26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/al-jorf26a/al-jorf26a.pdf",
+    "authors": {
+      "0_Baraa Al Jorf": "Baraa Al Jorf",
+      "1_Farah Shamout": "Farah Shamout"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/al-jorf26a/al-jorf26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:52-73,\u00a02026.",
+    "supplemental": ""
+  },
+  "39_Cached Summary Embeddings for MemoryEfficient EHR Inference": {
+    "title": "Cached Summary Embeddings for Memory-Efficient EHR Inference",
+    "abstract": "Transformer-based clinical prediction models face a deployment challenge: processing long patient histories can require memory that exceeds available resources in resource-constrained settings. We propose a deployment architecture that separates expensive historical encoding from lightweight inference. In an offline preprocessing phase, a clinical language model compresses each patient\u2019s historical events into a fixed-size vector (768 dimensions, 5\u00a0KB per patient). At inference time, the prediction model processes only a short window of recent events, conditioned on the cached summary. Through 252 experiments on a 24-hour in-ICU mortality cohort from MIMIC-IV, we characterize when this architecture provides value. The benefit of cached summaries decays as the recent context window grows: a 6.5% relative AUROC improvement at $N$=8 recent events ($p < 0.001$) shrinks to a negligible 0.1% at $N$=256 (not statistically significant). We find that Feature-wise Linear Modulation (FiLM) outperforms token injection for integrating summaries ($p < 0.001$). Our results provide deployment guidance: when hardware constraints limit the recent context to 32 events or fewer, cached summaries recover meaningful predictive signal; when longer sequences are feasible, the caching overhead is not justified.",
+    "url": "https://proceedings.mlr.press/v333/al-attrach26a.html",
+    "id": "https://proceedings.mlr.press/v333/al-attrach26a.html",
+    "pdf": "https://proceedings.mlr.press/v333/al-attrach26a/al-attrach26a.pdf",
+    "authors": {
+      "0_Rafi Al Attrach": "Rafi Al Attrach",
+      "1_Rajna Fani": "Rajna Fani",
+      "2_David Restrepo": "David Restrepo",
+      "3_Yugang Jia": "Yugang Jia",
+      "4_Leo Anthony Celi": "Leo Anthony Celi",
+      "5_Peter Schuffler": "Peter Schuffler"
+    },
+    "pmlr_pdf": "https://raw.githubusercontent.com/mlresearch/v333/main/assets/al-attrach26a/al-attrach26a.pdf",
+    "github_url": "",
+    "conf_info": "Proceedings of the 7th Conference on Health, Inference, and Learning,\u00a0PMLR 333:778-793,\u00a02026.",
+    "supplemental": ""
+  }
+}
