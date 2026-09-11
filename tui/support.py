@@ -389,6 +389,7 @@ def load_taxonomy(search:bool=False):
 date_json = get_time().strftime("%m-%d-%Y_%H-%M-%S")
 console = Console(color_system="auto", stderr=True)
 logger = get_logger(console, log_dir=f"data/logs/tui/{date_json}.log")
+chrome_version = np.random.randint(125, 152)
 
 #Confernces
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]

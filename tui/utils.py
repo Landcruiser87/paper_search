@@ -12,17 +12,17 @@ import numpy as np
 import pandas as pd
 import curl_cffi as cf
 from os import path, mkdir
-from support import logger
 from bs4 import BeautifulSoup
 from urllib.parse import quote
 from typing import Callable, Optional
+from support import logger, chrome_version
 from dataclasses import dataclass, fields
 from sentence_transformers import SentenceTransformer
 from scipy.spatial.distance import cosine as scipy_cos
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity as sklearn_cos
-
 ################################# Dataclass #################################
+
 @dataclass
 class Paper:
     id      : str  | None = None
@@ -159,7 +159,6 @@ class GoogleScholar(object):
             return False
         
     def request_papers(self) -> dict:
-        chrome_version = np.random.randint(120, 141)
         baseurl = "https://scholar.google.com/"
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -324,7 +323,6 @@ class ArxivSearch(object):
             return False
         
     def request_papers(self) -> dict:
-        chrome_version = np.random.randint(120, 140)
         baseurl = "https://arxiv.org/search/advanced"
         headers = {
             'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -700,7 +698,6 @@ class xRxivBase(object):
             self.cursor += 1
     
     async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
-        chrome_version = np.random.randint(138, 139)
         if doi_url:
             baseurl = self.query_formatted
         else:
@@ -784,7 +781,6 @@ class xRxivBase(object):
         Returns:
             BeautifulSoup: BSoup object for parsing HTML
         """        
-        chrome_version = np.random.randint(125, 135)
         baseurl = doi + ".article-metrics"
         headers = {
             'accept': 'text/html, */*; q=0.01',
@@ -838,6 +834,11 @@ class bioRxiv(xRxivBase):
         )
 
 class medRxiv(xRxivBase):
+    """medRxiv class with all functions inherited from xRxivBase class
+
+    Args:
+        xRxivBase (_type_): _description_
+    """
     def __init__(self, variables:dict, progress_callback):
         super().__init__(
             server = "medRxiv",
