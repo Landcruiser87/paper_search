@@ -856,6 +856,124 @@ class medRxiv(xRxivBase):
             progress_callback = progress_callback
     )
 
+class SemanticScholarSearch(object):
+    def __init__(self, variables:dict):
+        self.params: dict = variables
+        self.results: dict = {}
+        self.configs: dict = self.load_config()
+        self.api_key: str = self.configs.get("apikey", "")
+
+    def load_config(self)->json:
+        """Load global variable configs
+        
+        Returns:
+            config_data: Loads configuation data
+        """
+        with open("./secret/config.json", "r") as f:
+            config_data = json.loads(f.read())
+        return config_data
+
+    def request_papers(self) -> tuple[dict|None, str|None]:
+        baseurl = "https://api.semanticscholar.org/graph/v1/paper/search"
+        headers = {}
+        if self.api_key:
+            headers["x-api-key"] = self.api_key
+
+        parameters = {
+            'query': self.params["query"],
+            'limit': self.params.get("limit", 20),
+            'fields': 'title,authors,abstract,url,year,citationCount,openAccessPdf'
+        }
+        
+        # Add the optional filters if they are provided
+        if self.params.get("year"):
+            parameters['year'] = self.params["year"]
+        
+        if self.params.get("publicationTypes"):
+            parameters['publicationTypes'] = self.params["publicationTypes"]
+            
+        if self.params.get("fieldsOfStudy"):
+            parameters['fieldsOfStudy'] = self.params["fieldsOfStudy"]
+            
+        if self.params.get("venue"):
+            parameters['venue'] = self.params["venue"]
+
+        max_retries = 3
+        base_delay = 2.0
+        
+        for attempt in range(max_retries + 1):
+            try:
+                response = requests.get(baseurl, headers=headers, params=parameters)
+                
+                # Success
+                if response.status_code == 200:
+                    data = response.json()
+                    if "data" in data and len(data["data"]) > 0:
+                        return self.parse_feed(data["data"]), None
+                    return None, f"No papers found for {self.params['query']}"
+                
+                # Rate Limiting (429)
+                elif response.status_code == 429:
+                    if attempt < max_retries:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Semantic Scholar rate limit reached. Retrying in {delay}s...")
+                        time.sleep(delay)
+                        continue
+                    return None, "Rate limit reached. Maximum retries exceeded."
+                
+                # Client Errors (400-499 excluding 429)
+                elif 400 <= response.status_code < 500:
+                    # Returns 400 for bad parameters or if the response exceeds 10MB
+                    return None, f"Client error {response.status_code}: Adjust query, fields, or limit."
+                
+                # Server Errors (5xx)
+                elif response.status_code >= 500:
+                    if attempt < max_retries:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Semantic Scholar server error {response.status_code}. Retrying in {delay}s...")
+                        time.sleep(delay)
+                        continue
+                    return None, f"Server error {response.status_code}. Try again later."
+                    
+            except Exception as e:
+                logger.warning(f"Semantic Scholar API connection error: {e}")
+                if attempt == max_retries:
+                    return None, str(e)
+                time.sleep(base_delay * (2 ** attempt))
+
+        return None, "Unexpected error occurred during Semantic Scholar search."
+            
+    def parse_feed(self, results:list) -> dict:
+        paper_dict = {"search_params": self.params}
+        for idx, result in enumerate(results):
+            paper = Paper()
+            # Change this to use the title and slice it so it doesn't break the UI if it's too long
+            title_str = result.get('title', 'Unknown Title')
+            paper.id = f"{idx}_s2_{title_str[:50]}" 
+            paper.title = title_str
+            paper.abstract = result.get('abstract', "")
+            
+            # Use openAccessPdf if available, else general url
+            if result.get('openAccessPdf'):
+                paper.pdf = result['openAccessPdf'].get('url', "")
+                paper.url = paper.pdf
+            else:
+                paper.url = result.get('url', "")
+                
+            paper.score = result.get('citationCount', 0)
+            
+            if result.get('authors'):
+                paper.authors = {f"{idx}_{a['name']}": a['name'] for idx, a in enumerate(result['authors'])}
+                
+            if result.get('year'):
+                paper.date_published = str(result['year'])
+                
+            paper.conference_info = "Semantic Scholar"
+            
+            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
+            
+        return paper_dict
+    
 ###############################  Date Functions ########################################
 #FUNCTION Date Check
 def is_a_date(datetext:str) -> bool:

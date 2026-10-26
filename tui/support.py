@@ -442,3 +442,14 @@ MEDARXIV_SUBJECTS= [
     "Rheumatology", "Sexual and Reproductive Health", "Sports Medicine",
     "Surgery", "Toxicology", "Transplantation", "Urology"
 ]
+
+
+SEMANTIC_SUBJECTS = ["Computer Science", "Medicine", "Chemistry", "Biology", "Materials Science",
+"Physics", "Geology", "Psychology", "Art", "History", "Geography",
+"Sociology", "Business", "Political Science", "Economics", "Philosophy",
+"Mathematics", "Engineering", "Environmental Science", "Agricultural and Food Sciences", 
+"Education", "Law", "Linguistics"]
+
+SEMANTIC_PUBS = ["Review", "JournalArticle", "CaseReport", "ClinicalTrial", "Conference",
+"Dataset", "Editorial", "LettersAndComments", "MetaAnalysis", "News", "Study",
+"Book", "BookSection"]

@@ -36,7 +36,7 @@ from textual.widgets.tree import TreeNode
 from sentence_transformers import util as st_utils
 #Custom Imports
 from utils import (
-    ArxivSearch, bioRxiv, medRxiv,
+    ArxivSearch, bioRxiv, medRxiv, SemanticScholarSearch,
     cosine_similarity, sbert, word2vec, 
     tfidf, get_c_time,clean_text, clean_string_values
 )
@@ -45,7 +45,8 @@ from support import (
     list_datasets, save_data, logger, #functions
     SEARCH_FIELDS, SEARCH_MODELS, MODEL_DESC, #global vars
     ARXIV_FIELDS, ARXIV_SUBJECTS, ARXIV_DATES, ARXIV_AREAS, #arXiv vars
-    XARXIV_SOURCES, XARXIV_FIELDS, XARXIV_SORT, BIOARXIV_SUBJECTS, MEDARXIV_SUBJECTS #xRxiv vars
+    XARXIV_SOURCES, XARXIV_FIELDS, XARXIV_SORT, BIOARXIV_SUBJECTS, MEDARXIV_SUBJECTS, #xRxiv vars
+    SEMANTIC_SUBJECTS, SEMANTIC_PUBS # Semantic Vars
 )
 if TYPE_CHECKING:
     from io import TextIOWrapper
@@ -195,16 +196,30 @@ class PaperSearch(App):
                             yield Input("Date To", id="xinput-arx-to", tooltip="Ex: 2025-4-12", type="text", disabled=True)
                             yield Button("Search",  id="xsearch-arxiv", tooltip="For search tips go to\nhttps://biorxiv.org/search/advanced")
 
-                # # Tab 6 - Semantic Scholar Search
-                # with TabPane("Semantic Scholar", id="s2-tab"):
-                #     with Container(id="srch-s2-container"):
-                #         yield Input("Type search here", id="input-s2", tooltip="Enter keywords, authors, or topics")
-                #         yield Static("Search Parameters", id="hdr-s2-params", classes="header")
-                #         with Vertical(id="sub-s2-limit"):
-                #             yield Input("Result limit", id="input-s2-limit", type="integer", value="20")
-                #             yield Input("Year (Optional)", id="input-s2-from", tooltip="Specific Year (e.g., 2023) or Range (2020-2023)", type="text")
-                #             yield Button("Search Semantic Scholar", id="search-s2")
-                #         yield Footer()
+                # Tab 6 - Semantic Scholar Search
+                with TabPane("Semantic Scholar", id="s2-tab"):
+                    with Container(id="srch-s2-container"):
+                        yield Input("Type search here", id="input-s2", tooltip="Enter keywords, authors, or topics")
+                        
+                        yield Static("Fields of Study", id="hdr-s2-fields", classes="header")
+                        yield Static("Publication Type", id="hdr-s2-pub", classes="header")
+                        yield Static("Filters", id="hdr-s2-filters", classes="header")
+                        
+                        with Vertical(id="s2-radios-left"):
+                            with RadioSet(id="radio-s2-study", classes="header"):
+                                for subject in SEMANTIC_SUBJECTS:
+                                    yield RadioButton(subject)
+                                    
+                        with Vertical(id="s2-radios-right"):
+                            with RadioSet(id="radio-s2-pubtype", classes="header"):
+                                for pub_type in SEMANTIC_PUBS:
+                                    yield RadioButton(pub_type)
+                                    
+                        with Vertical(id="sub-s2-limit"):
+                            yield Input("Result limit", id="input-s2-limit", type="integer", tooltip="20")
+                            yield Input("Year Range", id="input-s2-year", tooltip="Format: YYYY or YYYY-YYYY", type="text")
+                            yield Input("Venue", id="input-s2-venue", tooltip="e.g., ICML, Nature", type="text")
+                            yield Button("Search", id="search-s2")
 
     #FUNCTION - onmount
     def on_mount(self) -> None:
@@ -349,6 +364,10 @@ class PaperSearch(App):
     @on(Button.Pressed, "#xsearch-arxiv")
     def xarxiv_button_event(self):
         self.search_xrxiv()
+    
+    @on(Button.Pressed, "#search-s2")
+    def s2_button_event(self):
+        self.search_s2()
 
     #FUNCTION - Load Data
     def load_data(self, json_tree: TreeView, root_name:str, json_data:dict|str):
@@ -1056,7 +1075,109 @@ class PaperSearch(App):
             self.app.call_from_thread(remove_progress_ui)
             #Reload SelectionList to include search results
             self.reload_datasets()
-    
+
+
+    #FUNCTION - search Semantic Scholar
+    def search_s2(self):
+        srch_text = self.query_one("#input-s2", Input).value
+        limit = self.query_one("#input-s2-limit", Input).value
+        year = self.query_one("#input-s2-year", Input).value
+        venue = self.query_one("#input-s2-venue", Input).value
+        
+        # Extract radio set selections safely
+        study_radio = self.query_one("#radio-s2-study", RadioSet)
+        study = study_radio.pressed_button.label.plain if study_radio.pressed_button else ""
+        
+        pub_radio = self.query_one("#radio-s2-pubtype", RadioSet)
+        pub_type = pub_radio.pressed_button.label.plain if pub_radio.pressed_button else ""
+
+        if not self.is_numeric_string(str(limit)):
+            self.notify("Search limit must be numeric.", severity="error")
+            return
+
+        variables = {
+            "query": srch_text,
+            "limit": int(limit),
+            "year": year,
+            "fieldsOfStudy": study,
+            "publicationTypes": pub_type,
+            "venue": venue
+        }
+        
+        root_name = f"s2_{'-'.join(srch_text.lower().split())}"
+        
+        try:    
+            tree_view: TreeView = self.query_one("#tree-container", TreeView)
+            tree: Tree = tree_view.query_one(Tree)
+            
+            searchbar = SearchProgress(count=0, total=1)
+            self.search_container = Container(searchbar, id="loading-container")
+            self.mount(self.search_container)
+            
+            self._search_s2_worker(variables, root_name, tree)
+                
+        except Exception as e:
+            logger.error(f"Failed to initialize S2 search: {e}")
+
+    #FUNCTION - run S2 worker
+    @work(thread=True, exclusive=True, group="s2_searching")
+    async def _search_s2_worker(
+        self, 
+        variables: dict,
+        root_name: str,
+        tree: Tree
+    ):
+        """Worker thread to search Semantic Scholar"""
+        
+        def update_progress_ui(current_count: int):
+            if self.search_container and self.search_container.is_mounted:
+                try:
+                    progress_bar = self.search_container.query_one(SearchProgress)
+                    progress_bar.count = current_count
+                    progress_bar.advance(1)
+                    progress_bar.refresh()
+                except Exception as e:
+                    logger.error(f"Failed to update search progress bar: {e}")
+        
+        worker = get_current_worker()
+        s2 = SemanticScholarSearch(variables)
+
+        try:
+            # The retry loop and delay happen safely in this background thread
+            json_data, error_message = s2.request_papers()
+            
+            if json_data:
+                self.app.call_from_thread(update_progress_ui, 1)
+                # Subtract 1 because search_params is in the dict
+                self.app.call_from_thread(self.notify, f"{len(json_data) - 1} results found on Semantic Scholar")
+                
+                await asyncio.sleep(0.1)
+                if not worker.is_cancelled:
+                    try:
+                        self.app.call_from_thread(self.load_data, tree, root_name, json_data)
+                        save_data(root_name, json_data)
+                    except Exception as e:
+                        logger.error(f"Failed to save S2 search results: {e}")
+            elif error_message:
+                self.app.call_from_thread(self.notify, f"No results:\nMessage: {error_message}", severity="warning")
+                logger.warning(f"No Results due to {error_message}")
+
+        except Exception as e:
+            logger.error(f"Error during S2 worker run: {e}")
+            self.app.call_from_thread(self.notify, f"Search failed on Semantic Scholar:\n{e}", severity="error", timeout=2)
+
+        finally:
+            def remove_progress_ui():
+                if self.search_container and self.search_container.is_mounted:
+                    try:
+                        self.search_container.remove()
+                    except Exception as e:
+                        logger.error(f"Error removing search progress container: {e}")
+                self.search_container = None 
+                
+            self.app.call_from_thread(remove_progress_ui)
+            self.reload_datasets()
+
     ##########################  Tree Functions ####################################
     #FUNCTION - Tree Node select
     def on_tree_node_selected(self, event: Tree.NodeSelected) -> None:
