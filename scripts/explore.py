@@ -1,4 +1,3 @@
-import numpy as np
 from rich.logging import RichHandler
 from rich.console import Console
 from time import strftime, sleep
@@ -12,7 +11,7 @@ import time
 papers_dict, all_dict = {}, {}
 for year in range(2020, 2025):
     for conference in ["neurips", "icml", "iclr"]:
-        with open(f"../data/scraped/{year}_{conference}.json", "r") as f:
+        with open(f"./data/conferenceS/{year}_{conference}.json", "r") as f:
             papers_dict = json.loads(f.read())
             # remap the keys so they don't overlap
             papers_dict = {k+f"_{conference[:1]}_{str(year)[-2:]}":v for k, v in papers_dict.items()}
@@ -38,7 +37,7 @@ count_d = dict(Counter(list(chain(*centers))))
 #Combine known repeat centers
 tupes = [
     ("Massachusetts Institute of Technology", "MIT"),
-     ("Tsinghua University","Tsinghua University, Tsinghua University"),
+    ("Tsinghua University","Tsinghua University, Tsinghua University"),
     ("Stanford University", "Stanford"),
     ("UCLA", "University of California, Los Angeles"),
     ("UC Berkeley", "University of California, Berkeley")

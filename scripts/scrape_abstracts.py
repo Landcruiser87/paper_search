@@ -242,7 +242,7 @@ def extract_json(json_data:json, url:str)->dict:
     return base_dict
 
 def get_abstracts(json_data:json, headers:dict, url:str) -> dict:
-    """They split the abstracts into another JSON call at some point with the major conferences.
+    """They split the abstracts into another JSON call in 2026 with the major conferences.
     This will make an additional request to grab those abstracts and align them by ID. 
 
     Args:
@@ -372,6 +372,7 @@ def main():
     PMLR = request_conf("PMLR", year=years.start)
     global prog, task
     prog, task = support.mainspinner(console, len(MAIN_CONFERENCES)*len(years) + len(PMLR.keys())) 
+    subconf = False
 
     with prog:
         for year in years:
@@ -387,25 +388,25 @@ def main():
                     logger.warning(f"{conference:7s}:{year} not available.")
                 support.add_spin_subt(prog, f"[purple]{next(FUN_STATUS_UPDATE)}[/purple]", np.random.randint(3, 6))
         logger.warning(f"Main conferences from {years.start} to {years.stop} searched.")
+        if subconf:
+            #Search Sub conferences
+            for conference, link in PMLR.items():
+                year, conf = conference.split("_")
+                conf = conf.strip()
+                prog.update(task_id=task, description=f"[green]{year}[/green]:[yellow]{conf}[/yellow]", advance=1)
+                version = link.split("/")[-1]
+                logger.info(f"{conf}:{year} searching")
+                results = request_conf(link, version=version)
+                
+                #Author / Git extraction
+                for title, paperinfo in results.items():
+                    results[title] = request_paper(paperinfo, version)
+                    logger.info(f"parsing {title}")
+                    support.add_spin_subt(prog, f"[green]{title:<30s}[/green]", np.random.randint(1, 8))
 
-        #Search Sub conferences
-        for conference, link in PMLR.items():
-            year, conf = conference.split("_")
-            conf = conf.strip()
-            prog.update(task_id=task, description=f"[green]{year}[/green]:[yellow]{conf}[/yellow]", advance=1)
-            version = link.split("/")[-1]
-            logger.info(f"{conf}:{year} searching")
-            results = request_conf(link, version=version)
-            
-            #Author / Git extraction
-            for title, paperinfo in results.items():
-                results[title] = request_paper(paperinfo, version)
-                logger.info(f"parsing {title}")
-                support.add_spin_subt(prog, f"[green]{title:<30s}[/green]", np.random.randint(1, 8))
-
-            support.save_data(results, conf, year)
-            support.add_spin_subt(prog, f"[yellow]{next(FUN_STATUS_UPDATE)}[/yellow]", np.random.randint(3, 6))
-        logger.warning(f"Sub conferences from {years.start} to {years.stop} searched.")
+                support.save_data(results, conf, year)
+                support.add_spin_subt(prog, f"[yellow]{next(FUN_STATUS_UPDATE)}[/yellow]", np.random.randint(3, 6))
+            logger.warning(f"Sub conferences from {years.start} to {years.stop} searched.")
 
 if __name__ == "__main__":
     main()

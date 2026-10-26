@@ -735,29 +735,36 @@ class xRxivBase(object):
             #First request
             if post:
                 logger.debug(self.query_formatted)
-                if self.params["source"] == "bioRxiv":
-                    response = cf.requests.post(self.query_formatted, impersonate="chrome")
-                    logger.info("Much Success!")
+                response = cf.requests.post(self.query_formatted, impersonate="chrome")
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
+                #     logger.info("Much Success!")
 
-                elif self.params["source"] == "medRxiv":
-                    response = requests.post(self.query_formatted, headers=headers)
+                # elif self.params["source"] == "medRxiv":
+                #     # response = requests.post(self.query_formatted, headers=headers)
+                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
 
             #Individual paper request
             elif doi_url:
                 logger.debug(doi_url)
-                if self.params["source"] == "bioRxiv":
-                    response = cf.requests.get(url=doi_url, impersonate="chrome")
-                elif self.params["source"] == "medRxiv":
-                    response = requests.get(doi_url, headers=headers)
+                response = cf.requests.get(url=doi_url, impersonate="chrome")
+                #Old Code
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.get(url=doi_url, impersonate="chrome")
+                # elif self.params["source"] == "medRxiv":
+                #     response = requests.get(doi_url, headers=headers)
 
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
                 logger.debug(url)
-                if self.params["source"] == "bioRxiv":
-                    response = cf.requests.post(url=url, impersonate="chrome")
-                elif self.params["source"] == "medRxiv":
-                    response = requests.post(url=url, headers=headers)
+                response = cf.requests.post(url=url, impersonate="chrome")
+
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.post(url=url, impersonate="chrome")
+                # elif self.params["source"] == "medRxiv":
+                #     # response = requests.post(url=url, headers=headers)
+                #     response = cf.requests.post(url=url, impersonate="chrome")
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
@@ -801,11 +808,12 @@ class xRxivBase(object):
 
         try:
             logger.debug(baseurl)
-            if "biorxiv" in doi:
-                response = cf.requests.get(baseurl, impersonate="chrome")
-            else:
-                response = requests.get(baseurl, headers=headers)
-            await asyncio.sleep(np.random.randint(6,8)) #Extra long nap because metrics.... don't like to come through for some reason. 
+            response = cf.requests.get(baseurl, impersonate="chrome")
+            # if "biorxiv" in doi:
+            #     response = cf.requests.get(baseurl, impersonate="chrome")
+            # else:
+            #     response = requests.get(baseurl, headers=headers)
+            await asyncio.sleep(np.random.randint(6,8)) #Extra long nap because metrics.... don't like to come through quickly for some reason. 
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")

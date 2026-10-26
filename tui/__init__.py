@@ -194,7 +194,17 @@ class PaperSearch(App):
                             yield Input("Date From", id="xinput-arx-from", tooltip="Specific Year Ex:2025\nDate Range Ex: YYYY-MM-DD", type="text")
                             yield Input("Date To", id="xinput-arx-to", tooltip="Ex: 2025-4-12", type="text", disabled=True)
                             yield Button("Search",  id="xsearch-arxiv", tooltip="For search tips go to\nhttps://biorxiv.org/search/advanced")
-        yield Footer()
+
+                # # Tab 6 - Semantic Scholar Search
+                # with TabPane("Semantic Scholar", id="s2-tab"):
+                #     with Container(id="srch-s2-container"):
+                #         yield Input("Type search here", id="input-s2", tooltip="Enter keywords, authors, or topics")
+                #         yield Static("Search Parameters", id="hdr-s2-params", classes="header")
+                #         with Vertical(id="sub-s2-limit"):
+                #             yield Input("Result limit", id="input-s2-limit", type="integer", value="20")
+                #             yield Input("Year (Optional)", id="input-s2-from", tooltip="Specific Year (e.g., 2023) or Range (2020-2023)", type="text")
+                #             yield Button("Search Semantic Scholar", id="search-s2")
+                #         yield Footer()
 
     #FUNCTION - onmount
     def on_mount(self) -> None:
@@ -1081,4 +1091,4 @@ class PaperSearch(App):
         tree_view: TreeView = self.query_one("#tree-container", TreeView)
         tree: JSONTree = tree_view.query_one(JSONTree) 
         tree.show_root = not tree.show_root
-# ref https://www.newscatcherapi.com/blog/ultimate-guide-to-text-similarity-with-python#toc-3
+        # ref https://www.newscatcherapi.com/blog/ultimate-guide-to-text-similarity-with-python#toc-3
