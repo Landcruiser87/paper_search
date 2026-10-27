@@ -218,7 +218,7 @@ class PaperSearch(App):
                         with Vertical(id="sub-s2-limit"):
                             yield Input("Result limit", id="input-s2-limit", type="integer", tooltip="20")
                             yield Input("Year Range", id="input-s2-year", tooltip="Format: YYYY or YYYY-YYYY", type="text")
-                            yield Input("Venue", id="input-s2-venue", tooltip="e.g., ICML, Nature", type="text")
+                            yield Input("Venue", id="input-s2-venue", tooltip="e.g., Nature, New England Journal Medicine", type="text")
                             yield Button("Search", id="search-s2")
 
     #FUNCTION - onmount
