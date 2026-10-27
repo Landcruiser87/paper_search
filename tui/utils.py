@@ -14,6 +14,7 @@ import curl_cffi as cf
 from os import path, mkdir
 from bs4 import BeautifulSoup
 from urllib.parse import quote
+from textual.widgets import Tree
 from typing import Callable, Optional
 from support import logger, chrome_version
 from dataclasses import dataclass, fields
@@ -1030,7 +1031,7 @@ def clean_string_values(obj: dict|list|str) -> dict|list|str:
     return obj
 
 #FUNCTION clean text
-def clean_text(srch_text:str, srch_field, node)-> list:
+def clean_text(srch_text:str, srch_field:str, node:Tree)-> list:
     """String cleaning routine for cosine similarities.  Removes stopwords and numerics.
 
     Args:
@@ -1039,30 +1040,44 @@ def clean_text(srch_text:str, srch_field, node)-> list:
         node (_type_): Node of the tree
 
     Returns:
-        list: _description_
-    """    
-    #Pull out the fields into a list
-    data_fields = [x.data.get(srch_field) for x in node.children]
-    paper_names = [x.label.plain.strip("{}").strip() for x in node.children]
-    with open("./data/stopwords.txt", "r") as f:
-        stopwords_list = f.read()
+        tuple (list, list): returns the fields and paper names
+    """ 
+    data_fields = []
+    paper_names = []
+    # Alias for mlconf papers using "name" and search uses "title"
+    search_keys = ["title", "name"] if srch_field.lower() == "title" else [srch_field.lower()]
+    # Case-insensitive data extraction
+    for x in node.children:
+        paper_names.append(x.label.plain.strip("{}").strip())
+        if isinstance(x.data, dict):
+            val = next((str(v) for k, v in x.data.items() if k.lower() in search_keys), "")
+            data_fields.append(val)
+        else:
+            data_fields.append("")
     # stopwords source:
     # stopwords_list = requests.get("https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt").text
+    with open("./data/stopwords.txt", "r") as f:
+        stopwords_list = f.read()
     stopwords = set(stopwords_list.splitlines())
-    #Add the search term to the list at the zero index
+    
     data_fields.insert(0, srch_text)
     paper_names.insert(0, "papernames")
 
-    #Remove and clean stopwords
-    for idx, abstract in enumerate(data_fields):
-        if (abstract != None) & (isinstance(abstract, str)):
-            re_txt = re.sub(r'[\W_]+', ' ', abstract)
+    # Only remove stopwords if we are searching abstracts 
+    remove_stopwords = (srch_field.lower() == "abstract")
+
+    for idx, text_val in enumerate(data_fields):
+        if text_val and isinstance(text_val, str):
+            re_txt = re.sub(r'[\W_]+', ' ', text_val)
             l_txt = re_txt.lower().split()
-            #BUG - Do you want to be removing numerics still?
-            s_txt = [word for word in l_txt if word not in stopwords and not word.isnumeric()]
-            data_fields[idx] = " ".join(s_txt)
+            if remove_stopwords:
+                s_txt = [word for word in l_txt if word not in stopwords and not word.isnumeric()]
+                data_fields[idx] = " ".join(s_txt)
+            else:
+                data_fields[idx] = " ".join(l_txt)
         else:
             data_fields[idx] = ""
+            
     return data_fields, paper_names
 
 #FUNCTION TFIDF Vectorizer

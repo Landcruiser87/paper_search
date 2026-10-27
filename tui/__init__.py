@@ -562,30 +562,32 @@ class PaperSearch(App):
         Returns:
             (dict): Dictionary of results returned
         """        
-        #Load variables
         results = {}
         metric = SEARCH_MODELS[variables[0]]
         field = SEARCH_FIELDS[variables[1]]
         res_limit = int(variables[2])
         threshold = float(variables[3])
         
-        #Decide metric
+        # Alias mapping for title discrepancies
+        search_keys = ["title", "name"] if field.lower() == "title" else [field.lower()]
+        
         if metric == "Fuzzy":
             node_queue = deque(node.children)
             while node_queue:
                 paperkey = node_queue.popleft()
-                labels = [x.label.plain.split("=")[0] for x in paperkey.children]
-                if field in labels:
-                    index = labels.index(field)
-                    criteria = paperkey.children[index].label.plain.split("=")[1]
-                    query = Matcher(srch_text)
-                    match_num = query.match(criteria)
-                    if match_num > threshold:
-                        reskey = paperkey.label.plain[3:]
-                        results[reskey] = paperkey.data
-                        results[reskey]["metric_match"] = round(match_num, 3)
-                        results[reskey]["metric_thres"] = threshold
-                        results[reskey]["conference"] = conf
+                paper_dict = paperkey.data
+                
+                if isinstance(paper_dict, dict):
+                    criteria = next((str(v) for k, v in paper_dict.items() if k.lower() in search_keys), None)
+                    if criteria:
+                        query = Matcher(srch_text)
+                        match_num = query.match(criteria)
+                        if match_num > threshold:
+                            reskey = paperkey.label.plain.strip("{}").strip()
+                            results[reskey] = paper_dict
+                            results[reskey]["metric_match"] = round(match_num, 3)
+                            results[reskey]["metric_thres"] = threshold
+                            results[reskey]["conference"] = conf
 
         elif metric in ["Cosine", "Word2Vec", "Marco", "Specter"]:
             if metric == "Cosine":
@@ -597,6 +599,7 @@ class PaperSearch(App):
             else:
                 self.app.notify("Something broke", severity="error")
                 raise ValueError("Something broke, check me! Line 474")
+                
             arr = np.array(sims, dtype=np.float32)
             qual_indexes = np.where(arr >= threshold)[0]
             if qual_indexes.shape[0] > 0:
@@ -607,10 +610,10 @@ class PaperSearch(App):
                     label = paperkey.label.plain.strip("{}").strip()
                     papers = [x[1] for x in paper_info]
                     if label in papers:
-                        labels = [x.label.plain.split("=")[0] for x in paperkey.children]                 
-                        if field in labels:
-                            index = labels.index(field)
-                            results[label] = paperkey.data
+                        paper_dict = paperkey.data
+                        
+                        if isinstance(paper_dict, dict) and any(k.lower() in search_keys for k in paper_dict.keys()):
+                            results[label] = paper_dict
                             similarity = paper_info[papers.index(label)][2].item()
                             results[label]["metric_match"] = round(similarity, 4)
                             results[label]["metric_thres"] = threshold
@@ -623,7 +626,7 @@ class PaperSearch(App):
         #NOTE: slows down iterations when gc is collected here
         # gc.collect()
         return dict(res)
-    
+        
     #FUNCTION - add datasets
     def add_datasets(self):
         """Handles the 'Add Dataset' button press by launching a worker."""
