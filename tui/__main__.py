@@ -86,10 +86,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-#TODO - Reformat f strings that are calling bracketed variables
-
-# Test single brackets on mac as they use the special curly apostrophe
-# init.py -  787, 824, 889, 894, 967, 981, 993,
-# utils.py - 271
