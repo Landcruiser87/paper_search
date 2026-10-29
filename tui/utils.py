@@ -949,28 +949,27 @@ class SemanticScholarSearch(object):
         for idx, result in enumerate(results):
             paper = Paper()
             # Change this to use the title and slice it so it doesn't break the UI if it's too long
-            title_str = result.get('title', 'Unknown Title')
+            title_str = result.get("title", "Unknown Title")
             paper.id = f"{idx}_s2_{title_str[:50]}" 
             paper.title = title_str
-            paper.abstract = result.get('abstract', "")
+            paper.abstract = result.get("abstract", "")
             
             # Use openAccessPdf if available, else general url
-            if result.get('openAccessPdf'):
-                paper.pdf = result['openAccessPdf'].get('url', "")
+            if result.get("openAccessPdf"):
+                paper.pdf = result["openAccessPdf"].get("url", "")
                 paper.url = paper.pdf
             else:
-                paper.url = result.get('url', "")
+                paper.url = result.get("url", "")
                 
-            paper.score = result.get('citationCount', 0)
-            
-            if result.get('authors'):
+            paper.score = result.get("citationCount", 0)
+            if result.get("authors"):
                 paper.authors = {f"{idx}_{a['name']}": a['name'] for idx, a in enumerate(result['authors'])}
                 
-            if result.get('year'):
-                paper.date_published = str(result['year'])
+            if result.get("year"):
+                paper.date_published = str(result["year"])
                 
-            paper.conference_info = "Semantic Scholar"
-            
+            paper.conference_info = result.get("venue", "semantic")
+
             paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
             
         return paper_dict

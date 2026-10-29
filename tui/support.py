@@ -443,7 +443,6 @@ MEDARXIV_SUBJECTS= [
     "Surgery", "Toxicology", "Transplantation", "Urology"
 ]
 
-
 SEMANTIC_SUBJECTS = ["Computer Science", "Medicine", "Chemistry", "Biology", "Materials Science",
 "Physics", "Geology", "Psychology", "Art", "History", "Geography",
 "Sociology", "Business", "Political Science", "Economics", "Philosophy",
