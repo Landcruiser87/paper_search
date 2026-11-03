@@ -36,7 +36,7 @@ from textual.widgets.tree import TreeNode
 from sentence_transformers import util as st_utils
 #Custom Imports
 from utils import (
-    ArxivSearch, bioRxiv, medRxiv, SemanticScholarSearch,
+    ArxivSearch, bioRxiv, medRxiv, SemanticScholar,
     cosine_similarity, sbert, word2vec, 
     tfidf, get_c_time,clean_text, clean_string_values
 )
@@ -891,7 +891,6 @@ class PaperSearch(App):
             #Select the Tree object
             tree_view: TreeView = self.query_one("#tree-container", TreeView)
             tree: Tree = tree_view.query_one(Tree)
-
             try:
                 self.notify(f"{len(json_data)} papers found on arXiv searching {variables['query']} in subject {variables['subject']}")
                 #load the JSON into the Tree
@@ -1143,7 +1142,7 @@ class PaperSearch(App):
                     logger.error(f"Failed to update search progress bar: {e}")
         
         worker = get_current_worker()
-        s2 = SemanticScholarSearch(variables)
+        s2 = SemanticScholar(variables)
 
         try:
             # The retry loop and delay happen safely in this background thread

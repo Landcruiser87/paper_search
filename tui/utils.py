@@ -857,7 +857,7 @@ class medRxiv(xRxivBase):
             progress_callback = progress_callback
     )
 
-class SemanticScholarSearch(object):
+class SemanticScholar(object):
     def __init__(self, variables:dict):
         self.params: dict = variables
         self.results: dict = {}
