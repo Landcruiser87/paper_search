@@ -44,6 +44,9 @@ cd paper_search
 poetry install
 ```
 
+### Semantic Scholar API
+Due to obvious reasons of not wanting to version an API key into git, you will need to manually drop an API key into the `~.paper_search/data/secret` folder in order to use Semantic Scholar quickly.  The instructions for obtaining said key can be found here.  `https://www.semanticscholar.org/product/api#api-key`  If you have a .edu email, they will prioritize getting you a key quickly.  
+
 ---
 
 ## 💻 Usage & CLI Commands
