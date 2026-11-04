@@ -335,7 +335,7 @@ def load_json(fp:str)->json:
 ########################## Web functions ##########################################
 def download_conferences_bundle(target_dir: Path | None = None) -> bool:
     """Streams and unpacks the pre-compiled conference datasets into ~/.paper_search."""
-    dest_dir = target_dir or CONFERENCES_DIR
+    dest_dir = target_dir or CONF_DIR
     dest_dir.mkdir(parents=True, exist_ok=True)
 
     console.print(f"[bold cyan]Connecting to GitHub to download conference datasets...[/bold cyan]")
