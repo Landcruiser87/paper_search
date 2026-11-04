@@ -1089,7 +1089,12 @@ class PaperSearch(App):
         limit = self.query_one("#input-s2-limit", Input).value
         year = self.query_one("#input-s2-year", Input).value
         venue = self.query_one("#input-s2-venue", Input).value
-        
+        for variable in [year, venue]:
+            if variable == "Venue":
+                venue = ""
+            elif variable == "Year Range":
+                year = ""
+
         # Extract radio set selections safely
         study_radio = self.query_one("#radio-s2-study", RadioSet)
         study = study_radio.pressed_button.label.plain if study_radio.pressed_button else ""

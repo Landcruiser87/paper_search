@@ -1139,7 +1139,6 @@ def clean_text(srch_text:str, srch_field:str, node:Tree)-> list:
     # stopwords source:
     # stopwords_list = requests.get("https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt").text
     stopwords = load_stopwords()
-    stopwords = load_stopwords()
     data_fields.insert(0, srch_text)
     paper_names.insert(0, "papernames")
 
