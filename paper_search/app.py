@@ -334,8 +334,8 @@ class PaperSearch(App):
             codes = [Selection(y, x, False) for x, y in enumerate(BIOARXIV_SUBJECTS)]
         elif pressed == "medRxiv":
             codes = [Selection(y, x, False) for x, y in enumerate(MEDARXIV_SUBJECTS)]
-        elif pressed == "both":
-            codes = [Selection("all", 0, True)]
+        # elif pressed == "both":
+        #     codes = [Selection("all", 0, True)]
         categories.add_options(codes)
 
     @on(SelectionList.SelectionHighlighted, "#sl-arx-categories")
@@ -406,7 +406,6 @@ class PaperSearch(App):
         elif len(selected) > 1:
             for itemid in selected:
                 rem_conf = getattr(datasets.options[itemid].prompt, '_text', None)[0]
-                # rem_conf = datasets.options[itemid].prompt._text[0] + ".json"
                 for node in tree.root.children:
                     if rem_conf in node.label.plain:
                         self.app.notify(f"Removing {rem_conf}")
@@ -414,7 +413,6 @@ class PaperSearch(App):
                         sleep(0.1)
         else:
             rem_conf = getattr(datasets.options[selected[0]].prompt, '_text', None)[0]
-            # rem_conf = datasets.options[selected[0]].prompt._text[0] + ".json"
             for node in tree.root.children:
                 if rem_conf in node.label.plain:
                     self.app.notify(f"Removing {rem_conf}")
@@ -627,8 +625,6 @@ class PaperSearch(App):
             return
         
         res = sorted(results.items(), key=lambda x:x[1].get("metric_match"), reverse=True)[:res_limit]
-        #NOTE: slows down iterations when gc is collected here
-        # gc.collect()
         return dict(res)
         
     #FUNCTION - add datasets
