@@ -486,8 +486,8 @@ def main(force: bool = False, target_year: int | None = None):
                     papers_to_fetch = []
                     for title_key, paper_stub in feed_results.items():
                         # Fetch if:
-                        # 1. Not in existing local data
-                        # 2. Missing detail fields (like abstract or authors)
+                        # - Not in existing local data
+                        # - Missing detail fields (like abstract or authors)
                         if title_key not in existing_data:
                             papers_to_fetch.append((title_key, paper_stub))
                         elif not existing_data[title_key].get("abstract") or not existing_data[title_key].get("authors"):
