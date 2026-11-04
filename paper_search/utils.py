@@ -1238,37 +1238,36 @@ def sbert(model_name:str):
     Returns:
         model: Returns a loaded version of the model you want to run.  Models are loaded through the library sentence-transformers
     """    
+# FUNCTION Sbert Model
+def sbert(model_name: str):
+    """Loads up either of the Bidirectional Sentence Bert models for comparison.
+    Downloads and caches the model to ~/.paper_search/models on first use.
+    """
     try:
-        gpu_count = torch.cuda.device_count()
-        if gpu_count > 1:
-            device = "cuda:0" if torch.cuda.is_available() else "cpu"
-        else:
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-        
-        #Trained on a bunch of bing queries
-        if model_name == "Marco": #Polooooooo.
-            model_path = f"{DATA_DIR}/models/marco/"
-            model_id = "msmarco-MiniLM-L6-v3"
-            if path.exists(model_path):
-                model = SentenceTransformer(model_path, device = device)
-                logger.info("Model loaded locally")
+        device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        # trained on finding similar papers.  Works better with abstracts but suffers from long runtimes
+        # Define model parameters
+        if model_name == "Marco":
+            model_id = "msmarco-MiniLM-L6-v3"
+            model_path = Path(DATA_DIR) / "models" / "marco"
         elif model_name == "Specter":
             model_id = "allenai-specter"
-            model_path = f"{DATA_DIR}/models/specter"
-            if path.exists(model_path):
-                model = SentenceTransformer(model_path, device = device)
-                logger.info("Model loaded locally")                
-
+            model_path = Path(DATA_DIR) / "models" / "specter"
         else:
-            # Automatically download model from HuggingFace on first use and cache locally
+            raise ValueError(f"Unknown Sbert model: {model_name}")
+
+        # Load locally if cached, otherwise download and save
+        if model_path.exists() and any(model_path.iterdir()):
+            model = SentenceTransformer(str(model_path), device=device)
+            logger.info(f"{model_name} loaded locally from {model_path}")
+        else:
+            logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             model = SentenceTransformer(model_id, device=device)
             model_path.mkdir(parents=True, exist_ok=True)
             model.save_pretrained(str(model_path))
-            logger.info(f"{model_id} loaded and saved dynamically")
-                
+            logger.info(f"{model_id} downloaded and cached successfully")
+
         return model, device
-        
+
     except Exception as e:
-        raise ValueError(f"error:{e}\nYou probably to install sentence-transformers for model {model_name}")
+        raise ValueError(f"Error loading {model_name}: {e}")
