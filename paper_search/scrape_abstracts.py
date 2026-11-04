@@ -1,11 +1,16 @@
 import re
 import json
 import requests
+import argparse
 import numpy as np
 import xml.etree.ElementTree as ET
 from bs4 import BeautifulSoup
 from itertools import cycle
-from .support import console, logger, log_time, save_conference, mainspinner, add_spin_subt
+from .support import (
+    console, logger, log_time, 
+    save_conference, mainspinner, add_spin_subt,
+    download_conferences_bundle
+    )
 
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ECCV"] #"CLDD"-Got an xml error for 2024
@@ -361,6 +366,29 @@ def parse_paper(page_text:str):
 
     return temp
 
+def cli():
+    parser = argparse.ArgumentParser(
+        prog="paper-search-sync",
+        description="Synchronize conference datasets for PaperSearch",
+    )
+    parser.add_argument(
+        "--scrape",
+        action="store_true",
+        help="Run live web crawler to re-scrape conference abstracts (takes longer).",
+    )
+
+    args = parser.parse_args()
+    
+    # Runs the full scrape_abstracts loop
+    if args.scrape:
+        main()  
+    else:
+        # Default action: fast bundle download
+        success = download_conferences_bundle()
+        if not success:
+            console.print("[yellow]Falling back to live scraper...[/yellow]")
+            main()
+
 #NOTE START PROGRAM
 #FUNCTION main
 @log_time
@@ -410,5 +438,6 @@ def main():
                 
         except KeyboardInterrupt:
             console.print("Sync Interrupted, saved datasets still in tact")
+
 if __name__ == "__main__":
-    main()
+    cli()

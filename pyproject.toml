@@ -63,4 +63,4 @@ include = [
 paper-search = "paper_search.__main__:main"
 paper_search = "paper_search.__main__:main"
 paper-search-serve = "paper_search.serve_app:main"
-paper-search-sync = "paper_search.scrape_abstracts:main"
+paper-search-sync = "paper_search.scrape_abstracts:cli"

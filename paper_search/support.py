@@ -6,9 +6,11 @@ import json
 import time
 import shutil
 import logging
+import zipfile
 import datetime
-import numpy as np
 import requests
+import numpy as np
+from io import BytesIO
 from importlib import resources
 from bs4 import BeautifulSoup
 from rich import print
@@ -24,6 +26,9 @@ from rich.progress import (
     BarColumn,
     SpinnerColumn,
     TextColumn,
+    DownloadColumn,
+    TransferSpeedColumn,
+    TimeRemainingColumn,
     TimeElapsedColumn
 )
 
@@ -149,7 +154,7 @@ def launch_tui() -> Path | None:
     """Scans the conferences directory, prints available datasets,
     and prompts the user to select one or skip.
     """
-    directory = Path(DATA_DIR) / "conferences"
+    directory = CONF_DIR
     directory.mkdir(parents=True, exist_ok=True)
 
     tree = Tree(
@@ -161,10 +166,26 @@ def launch_tui() -> Path | None:
     # Filter to actual files
     files = [p for p in paths if p.is_file()]
 
+    # If no files exist, offer the automatic archive download
     if not files:
-        console.print(f"[yellow]No conferences found in {directory}[/yellow]")
-        console.print("[dim]Launching with an empty workspace (you can fetch papers inside the TUI)...[/dim]\n")
-        return None
+        console.print(f"[yellow]No conference datasets found in {directory}[/yellow]")
+        prompt_dl = console.input(
+            "[bold cyan]Download pre-compiled conference bundle (NeurIPS, ICML, ICLR)? [Y/n]: [/bold cyan]"
+        ).strip().lower()
+
+        if prompt_dl in ("", "y", "yes"):
+            if download_conferences_bundle(directory):
+                # Re-scan folder after extraction
+                tree = Tree(
+                    f":open_file_folder: [bold bright_blue]{directory}[/]",
+                    guide_style="bold bright_blue",
+                )
+                paths = walk_directory(directory, tree)
+                files = [p for p in paths if p.is_file()]
+
+        if not files:
+            console.print("[dim]Starting with empty workspace (live APIs still functional)...[/dim]\n")
+            return None
 
     # Print the tree of files found
     console.print(tree)
@@ -312,6 +333,52 @@ def load_json(fp:str)->json:
             return jsondata	
 
 ########################## Web functions ##########################################
+def download_conferences_bundle(target_dir: Path | None = None) -> bool:
+    """Streams and unpacks the pre-compiled conference datasets into ~/.paper_search."""
+    dest_dir = target_dir or CONFERENCES_DIR
+    dest_dir.mkdir(parents=True, exist_ok=True)
+
+    console.print(f"[bold cyan]Connecting to GitHub to download conference datasets...[/bold cyan]")
+
+    try:
+        response = requests.get(BUNDLE_URL, stream=True, timeout=15)
+        if response.status_code == 404:
+            console.print("[red]Download failed: conferences_bundle.zip not found on GitHub Releases.[/red]")
+            console.print("[dim]Make sure conferences_bundle.zip is attached to your latest GitHub release.[/dim]")
+            return False
+        response.raise_for_status()
+
+        total_size = int(response.headers.get("content-length", 0))
+        buffer = BytesIO()
+
+        progress = Progress(
+            SpinnerColumn(),
+            TextColumn("[bold blue]{task.description}[/bold blue]"),
+            BarColumn(),
+            DownloadColumn(),
+            TransferSpeedColumn(),
+            TimeRemainingColumn(),
+            console=console,
+        )
+
+        with progress:
+            task = progress.add_task("Downloading bundle...", total=total_size)
+            for chunk in response.iter_content(chunk_size=65536):
+                if chunk:
+                    buffer.write(chunk)
+                    progress.update(task, advance=len(chunk))
+
+        console.print("[dim]Extracting archive into ~/.paper_search/data/conferences/...[/dim]")
+        with zipfile.ZipFile(buffer) as zip_file:
+            zip_file.extractall(dest_dir)
+
+        console.print("[bold green]Success: Conference datasets downloaded and ready![/bold green]\n")
+        return True
+
+    except Exception as error:
+        console.print(f"[red]Error downloading conference archive: {error}[/red]\n")
+        return False
+    
 def get_categories(result:BeautifulSoup) -> dict:
     """[Ingest XML of summary page for articles info]
 
@@ -492,10 +559,12 @@ console = Console(color_system="auto", stderr=True)
 logger = get_logger(console, log_dir = f"{DATA_DIR}/logs/{date_json}.log")
 chrome_version = np.random.randint(125, 152)
 
-#Confernces
+# Confernces
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ICCV"] 
 SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]  
+# Conf data
+BUNDLE_URL = "https://github.com/Landcruiser87/paper_search/releases/latest/download/conferences_bundle.zip"
 
 #Metrics for asymetric similarity search
 SEARCH_MODELS = ["Fuzzy", "Cosine", "Word2Vec", "Marco", "Specter"]
