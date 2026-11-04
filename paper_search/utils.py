@@ -59,6 +59,18 @@ def load_stopwords() -> set[str]:
             return set(p.read_text(encoding="utf-8").splitlines())
     return set()
 
+def load_stopwords() -> set[str]:
+    # Look for bundled package stopwords first, fallback to user directory
+    candidates = [
+        PACKAGE_DIR / "data" / "stopwords.txt",
+        PACKAGE_DIR / "seed_data" / "stopwords.txt",
+        DATA_DIR / "stopwords.txt",
+    ]
+    for p in candidates:
+        if p.is_file():
+            return set(p.read_text(encoding="utf-8").splitlines())
+    return set()
+
 ################################# Classes #################################
 class GoogleScholar(object):
     #ISSUES with GScholar
@@ -887,6 +899,11 @@ class SemanticScholar(object):
         
         If missing, creates a template file and alerts the user with instructions.
 
+    def load_config(self) -> dict:
+        """Load global variable configs from ~/.paper_search/data/secrets/config.json.
+        
+        If missing, creates a template file and alerts the user with instructions.
+
         Returns:
             dict: Configuration dictionary containing API keys.
         """
@@ -926,6 +943,51 @@ class SemanticScholar(object):
                 )
 
             return config_data
+            dict: Configuration dictionary containing API keys.
+        """
+        config_path = Path(SECRET_DIR) / "config.json"
+
+        # If file does not exist, create a template and alert the user
+        if not config_path.exists():
+            config_path.parent.mkdir(parents=True, exist_ok=True)
+            template = {
+                "apikey": ""
+            }
+            try:
+                with open(config_path, "w", encoding="utf-8") as f:
+                    json.dump(template, f, indent=2)
+                logger.info(
+                    f"Config file created at {config_path}. "
+                    "To increase rate limits, add your Semantic Scholar API key: {\"apikey\": \"YOUR_KEY\"}"
+                )
+            except Exception as e:
+                logger.warning(f"Could not write default config to {config_path}: {e}")
+            return {}
+
+        # Read and parse existing config
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                config_data = json.loads(f.read())
+
+            if not isinstance(config_data, dict):
+                logger.warning(
+                    f"Config file at {config_path} must be a JSON dictionary (e.g. {{\"apikey\": \"YOUR_KEY\"}})."
+                )
+                return {}
+
+            if not config_data.get("apikey"):
+                logger.info(
+                    f"No 'apikey' found in {config_path}. Running Semantic Scholar with unauthenticated rate limits."
+                )
+
+            return config_data
+
+        except json.JSONDecodeError as e:
+            logger.warning(f"Malformed JSON in {config_path}: {e}. Running without API key.")
+            return {}
+        except Exception as e:
+            logger.warning(f"Error reading {config_path}: {e}")
+            return {}
 
         except json.JSONDecodeError as e:
             logger.warning(f"Malformed JSON in {config_path}: {e}. Running without API key.")
@@ -1116,6 +1178,7 @@ def clean_text(srch_text:str, srch_field:str, node:Tree)-> list:
     # stopwords source:
     # stopwords_list = requests.get("https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt").text
     stopwords = load_stopwords()
+    stopwords = load_stopwords()
     data_fields.insert(0, srch_text)
     paper_names.insert(0, "papernames")
 
@@ -1243,7 +1306,12 @@ def sbert(model_name: str):
 
         # Define model parameters
         if model_name == "Marco":
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+
+        # Define model parameters
+        if model_name == "Marco":
             model_id = "msmarco-MiniLM-L6-v3"
+            model_path = Path(DATA_DIR) / "models" / "marco"
             model_path = Path(DATA_DIR) / "models" / "marco"
         elif model_name == "Specter":
             model_id = "allenai-specter"
@@ -1255,14 +1323,27 @@ def sbert(model_name: str):
         if model_path.exists() and any(model_path.iterdir()):
             model = SentenceTransformer(str(model_path), device=device)
             logger.info(f"{model_name} loaded locally from {model_path}")
+            model_path = Path(DATA_DIR) / "models" / "specter"
         else:
+            raise ValueError(f"Unknown Sbert model: {model_name}")
+
+        # Load locally if cached, otherwise download and save
+        if model_path.exists() and any(model_path.iterdir()):
+            model = SentenceTransformer(str(model_path), device=device)
+            logger.info(f"{model_name} loaded locally from {model_path}")
+        else:
+            logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             model = SentenceTransformer(model_id, device=device)
             model_path.mkdir(parents=True, exist_ok=True)
             model.save_pretrained(str(model_path))
             logger.info(f"{model_id} downloaded and cached successfully")
 
+            logger.info(f"{model_id} downloaded and cached successfully")
+
         return model, device
 
+
     except Exception as e:
+        raise ValueError(f"Error loading {model_name}: {e}")
         raise ValueError(f"Error loading {model_name}: {e}")
