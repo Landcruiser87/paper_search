@@ -46,8 +46,18 @@ class Paper:
 
 ################################# Pathing #################################
 PACKAGE_DIR = Path(__file__).parent
-with open(DATA_DIR / "stopwords.txt", "r") as f:
-    stopwords_list = f.read()
+
+def load_stopwords() -> set[str]:
+    # Look for bundled package stopwords first, fallback to user directory
+    candidates = [
+        PACKAGE_DIR / "data" / "stopwords.txt",
+        PACKAGE_DIR / "seed_data" / "stopwords.txt",
+        DATA_DIR / "stopwords.txt",
+    ]
+    for p in candidates:
+        if p.is_file():
+            return set(p.read_text(encoding="utf-8").splitlines())
+    return set()
 
 ################################# Classes #################################
 class GoogleScholar(object):
@@ -872,15 +882,57 @@ class SemanticScholar(object):
         self.configs: dict = self.load_config()
         self.api_key: str = self.configs.get("apikey", "")
 
-    def load_config(self)->json:
-        """Load global variable configs
+    def load_config(self) -> dict:
+        """Load global variable configs from ~/.paper_search/data/secrets/config.json.
         
+        If missing, creates a template file and alerts the user with instructions.
+
         Returns:
-            config_data: Loads configuation data
+            dict: Configuration dictionary containing API keys.
         """
-        with open(f"{SECRET_DIR}/config.json", "r") as f:
-            config_data = json.loads(f.read())
-        return config_data
+        config_path = Path(SECRET_DIR) / "config.json"
+
+        # If file does not exist, create a template and alert the user
+        if not config_path.exists():
+            config_path.parent.mkdir(parents=True, exist_ok=True)
+            template = {
+                "apikey": ""
+            }
+            try:
+                with open(config_path, "w", encoding="utf-8") as f:
+                    json.dump(template, f, indent=2)
+                logger.info(
+                    f"Config file created at {config_path}. "
+                    "To increase rate limits, add your Semantic Scholar API key: {\"apikey\": \"YOUR_KEY\"}"
+                )
+            except Exception as e:
+                logger.warning(f"Could not write default config to {config_path}: {e}")
+            return {}
+
+        # Read and parse existing config
+        try:
+            with open(config_path, "r", encoding="utf-8") as f:
+                config_data = json.loads(f.read())
+
+            if not isinstance(config_data, dict):
+                logger.warning(
+                    f"Config file at {config_path} must be a JSON dictionary (e.g. {{\"apikey\": \"YOUR_KEY\"}})."
+                )
+                return {}
+
+            if not config_data.get("apikey"):
+                logger.info(
+                    f"No 'apikey' found in {config_path}. Running Semantic Scholar with unauthenticated rate limits."
+                )
+
+            return config_data
+
+        except json.JSONDecodeError as e:
+            logger.warning(f"Malformed JSON in {config_path}: {e}. Running without API key.")
+            return {}
+        except Exception as e:
+            logger.warning(f"Error reading {config_path}: {e}")
+            return {}
 
     def request_papers(self) -> tuple[dict|None, str|None]:
         baseurl = "https://api.semanticscholar.org/graph/v1/paper/search"
@@ -1063,10 +1115,7 @@ def clean_text(srch_text:str, srch_field:str, node:Tree)-> list:
             data_fields.append("")
     # stopwords source:
     # stopwords_list = requests.get("https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt").text
-    with open(f"{DATA_DIR}/stopwords.txt", "r") as f:
-        stopwords_list = f.read()
-    stopwords = set(stopwords_list.splitlines())
-    
+    stopwords = load_stopwords()
     data_fields.insert(0, srch_text)
     paper_names.insert(0, "papernames")
 
@@ -1176,10 +1225,10 @@ def word2vec():
         subprocess.check_call([sys.executable, "-m", "spacy", "download", model_name])
         return spacy.load(model_name)
 
-#FUNCTION Sbert Model
-def sbert(model_name:str):
+# FUNCTION Sbert Model
+def sbert(model_name: str):
     """Loads up either of the Bidirectional Sentence Bert models for comparison. 
-
+    Downloads and caches the model to ~/.paper_search/models on first use.
     Args:
         model_name (str): Which Sbert model you want
 
@@ -1188,38 +1237,32 @@ def sbert(model_name:str):
 
     Returns:
         model: Returns a loaded version of the model you want to run.  Models are loaded through the library sentence-transformers
-    """    
+    """
     try:
-        gpu_count = torch.cuda.device_count()
-        if gpu_count > 1:
-            device = "cuda:0" if torch.cuda.is_available() else "cpu"
-        else:
-            device = "cuda" if torch.cuda.is_available() else "cpu"
-        
-        #Trained on a bunch of bing queries
-        if model_name == "Marco": #Polooooooo.
-            model_path = f"{DATA_DIR}/models/marco/"
-            model_id = "msmarco-MiniLM-L6-v3"
-            if path.exists(model_path):
-                model = SentenceTransformer(model_path, device = device)
-                logger.info("Model loaded locally")
+        device = "cuda" if torch.cuda.is_available() else "cpu"
 
-        # trained on finding similar papers.  Works better with abstracts but suffers from long runtimes
+        # Define model parameters
+        if model_name == "Marco":
+            model_id = "msmarco-MiniLM-L6-v3"
+            model_path = Path(DATA_DIR) / "models" / "marco"
         elif model_name == "Specter":
             model_id = "allenai-specter"
-            model_path = f"{DATA_DIR}/models/specter"
-            if path.exists(model_path):
-                model = SentenceTransformer(model_path, device = device)
-                logger.info("Model loaded locally")                
-
+            model_path = Path(DATA_DIR) / "models" / "specter"
         else:
-            # Automatically download model from HuggingFace on first use and cache locally
+            raise ValueError(f"Unknown Sbert model: {model_name}")
+
+        # Load locally if cached, otherwise download and save
+        if model_path.exists() and any(model_path.iterdir()):
+            model = SentenceTransformer(str(model_path), device=device)
+            logger.info(f"{model_name} loaded locally from {model_path}")
+        else:
+            logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             model = SentenceTransformer(model_id, device=device)
             model_path.mkdir(parents=True, exist_ok=True)
             model.save_pretrained(str(model_path))
-            logger.info(f"{model_id} loaded and saved dynamically")
-                
+            logger.info(f"{model_id} downloaded and cached successfully")
+
         return model, device
-        
+
     except Exception as e:
-        raise ValueError(f"error:{e}\nYou probably to install sentence-transformers for model {model_name}")
+        raise ValueError(f"Error loading {model_name}: {e}")

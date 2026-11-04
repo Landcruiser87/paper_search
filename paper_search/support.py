@@ -148,6 +148,28 @@ def getpapercount(file:Path):
     return numpapers
 
 ################################# TUI Funcs ############################################
+def list_datasets() -> list[tuple]:
+    """Main function is list available datasources
+
+    Args:
+        paths list[Path]: List of pathlib Path's
+
+    Returns:
+        results list[tuple]: Returns a list of file names with their index as tuples
+    """
+    results = []
+    filenum = 0
+    s_paths = [CONF_DIR, SEARCH_DIR]
+    for directory in s_paths:
+        directory.mkdir(parents=True, exist_ok=True)
+        paths = sorted(
+            [p for p in directory.iterdir() if p.is_file() and p.suffix == ".json"],
+            key=lambda path: path.name.lower(),
+        )
+        for val in paths:
+            results.append((val.stem, filenum))
+            filenum += 1
+    return results
 
 #FUNCTION Launch TUI
 def launch_tui() -> Path | None:
@@ -258,28 +280,6 @@ def walk_directory(directory: Path, tree: Tree) -> None:
 
     return paths
 
-def list_datasets() -> list[tuple]:
-    """Main function is list available datasources
-
-    Args:
-        paths list[Path]: List of pathlib Path's
-
-    Returns:
-        results list[tuple]: Returns a list of file names with their index as tuples
-    """
-    results = []
-    filenum = 0
-    s_paths = [Path(f"{DATA_DIR}/conferences/"), Path(f"{DATA_DIR}/searches/")]
-    for directory in s_paths:
-        paths = sorted(
-            directory.iterdir(),
-            key=lambda path: (path.is_file(), path.name.lower()),
-        )
-        for val in paths:
-            results.append((val.stem, filenum))
-            filenum += 1
-
-    return results
 
 ########################## Saving funcs ##########################################
 
@@ -343,8 +343,8 @@ def download_conferences_bundle(target_dir: Path | None = None) -> bool:
     try:
         response = requests.get(BUNDLE_URL, stream=True, timeout=15)
         if response.status_code == 404:
-            console.print("[red]Download failed: conferences_bundle.zip not found on GitHub Releases.[/red]")
-            console.print("[dim]Make sure conferences_bundle.zip is attached to your latest GitHub release.[/dim]")
+            logger.warning("[red]Download failed: conferences_bundle.zip not found on GitHub Releases.[/red]")
+            logger.warning("[dim]Make sure conferences_bundle.zip is attached to your latest GitHub release.[/dim]")
             return False
         response.raise_for_status()
 
@@ -370,7 +370,14 @@ def download_conferences_bundle(target_dir: Path | None = None) -> bool:
 
         console.print("[dim]Extracting archive into ~/.paper_search/data/conferences/...[/dim]")
         with zipfile.ZipFile(buffer) as zip_file:
-            zip_file.extractall(dest_dir)
+            for member in zip_file.infolist():
+                if member.is_dir():
+                    continue
+                filename = Path(member.filename).name
+                if filename.endswith(".json"):
+                    target_file = dest_dir / filename
+                    with zip_file.open(member) as source, open(target_file, "wb") as target:
+                        shutil.copyfileobj(source, target)
 
         console.print("[bold green]Success: Conference datasets downloaded and ready![/bold green]\n")
         return True
@@ -448,26 +455,24 @@ def rebuild_taxonomy() -> dict:
         logger.warning(f"An error occured and categories could not be extracted. Check DOM for updated field names")
 
 def load_taxonomy(search:bool=False):
+    categories = {}
     try:
         if search:
             categories = rebuild_taxonomy()
             cat_json = json.dumps(categories, indent=2, cls=NumpyArrayEncoder)
-            with open(f"{DATA_DIR}/arxiv_cat.json", "w") as outf:
+            with open(DATA_DIR / "arxiv_cat.json", "w", encoding="utf-8") as outf:
                 outf.write(cat_json)
-
         else:
-            path = f"{DATA_DIR}/arxiv_cat.json"
-            if os.path.exists(path):
-                categories = load_json(path)
+            path = DATA_DIR / "arxiv_cat.json"
+            if path.exists():
+                categories = load_json(str(path)) or {}
             else:
-                logger.warning(f"An error occured loading the arx-cat.json file")
-
-        return categories 
-    
+                logger.warning("arxiv_cat.json not found. Set search=True or fetch taxonomy.")
+        return categories
     except Exception as e:
-        logger.warning("Arxiv Categories were not loaded properly")
-        logger.warning(f"Error: {e}")
-        logger.warning("To rebuild Taxonomy, set initial search variable to True")
+        logger.warning(f"Arxiv Categories were not loaded properly: {e}")
+        return {}
+
 ################################# Rich Spinner Control ####################################
 
 #FUNCTION Progress bar
@@ -519,39 +524,38 @@ def add_spin_subt(prog:Progress, msg:str, howmanysleeps:int):
     prog.update(liljob, visible=False)
 
 ########################## Global Variables for import ##########################################
-def init_workspace():
-    # Ensure folders exist on startup
-    for path in [DATA_DIR, LOG_DIR, MODEL_DIR, SCREEN_DIR, SECRET_DIR, CONF_DIR, DATA_DIR / "searches", LOG_DIR / "tui"]:
-        path.mkdir(parents=True, exist_ok=True)
-    
-    if not any(CONF_DIR.iterdir()):
-        try:
-            # Locate seed data inside installed package
-            seed_path = resources.files("paper_search") / "seed_data"
-            
-            # Copy bundled conference seed files
-            seed_conf = seed_path / "conferences"
-            if seed_conf.is_dir():
-                for file_path in seed_conf.iterdir():
-                    if file_path.is_file():
-                        shutil.copy2(file_path, CONF_DIR / file_path.name)
-
-            # Copy baseline taxonomy if available
-            taxonomy = seed_path / "arxiv_cat.json"
-            if taxonomy.is_file():
-                shutil.copy2(taxonomy, CONF_DIR / "arxiv_cat.json")
-
-        except Exception as e:
-            # Non-fatal: user can still fetch new datasets
-            pass          
-
 USER_DIR = Path.home() / ".paper_search"
 DATA_DIR = USER_DIR / "data"
 LOG_DIR = DATA_DIR / "logs"
 CONF_DIR = DATA_DIR / "conferences"
 MODEL_DIR = DATA_DIR / "models"
 SCREEN_DIR = DATA_DIR / "screenshots"
+SEARCH_DIR = DATA_DIR / "searches"
 SECRET_DIR = DATA_DIR / "secrets"
+
+########################## Global Init ##########################################
+def init_workspace():
+    # Ensure all directories exist
+    for path in [DATA_DIR, LOG_DIR, MODEL_DIR, SCREEN_DIR, SECRET_DIR, CONF_DIR, SEARCH_DIR, LOG_DIR / "tui"]:
+        path.mkdir(parents=True, exist_ok=True)
+    
+    # Copy seed data if conferences folder is empty
+    if not any(CONF_DIR.iterdir()):
+        try:
+            seed_path = resources.files("paper_search") / "seed_data"
+            seed_conf = seed_path / "conferences"
+            if seed_conf.is_dir():
+                for file_path in seed_conf.iterdir():
+                    if file_path.is_file():
+                        shutil.copy2(file_path, CONF_DIR / file_path.name)
+
+            taxonomy = seed_path / "arxiv_cat.json"
+            if taxonomy.is_file():
+                shutil.copy2(taxonomy, DATA_DIR / "arxiv_cat.json")
+        except Exception:
+            pass
+
+init_workspace()
 
 #logger/console stuffs
 date_json = get_time().strftime("%m-%d-%Y_%H-%M-%S")
@@ -562,9 +566,10 @@ chrome_version = np.random.randint(125, 152)
 # Confernces
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ICCV"] 
-SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]  
+SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]
+
 # Conf data
-BUNDLE_URL = "https://github.com/Landcruiser87/paper_search/releases/latest/download/conferences_bundle.zip"
+BUNDLE_URL = "https://github.com/Landcruiser87/paper_search/releases/latest/download/conference_bundle.zip"
 
 #Metrics for asymetric similarity search
 SEARCH_MODELS = ["Fuzzy", "Cosine", "Word2Vec", "Marco", "Specter"]

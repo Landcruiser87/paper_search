@@ -72,7 +72,7 @@ class PaperSearch(App):
     root_data_dir = var(Path(f"{DATA_DIR}/conferences"))
     srch_data_dir = var(Path(f"{DATA_DIR}/searches"))
     selected_node_data:  reactive[object | None] = reactive(None)
-    all_datasets: list = list_datasets()
+    all_datasets: list = []
 
     def __init__(
         self,
@@ -82,7 +82,7 @@ class PaperSearch(App):
         watch_css=False,
     ):
         super().__init__(driver_class, css_path, watch_css)
-
+        self.all_datasets = list_datasets()
         if json_file is None:
             self.json_data = "{}"
             self.json_name = ""
@@ -113,7 +113,7 @@ class PaperSearch(App):
                         with Container(id="dc-leftside"):
                             yield Static("Available Datasets", id="data-title", classes="header")
                             yield Input(tooltip="Begin typing to filter datasets", id="input-filt", type="text")
-                            yield SelectionList(*self.all_datasets, name="Dataset List", id="datasets")
+                            yield SelectionList(name="Dataset List", id="datasets")
 
                         with Container(id="dc-rightside"):
                             yield Button("Add Dataset", id="add-button")
@@ -233,6 +233,7 @@ class PaperSearch(App):
             
         json_docview = self.query_one(JSONDocumentView)
         json_docview.update_document(json_data if self.json_name else "")
+        self.reload_datasets()
         tree.focus()
 
     @on(SelectionList.SelectedChanged, "#datasets")
@@ -652,7 +653,7 @@ class PaperSearch(App):
                     # Determine source path based on whether the base name has numbers
                     has_a_year = re.search(r"\d{4}", ds_name)
                     source_p = self.root_data_dir if has_a_year else self.srch_data_dir
-                    json_path = PurePath(Path.cwd(), source_p, Path(ds_name))
+                    json_path = Path(source_p) / ds_name
                     datasets_to_load.append((ds_name, json_path))
                 else:
                      self.notify(f"Could not retrieve name for selection index {index}.", severity="warning")
