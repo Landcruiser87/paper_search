@@ -1,0 +1,1225 @@
+# -*- coding: utf-8 -*-
+import re
+import sys
+import json
+import time
+import spacy
+import torch
+import asyncio
+import requests
+import datetime
+import contextlib
+import subprocess
+import numpy as np
+import pandas as pd
+import curl_cffi as cf
+from pathlib import Path
+from os import path
+from bs4 import BeautifulSoup
+from urllib.parse import quote
+from textual.widgets import Tree
+from typing import Callable, Optional
+from dataclasses import dataclass, fields
+from sentence_transformers import SentenceTransformer
+from scipy.spatial.distance import cosine as scipy_cos
+from sklearn.feature_extraction.text import TfidfVectorizer
+from .support import logger, chrome_version, DATA_DIR, SECRET_DIR
+from sklearn.metrics.pairwise import cosine_similarity as sklearn_cos
+
+################################# Dataclass #################################
+@dataclass
+class Paper:
+    id      : str  | None = None
+    title   : str  | None = None
+    authors : list | None = None
+    keywords: list | None = None
+    category: list | None = None
+    abstract: str = ""
+    url     : str = ""
+    pdf     : str = ""
+    doi     : str = ""
+    score   : float = 0
+    github_url     : str = ""
+    supplemental   : str = ""  #general comments
+    date_published : str = ""  #mm-dd-yyyy
+    conference_info: str = ""  #e.g. arxiv
+
+################################# Pathing #################################
+PACKAGE_DIR = Path(__file__).parent
+with open(DATA_DIR / "stopwords.txt", "r") as f:
+    stopwords_list = f.read()
+
+################################# Classes #################################
+class GoogleScholar(object):
+    #ISSUES with GScholar
+        #Unfortunately it looks like I might have to figure out a way to 
+        #parse an unknown result format to get the information I want for comparison. 
+        
+        #Don't haves
+            #I can't get a full abstract.  
+            #I can't get keywords or a doi
+            #I can't get all the authors
+            #I don't have a DOI
+        #Do haves
+            #I can get a pdf url
+            #I can get a source possibly
+            #I can get publisher and year
+        
+        #So ...  
+        # In general, a publication on Google Scholar has two forms:
+            #* Appearing as a PUBLICATION SNIPPET and
+            #* Appearing as a paper in an AUTHOR PAGE
+
+            
+    def __init__(self, variables:dict):
+        self.params: dict = variables
+        self.results: list = []
+
+    def date_format(self):
+        self.params["dates"] = self.params["dates"].lower().split()
+        self.params["dates"] = "_".join(self.params["dates"])
+        self.params["submitted_date"] = datetime.datetime.today().date()
+        self.params["submitted_date"] = self.params["submitted_date"].strftime("%Y-%m-%d")
+
+        if self.params["dates"] == "specific_year":
+            start = self.params["year"]
+            if len(start) == 4 and start.isdigit():
+                return True
+            else:
+                return False
+        elif self.params["dates"] == "past_12_months":
+            self.params["start_date"] = datetime.datetime.today().date() - datetime.timedelta(days=365)
+            self.params["start_date"] = self.params["start_date"].strftime("%Y-%m-%d")
+            self.params["end_date"] = self.params["submitted_date"]
+            self.params["dates"] = "past_12"
+            return True
+        elif self.params["dates"] == "date_range":
+            start = self.params["start_date"]
+            end = self.params["end_date"]
+            for val in [start, end]:
+                if not is_a_date(val):
+                    logger.warning("Error in date formatting, please check inputs")
+                    return False
+            return True
+        elif self.params["dates"] == "all_dates":
+            #NOTE come back and check the date format for here. 
+            return True
+    
+    def parse_feed(self, results:list) -> dict:
+        paper_dict = {"search_params":self.params}
+        for idx, result in enumerate(results):
+            paper = Paper()
+            #Get the URL
+            url = result.find("p", {"class":"list-title is-inline-block"})
+            paper.url = url.select("a")[0].get('href')
+            #Grab title
+            paper.title = result.find("p", attrs={"class": lambda e: e.startswith("title")}).text.strip()
+            paper.id = str(idx) + "_" + paper.title
+            #Grab authors
+            authors = result.find("p", {"class":"authors"})
+            if authors != None:
+                paper.authors = {str(idx) + "_" + x.text:x.text for idx, x in enumerate(authors.find_all("a"))}
+            #Abstract
+            paper.abstract = result.find("span", attrs={"class":"abstract-full"}).text.strip()[:-15]
+            categories = result.find("div", attrs={"class":"tags is-inline-block"})
+            if categories != None:
+                paper.category = categories.text.split()
+
+            comments = result.find("p", attrs={"class": lambda e: e.startswith("comments")})
+            if comments != None:
+                comment_= comments.find("span", attrs={"class":"has-text-grey-dark mathjax"})
+                if comment_ != None:
+                    paper.supplemental = comment_.text
+
+            published = result.find("p", attrs={"class":"is-size-7"})
+            if published != None:
+                temp = published.find("span", attrs={"class": lambda e: e.startswith("has-text-black-bis")})
+                if temp.text == "Submitted":
+                    paper.date_published = datetime.datetime.strptime(temp.next_sibling.strip().strip(";"), '%d %B, %Y')
+
+            if "github" in paper.abstract:
+                #This regex will pull out a github.io or github.com link
+                pattern = r"((?:https?://)?(?:www\.)?(?:[a-zA-Z0-9-]+\.)?github\.(?:com|io)(?:/[a-zA-Z0-9\._-]+)*)"
+                possiblematch = re.findall(pattern, paper.abstract)
+                if possiblematch:
+                    paper.github_url = possiblematch[0]
+            paper.conference_info = "https://scholar.google.com"
+            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
+            del paper
+        
+        return paper_dict
+          
+    def classification_format(self):
+        main_cat = self.params["subject"].lower()
+        if " " in main_cat:
+            main_cat = "_".join(main_cat.split())
+        self.params["classification"] = f"classification-{main_cat}"
+        search_cat = self.params["categories"]
+        
+        try:
+            if len(search_cat) > 1:
+                self.params["categories"] = "+OR+".join(search_cat)
+                self.params["add_cat"] = True
+
+            return True
+        
+        except Exception as e:
+            logger.warning(f"Error in classification formatting\n{e}")
+            return False
+        
+    def request_papers(self) -> dict:
+        baseurl = "https://scholar.google.com/"
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-language': 'en-US,en;q=0.9',
+            'priority': 'u=0, i',
+            'referer': baseurl,
+            'sec-ch-ua': f'"Not)A;Brand";v="99", "Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-user': '?1',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+        }
+
+        #Input validation checks
+        formatted = self.date_format()
+        classy = self.classification_format()
+        if not formatted or not classy:
+            return None, "Error in formatting classification or date"
+
+        parameters = {
+            'advanced': '',                        
+            'terms-0-operator': 'AND',              
+            'terms-0-term': self.params["query"],
+            'terms-0-field': self.params["field"],
+            self.params["classification"]:'y',
+            'classification-include_cross_list': 'include',
+            'date-filter_by': self.params["dates"],
+            'date-year': self.params["year"],
+            'date-from_date': self.params["start_date"],
+            'date-to_date': self.params["end_date"],
+            'date-date_type': "submitted_date_first", 
+            'abstracts': 'show',
+            'size': self.params["limit"],
+            'order':'-submitted_date',
+        }
+        if self.params["add_cat"]:
+            parameters[f'{self.params["classification"]}' + "_archives"]  = self.params["categories"]
+
+        try:
+            response = requests.get(baseurl, headers=headers, params=parameters)
+            
+        except Exception as e:
+            logger.warning(f"A general request error occured.  Check URL\n{e}")
+
+        if response.status_code != 200:
+            logger.warning(f'Status code: {response.status_code}')
+            logger.warning(f'Reason: {response.reason}')
+            return None, f"Status Code {response.status_code} Reason: {response.reason}"
+        
+        time.sleep(3) #Be nice to the servers
+        bs4ob = BeautifulSoup(response.content, "lxml")
+        results = bs4ob.find_all("li", {"class":"arxiv-result"})
+        if results:
+            logger.info(f'{len(results)} papers returned from arxiv searching {self.params["query"]}')
+            new_papers = self.parse_feed(results)
+            return new_papers, None
+
+        else:
+            message = f"No papers returned for search ({self.params['query']}) in category {self.params['subject']}"
+            logger.warning(message)
+            return None, message
+
+class ArxivSearch(object):
+    def __init__(self, variables:dict):
+        self.params: dict = variables
+        self.results: list = []
+
+    def date_format(self):
+        self.params["dates"] = self.params["dates"].lower().split()
+        self.params["dates"] = "_".join(self.params["dates"])
+        self.params["submitted_date"] = datetime.datetime.today().date()
+        self.params["submitted_date"] = self.params["submitted_date"].strftime("%Y-%m-%d")
+
+        if self.params["dates"] == "specific_year":
+            start = self.params["year"]
+            if len(start) == 4 and start.isdigit():
+                return True
+            else:
+                return False
+        elif self.params["dates"] == "past_12_months":
+            self.params["start_date"] = datetime.datetime.today().date() - datetime.timedelta(days=365)
+            self.params["start_date"] = self.params["start_date"].strftime("%Y-%m-%d")
+            self.params["end_date"] = self.params["submitted_date"]
+            self.params["dates"] = "past_12"
+            return True
+        elif self.params["dates"] == "date_range":
+            start = self.params["start_date"]
+            end = self.params["end_date"]
+            for val in [start, end]:
+                if not is_a_date(val):
+                    logger.warning("Error in date formatting, please check inputs")
+                    return False
+            return True
+        elif self.params["dates"] == "all_dates":
+            #NOTE come back and check the date format for here. 
+            return True
+    
+    def parse_feed(self, results:list) -> dict:
+        paper_dict = {"search_params":self.params}
+        for idx, result in enumerate(results):
+            paper = Paper()
+            #Get the URL
+            url = result.find("p", {"class":"list-title is-inline-block"})
+            paper.url = url.select("a")[0].get('href')
+            #Grab title
+            paper.title = result.find("p", attrs={"class": lambda e: e.startswith("title")}).text.strip()
+            paper.id = str(idx) + "_" + paper.title
+            #Grab authors
+            authors = result.find("p", {"class":"authors"})
+            if authors != None:
+                paper.authors = {str(idx) + "_" + x.text:x.text for idx, x in enumerate(authors.find_all("a"))}
+            #Abstract
+            paper.abstract = result.find("span", attrs={"class":"abstract-full"}).text.strip()[:-15]
+            categories = result.find("div", attrs={"class":"tags is-inline-block"})
+            if categories != None:
+                paper.category = categories.text.split()
+
+            comments = result.find("p", attrs={"class": lambda e: e.startswith("comments")})
+            if comments != None:
+                comment_= comments.find("span", attrs={"class":"has-text-grey-dark mathjax"})
+                if comment_ != None:
+                    paper.supplemental = comment_.text
+
+            published = result.find("p", attrs={"class":"is-size-7"})
+            if published != None:
+                temp = published.find("span", attrs={"class": lambda e: e.startswith("has-text-black-bis")})
+                if temp.text == "Submitted":
+                    paper.date_published = datetime.datetime.strptime(temp.next_sibling.strip().strip(";"), '%d %B, %Y')
+
+            if "github" in paper.abstract:
+                #This regex will pull out a github.io or github.com link
+                pattern = r"((?:https?://)?(?:www\.)?(?:[a-zA-Z0-9-]+\.)?github\.(?:com|io)(?:/[a-zA-Z0-9\._-]+)*)"
+                possiblematch = re.findall(pattern, paper.abstract)
+                if possiblematch:
+                    paper.github_url = possiblematch[0]
+            paper.conference_info = "https://arxiv.org"
+            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}# asdict(paper). asdict not saving the authors keys
+            del paper
+        
+        return paper_dict
+          
+    def classification_format(self):
+        main_cat = self.params["subject"].lower()
+        if " " in main_cat:
+            main_cat = "_".join(main_cat.split())
+        self.params["classification"] = f"classification-{main_cat}"
+        search_cat = self.params["categories"]
+        
+        try:
+            if len(search_cat) > 1:
+                self.params["categories"] = "+OR+".join(search_cat)
+                self.params["add_cat"] = True
+
+            return True
+        
+        except Exception as e:
+            logger.warning(f"Error in classification formatting\n{e}")
+            return False
+        
+    def request_papers(self) -> dict:
+        baseurl = "https://arxiv.org/search/advanced"
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-language': 'en-US,en;q=0.9',
+            'priority': 'u=0, i',
+            'referer': baseurl,
+            'sec-ch-ua': f'"Not)A;Brand";v="99", "Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}',
+            'sec-ch-ua-mobile': '?0',
+            'sec-ch-ua-platform': '"Windows"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-user': '?1',
+            'Upgrade-Insecure-Requests': '1',
+            'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+        }
+
+        #Input validation checks
+        formatted = self.date_format()
+        classy = self.classification_format()
+        if not formatted or not classy:
+            return None, "Error in formatting classification or date"
+
+        parameters = {
+            'advanced': '',                        
+            'terms-0-operator': 'AND',              
+            'terms-0-term': self.params["query"],
+            'terms-0-field': self.params["field"],
+            self.params["classification"]:'y',
+            'classification-include_cross_list': 'include',
+            'date-filter_by': self.params["dates"],
+            'date-year': self.params["year"],
+            'date-from_date': self.params["start_date"],
+            'date-to_date': self.params["end_date"],
+            'date-date_type': "submitted_date_first", 
+            'abstracts': 'show',
+            'size': self.params["limit"],
+            'order':'-submitted_date',
+        }
+
+        if self.params["add_cat"]:
+            parameters[f'{self.params["classification"]}' + "_archives"]  = self.params["categories"]
+
+        try:
+            response = requests.get(baseurl, headers=headers, params=parameters)
+
+        except Exception as e:
+            logger.warning(f"A general request error occured.  Check URL\n{e}")
+
+        if response.status_code != 200:
+            logger.warning(f'Status code: {response.status_code}')
+            logger.warning(f'Reason: {response.reason}')
+            return None, f"Status Code {response.status_code} Reason: {response.reason}"
+        
+        time.sleep(3) #Be nice to the servers
+        bs4ob = BeautifulSoup(response.content, "lxml")
+        results = bs4ob.find_all("li", {"class":"arxiv-result"})
+        if results:
+            logger.info(f'{len(results)} papers returned from arxiv searching {self.params["query"]}')
+            new_papers = self.parse_feed(results)
+            return new_papers, None
+
+        else:
+            message = f"No papers returned for search ({self.params['query']}) in category {self.params['subject']}"
+            logger.warning(message)
+            return None, message
+
+        # NOTE - Can only make a request every 3 seconds. 
+        # NOTE - Don't feel like dealing with pagination so.  200 is the max request limit!
+
+class xRxivBase(object):
+    def __init__(
+        self,
+        server           : str,
+        launchdt         : str,
+        params           : dict,
+        base_url         : str,
+        progress_callback: Optional[Callable[[int],None]] = None
+    ):
+        self.server      : str = server
+        self.launchdt    : str = launchdt
+        self.params      : dict = params
+        self.base_url    : str = base_url
+        self.results     : dict = {}
+        self.cursor      : int = 0
+        self.cookies     : dict = {}
+        self.redirect_url: str = ""
+        self.turnstile_on: bool = False
+        self.progress_callback = progress_callback
+
+    def _calc_score(self, views:dict) -> dict:
+        #Using a time decayed weighted average
+        months = sorted([datetime.datetime.strptime(key, "%b %Y") for key in views.keys()])
+        if not months:
+            return 0
+        composite_score = 0
+        decay_rate = 0.1
+        most_recent_mon = months[-1]
+        w1, w2, w3 = 1, 3, 5
+        for month, counts in views.items():
+            past_month = datetime.datetime.strptime(month, "%b %Y")
+            month_diff = (most_recent_mon.year - past_month.year) * 12 + \
+                         (most_recent_mon.month - past_month.month)
+            decay_factor = np.exp(-decay_rate * month_diff)
+            engagement = (
+                int(counts["abstract"]) * w1 + 
+                int(counts["full"]) * w2 + 
+                int(counts["pdf"]) * w3
+            )
+        
+            composite_score += engagement * decay_factor
+        views["raw_avg"] = {cat:round(np.mean([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["raw_std"] = {cat:round(np.std([int(views[key][cat]) for key in views.keys()]).item(), 3) for cat in ["abstract", "full", "pdf"]}
+        views["months"] = len(months) - 1
+        views["score"] = round(composite_score.item(), 3)
+        return views
+
+    def _date_format(self):
+        self.params["dates"] = self.params["dates"].lower().split()
+        self.params["dates"] = "_".join(self.params["dates"])
+        self.params["submitted_date"] = datetime.datetime.today().date()
+        self.params["submitted_date"] = self.params["submitted_date"].strftime("%Y-%m-%d")
+
+        if self.params["dates"] == "specific_year":
+            start = self.params["year"]
+            if len(start) == 4 and start.isdigit():
+                self.params["start_date"] = f"{start}-01-01"
+                if self.params["submitted_date"][:4] == start:
+                    self.params["end_date"] = self.params["submitted_date"]
+                else:
+                    self.params["end_date"] = f"{self.params['year']}-12-31"
+                return True
+            else:
+                return False
+        elif self.params["dates"] == "past_12_months":
+            self.params["start_date"] = datetime.datetime.today().date() - datetime.timedelta(days=365)
+            self.params["start_date"] = self.params["start_date"].strftime("%Y-%m-%d")
+            self.params["end_date"] = self.params["submitted_date"]
+            self.params["dates"] = "past_12"
+            return True
+        elif self.params["dates"] == "date_range":
+            start = self.params["start_date"]
+            end = self.params["end_date"]
+            for val in [start, end]:
+                if not is_a_date(val):
+                    logger.warning("Error in date formatting, please check inputs")
+                    return False
+            return True
+        elif self.params["dates"] == "all_dates":
+            # self.params["start_date"] = self.launchdt
+            # self.params["end_date"] = self.params["submitted_date"]
+            return True
+    
+    def _url_format(self):
+        query_params = {}
+        try:
+            if self.params["field"]:
+                srch_field = "_".join(self.params["field"].lower().split("|"))
+                query_params["query"] = quote(f"{srch_field}:") +  self.params["query"].replace(" ", "%2B") + "%20" + quote(f"{srch_field}_flags:match-all ")
+            else:
+                query_params["query"] = self.params["query"].replace(" ", "%252B") + "%20"
+
+            query_params["jcode"] = self.params["source"].lower().strip()
+            if self.params["categories"]:
+                query_params["subject_collection_code"] = self.params["categories"]
+
+            if self.params["start_date"]:
+                query_params["limit_from"] = self.params["start_date"]
+
+            if self.params["end_date"]:
+                query_params["limit_to"] = self.params["end_date"]
+
+            query_params["numresults"] = "75"
+            if self.params["sort"] == "best match":
+                query_params["sort"] = "relevance-rank"
+            elif self.params["sort"] == "oldest first":
+                query_params["sort"] = "publication-date direction:ascending"
+            elif self.params["sort"] == "newest first":
+                query_params["sort"] = "publication-date direction:descending"
+            elif self.params["sort"] == "popularity":
+                query_params["sort"] = "relevance-rank"
+
+            query_params["format_result"] = "standard"
+            search = query_params["query"]
+            query_f1 = " ".join(f"{k}:{v}" for k, v in query_params.items() if k != "query")
+            self.query_formatted = self.base_url + search + quote(query_f1)
+            logger.info(f"formatted query\n{self.query_formatted}")
+            return True
+
+            #NOTE: API
+                #I find it hilarious that neither xrxiv left in a space in their api
+                #to actually saerch the api as opposed to just dumping the lastest 
+                #100 papers submitted.  Because of this idiocy, we will have 
+                #to use the advanced search endpoint and parse the resultant 
+                #html.  This also means we need to scrape each url because the
+                #fundamental abstract data won't be present.  ugh.  idiots
+
+                #api structure
+                # https://api.medrxiv.org/details/[server]/[interval]/[cursor]/[format] 
+                    # servers = duh
+                    # interval - Date format whiiich looks like dates separated by /
+                    # cursor - page iteration
+                    # format - JSON or XML.  Json it is!
+                    
+                #advancedsearch structure
+                # https://www.biorxiv.org/search/anomaly%20
+                # jcode%3Abiorxiv%20
+                # subject_collection_code%3AClinical%20Trials%20
+                # limit_from%3A2024-02-06%20
+                # limit_to%3A2025-06-09%20
+                # numresults%3A75%20
+                # sort%3Arelevance-rank%20
+                # format_result%3Astandard
+
+        except Exception as e:
+            logger.warning("Error in url query formatting")
+            return False
+
+    async def _query_xrxiv(self) -> dict:
+        #Input validation checks
+        formatted = self._date_format()
+        classy = self._url_format()
+        pcount = None
+        if not formatted or not classy:
+            return None, "Error in formatting date or url"
+        
+        #Make first request
+        bs4ob, er_mes = await self._make_request(post=True) 
+        if er_mes:
+            logger.error(f"{er_mes}")
+            return None, er_mes
+        
+        #Isolate how many papers were found, if any self._parse_query
+        paper_count = bs4ob.find("div", {"class":"highwire-search-summary"})
+        if len(paper_count.text) > 0:
+            if "No Results" in paper_count.text:
+                return None, f"No papers returned for search ({self.params['query']}) in {self.params['source']} {self.params['field']}"
+            pcount = paper_count.text.split()[0]
+            pcount = int("".join(x for x in pcount if x.isnumeric()))
+            if isinstance(pcount, int):
+                self.paper_count = pcount
+                logger.info(f"{pcount} papers found on {self.params['source']} in {self.params['field']}")
+
+        if pcount != None:
+            await self._parse_query(bs4ob)
+            logger.info(f'{len(self.results)} papers processed arxiv searching {self.params["query"]}')
+            return self.results, None
+
+        else:
+            message = f"No papers returned for search ({self.params['query']}) in {self.params['source']} {self.params['field']}"
+            logger.warning(message)
+            return None, message
+
+    async def _parse_query(self, bs4ob:BeautifulSoup):
+        totalpapers = self.paper_count
+        limit = int(self.params["limit"]) - 1
+        paper_idx = 0
+        self.results["search_params"] = self.params
+        while paper_idx < totalpapers:
+            if paper_idx > limit:
+                return
+            elif self.cursor != 0: 
+                bs4ob, er_mes = await self._make_request(cursor = self.cursor)
+                if er_mes:
+                    logger.error(f"{er_mes}")
+                outer_papers = bs4ob.find("ul", class_="highwire-search-results-list")
+            else:
+                outer_papers = bs4ob.find("ul", class_="highwire-search-results-list")
+            logger.info("outer papers")
+            papers = outer_papers.find_all("li", {"class":lambda x: x.endswith("search-result-highwire-citation")})
+            for result in papers:
+                if paper_idx > limit:
+                    return
+                else:
+                    paper = Paper()
+                    title = result.find("a", {"class":"highwire-cite-linked-title"})
+                    if title:
+                        f_url = f"{self.base_url[:-8]}" + title.get("href")
+                        paper.doi = f_url
+                        lil_req, er_mes = await self._make_request(doi_url=f_url)
+                        if er_mes:
+                            logger.error(f"{er_mes}")
+                        paper.title = title.text
+                        paper.id = str(paper_idx) + "_" + paper.title
+                        paper.pdf = paper.doi + ".full.pdf"
+                    else:
+                        logger.error(f"error in title extraction for {paper_idx}")
+                        logger.error(f"Unable to extract title -> moving to next paper")
+                        continue
+                    #Grab authors
+                    outer_authors = lil_req.find("span", {"class":"highwire-citation-authors"})
+                    if outer_authors != None:
+                        paper.authors = {}
+                        logger.debug("outer authors")
+                        authors = outer_authors.find_all("span", class_=lambda x:x.startswith("highwire-citation-author"))
+                        if authors:
+                            for author in authors:
+                                logger.debug("inner author")
+                                first = author.find("span", class_="nlm-given-names")
+                                if first:
+                                    firstn = first.text.strip()
+                                last = author.find("span", class_="nlm-surname")
+                                if last:
+                                    lastn = last.text.strip()
+                                if first and last:
+                                    name = " ".join([firstn, lastn])
+                                    paper.authors[name] = {"name":name}
+                                    orcid = author.select("a")
+                                    if orcid:
+                                        paper.authors[name]["orcidid"] = orcid[0].get("href")
+                                else:
+                                    logger.error(f"error in author extraction for {paper_idx}:{paper.title}")
+
+                    abstract = lil_req.find("div", {"class":"section abstract"})
+                    if abstract:
+                        paper.abstract = abstract.find("p").text
+
+                    category = lil_req.find("span", {"class":"highwire-article-collection-term"})
+                    if category:
+                        paper.category = category.text.strip()
+
+                    posted = lil_req.find("div", {"class":"panel-pane pane-custom pane-1"})
+                    if posted:
+                        post_date = posted.find("div", {"class":"pane-content"}).text.split("Posted\xa0")[1].strip().strip(".")
+                        post_date_f = datetime.datetime.strptime(post_date, "%B %d, %Y")
+                        paper.date_published = datetime.datetime.strftime(post_date_f, "%Y-%m-%d")
+                    
+                    # They put their infolinks behind another request.  Already at 3 calls per paper
+                    # github = lil_req.find('div', {"class":"section data-availability"})
+                    # if github:
+                    #     pattern = r"((?:https?://)?(?:www\.)?(?:[a-zA-Z0-9-]+\.)?github\.(?:com|io)(?:/[a-zA-Z0-9\._-]+)*)"
+                    #     possiblematch = re.findall(pattern, github.text)
+                    #     if possiblematch:
+                    #         paper.github_url = possiblematch[0]
+
+                    proc_table = True
+                    metrics = await self._make_subdata_request(paper.doi)
+                    logger.debug(f"searching paper {paper_idx} metrics")
+                    no_stats = metrics.find("div", class_="messages highwire-stats")
+                    if no_stats != None:
+                        if "No statistics" in no_stats.text:
+                            proc_table = False
+                            logger.info(f"No rows for requested table {paper.doi}")
+                    
+                    logger.debug(f"viewstable: {proc_table}")
+                    if proc_table:
+                        viewstable = metrics.find('table', class_=lambda x:x.startswith("highwire-stats"))
+                        rows = viewstable.find_all("tr")
+                        if rows:
+                            paper.supplemental = {}
+                            for col in rows:
+                                logger.debug("view table results")
+                                results = col.find_all("td")
+                                if results:
+                                    key = results[0].text
+                                    paper.supplemental[key] = {}
+                                    paper.supplemental[key]["abstract"] = results[1].text
+                                    if len(results) == 3:
+                                        paper.supplemental[key]["pdf"] = results[2].text
+                                    elif len(results) == 4:
+                                        paper.supplemental[key]["full"] = results[2].text
+                                        paper.supplemental[key]["pdf"] = results[3].text
+                            #Calculate popularity score
+                            paper.supplemental = self._calc_score(paper.supplemental)
+                            paper.score = paper.supplemental["score"]
+                        
+                    #Stuff whatever you found back into a dictionary
+                    self.results[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
+                    del paper
+                    paper_idx += 1
+                    if self.progress_callback:
+                        self.progress_callback(paper_idx)
+            self.cursor += 1
+    
+    async def _make_request(self, post:bool = False, doi_url:str = "", cursor:int = 0) -> BeautifulSoup:
+        if doi_url:
+            baseurl = self.query_formatted
+        else:
+            baseurl = self.base_url
+
+        headers = {
+            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+            'accept-language': 'en-US,en;q=0.9',
+            'cache-control': 'max-age=0',
+            'priority': 'u=0,i',
+            'referer': baseurl,
+            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            # 'sec-ch-ua-platform': '"Windows"',
+            'sec-ch-ua-platform': '"Linux"',
+            'sec-fetch-dest': 'document',
+            'sec-fetch-mode': 'navigate',
+            'sec-fetch-site': 'same-origin',
+            'sec-fetch-user': '?1',
+            'upgrade-insecure-requests': '1',
+            'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36'
+            # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+        }
+
+        #Old headers
+        #Still works for medrixv
+            # 'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+        #windows test header
+            # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+            # 'user-agent':  'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36'
+        #working but only on windows
+        # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+
+        try:
+            #First request
+            if post:
+                logger.debug(self.query_formatted)
+                response = cf.requests.post(self.query_formatted, impersonate="chrome")
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
+                #     logger.info("Much Success!")
+
+                # elif self.params["source"] == "medRxiv":
+                #     # response = requests.post(self.query_formatted, headers=headers)
+                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
+
+            #Individual paper request
+            elif doi_url:
+                logger.debug(doi_url)
+                response = cf.requests.get(url=doi_url, impersonate="chrome")
+                #Old Code
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.get(url=doi_url, impersonate="chrome")
+                # elif self.params["source"] == "medRxiv":
+                #     response = requests.get(doi_url, headers=headers)
+
+            #Page Iteration
+            elif cursor > 0:
+                url = self.query_formatted + f"?page={cursor}"
+                logger.debug(url)
+                response = cf.requests.post(url=url, impersonate="chrome")
+
+                # if self.params["source"] == "bioRxiv":
+                #     response = cf.requests.post(url=url, impersonate="chrome")
+                # elif self.params["source"] == "medRxiv":
+                #     # response = requests.post(url=url, headers=headers)
+                #     response = cf.requests.post(url=url, impersonate="chrome")
+
+        except Exception as e:
+            logger.warning(f"A general request error occured.  Check URL\n{e}")
+            return None
+
+        await asyncio.sleep(np.random.randint(3,4)) #Be nice to the servers    
+        
+        if response.status_code != 200:
+            logger.warning(f'Status code: {response.status_code}')
+            logger.warning(f'Reason: {response.reason}')
+            return None, f"Status Code {response.status_code} Reason: {response.reason}"
+        
+        return BeautifulSoup(response.content, "lxml"), None
+
+    async def _make_subdata_request(self, doi:str) -> BeautifulSoup:
+        """The purpose of this request is to grab the article.metrics for the paper. It has an eeeextra long nap because the metrics JS takes a while to render.
+
+        Args:
+            doi (str): DOI url for the paper
+
+        Returns:
+            BeautifulSoup: BSoup object for parsing HTML
+        """        
+        baseurl = doi + ".article-metrics"
+        headers = {
+            'accept': 'text/html, */*; q=0.01',
+            'accept-language': 'en-US,en;q=0.9',
+            'priority': 'u=1, i',
+            'referer': baseurl,
+            'sec-ch-ua': f'"Google Chrome";v={chrome_version}, "Chromium";v={chrome_version}, "Not/A)Brand";v="24"',
+            'sec-ch-ua-mobile': '?0',
+            # 'sec-ch-ua-platform': '"Windows"',
+            'sec-ch-ua-platform': '"Linux"',
+            'sec-fetch-dest': 'empty',
+            'sec-fetch-mode': 'cors',
+            'sec-fetch-site': 'same-origin',
+            # 'user-agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+            'user-agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
+            'x-requested-with': 'XMLHttpRequest',
+        }
+
+        try:
+            logger.debug(baseurl)
+            response = cf.requests.get(baseurl, impersonate="chrome")
+            # if "biorxiv" in doi:
+            #     response = cf.requests.get(baseurl, impersonate="chrome")
+            # else:
+            #     response = requests.get(baseurl, headers=headers)
+            await asyncio.sleep(np.random.randint(6,8)) #Extra long nap because metrics.... don't like to come through quickly for some reason. 
+
+        except Exception as e:
+            logger.warning(f"A general request error occured.  Check URL\n{e}")
+            return None
+        
+        if response.status_code != 200:
+            logger.warning(f'Status code: {response.status_code}')
+            logger.warning(f'Reason: {response.reason}')
+            return None
+        
+        return BeautifulSoup(response.content, "lxml")
+
+class bioRxiv(xRxivBase):
+    """bioRxiv class with all functions inherited from xRxivBase class
+
+    Args:
+        xRxivBase (_type_): _description_
+    """    
+    def __init__(self, variables:dict, progress_callback):
+        super().__init__(
+            server = "bioRxiv",
+            launchdt = "2013-01-01",
+            base_url = "https://www.biorxiv.org/search/",
+            params = variables,
+            progress_callback = progress_callback
+        )
+
+class medRxiv(xRxivBase):
+    """medRxiv class with all functions inherited from xRxivBase class
+
+    Args:
+        xRxivBase (_type_): _description_
+    """
+    def __init__(self, variables:dict, progress_callback):
+        super().__init__(
+            server = "medRxiv",
+            launchdt = "2019-06-01",
+            base_url = "https://www.medrxiv.org/search/",
+            params = variables,
+            progress_callback = progress_callback
+    )
+
+class SemanticScholar(object):
+    def __init__(self, variables:dict):
+        self.params: dict = variables
+        self.results: dict = {}
+        self.configs: dict = self.load_config()
+        self.api_key: str = self.configs.get("apikey", "")
+
+    def load_config(self)->json:
+        """Load global variable configs
+        
+        Returns:
+            config_data: Loads configuation data
+        """
+        with open(f"{SECRET_DIR}/config.json", "r") as f:
+            config_data = json.loads(f.read())
+        return config_data
+
+    def request_papers(self) -> tuple[dict|None, str|None]:
+        baseurl = "https://api.semanticscholar.org/graph/v1/paper/search"
+        headers = {}
+        if self.api_key:
+            headers["x-api-key"] = self.api_key
+
+        parameters = {
+            'query': self.params["query"],
+            'limit': self.params.get("limit", 20),
+            'fields': 'title,authors,abstract,url,year,citationCount,openAccessPdf'
+        }
+        
+        # Add the optional filters if they are provided
+        if self.params.get("year"):
+            parameters['year'] = self.params["year"]
+        
+        if self.params.get("publicationTypes"):
+            parameters['publicationTypes'] = self.params["publicationTypes"]
+            
+        if self.params.get("fieldsOfStudy"):
+            parameters['fieldsOfStudy'] = self.params["fieldsOfStudy"]
+            
+        if self.params.get("venue"):
+            parameters['venue'] = self.params["venue"]
+
+        max_retries = 3
+        base_delay = 2.0
+        
+        for attempt in range(max_retries + 1):
+            try:
+                response = requests.get(baseurl, headers=headers, params=parameters)
+                
+                # Success
+                if response.status_code == 200:
+                    data = response.json()
+                    if "data" in data and len(data["data"]) > 0:
+                        return self.parse_feed(data["data"]), None
+                    return None, f"No papers found for {self.params['query']}"
+                
+                # Rate Limiting (429)
+                elif response.status_code == 429:
+                    if attempt < max_retries:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Semantic Scholar rate limit reached. Retrying in {delay}s...")
+                        time.sleep(delay)
+                        continue
+                    return None, "Rate limit reached. Maximum retries exceeded."
+                
+                # Client Errors (400-499 excluding 429)
+                elif 400 <= response.status_code < 500:
+                    # Returns 400 for bad parameters or if the response exceeds 10MB
+                    return None, f"Client error {response.status_code}: Adjust query, fields, or limit."
+                
+                # Server Errors (5xx)
+                elif response.status_code >= 500:
+                    if attempt < max_retries:
+                        delay = base_delay * (2 ** attempt)
+                        logger.warning(f"Semantic Scholar server error {response.status_code}. Retrying in {delay}s...")
+                        time.sleep(delay)
+                        continue
+                    return None, f"Server error {response.status_code}. Try again later."
+                    
+            except Exception as e:
+                logger.warning(f"Semantic Scholar API connection error: {e}")
+                if attempt == max_retries:
+                    return None, str(e)
+                time.sleep(base_delay * (2 ** attempt))
+
+        return None, "Unexpected error occurred during Semantic Scholar search."
+            
+    def parse_feed(self, results:list) -> dict:
+        paper_dict = {"search_params": self.params}
+        for idx, result in enumerate(results):
+            paper = Paper()
+            # Change this to use the title and slice it so it doesn't break the UI if it's too long
+            title_str = result.get("title", "Unknown Title")
+            paper.id = f"{idx}_s2_{title_str[:50]}" 
+            paper.title = title_str
+            paper.abstract = result.get("abstract", "")
+            
+            # Use openAccessPdf if available, else general url
+            if result.get("openAccessPdf"):
+                paper.pdf = result["openAccessPdf"].get("url", "")
+                paper.url = paper.pdf
+            else:
+                paper.url = result.get("url", "")
+                
+            paper.score = result.get("citationCount", 0)
+            if result.get("authors"):
+                paper.authors = {f"{idx}_{a['name']}": a['name'] for idx, a in enumerate(result['authors'])}
+                
+            if result.get("year"):
+                paper.date_published = str(result["year"])
+                
+            paper.conference_info = result.get("venue", "semantic")
+
+            paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
+            
+        return paper_dict
+    
+###############################  Date Functions ########################################
+#FUNCTION Date Check
+def is_a_date(datetext:str) -> bool:
+    """Tries to format a date, returns boolean of if successful
+
+    Args:
+        datetext (str): Text for date evaluation
+
+    Returns:
+        bool: Was it a date?
+    """    
+    try:
+        datetime.datetime.strptime(datetext, "%Y-%m-%d")
+        return True
+    except Exception as e:
+        logger.warning(f"date extraction error.  Check date format\n{e}")
+        return False
+
+#FUNCTION get time
+def get_c_time():
+    """Function for getting current time
+
+    Returns:
+        current_t_s (str): String of current time
+    """
+    current_t_s = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M-%S")
+    return current_t_s
+
+#FUNCTION Clean String vals
+def clean_string_values(obj: dict|list|str) -> dict|list|str:
+    """This recursive function will descend a dictionary tree and clean all the objects underneath.  Quite handy when loading JSON files.
+
+    Args:
+        obj (dict | list | str): datatype in need of cleaning
+
+    Returns:
+        dict|list|str: cleaned version of object for jsonload
+    """    
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            if isinstance(value, str):
+                value = value.replace("\\r\\n", "")
+                with contextlib.suppress(json.JSONDecodeError):
+                    value = json.loads(value)
+            cleaned_value = clean_string_values(value)
+            obj[key] = cleaned_value
+    elif isinstance(obj, list):
+        for i, value in enumerate(obj):
+            cleaned_value = clean_string_values(value)
+            obj[i] = cleaned_value
+    elif isinstance(obj, str):
+        obj = obj.replace("\\r\\n", "").replace('\\"', '"')
+
+    return obj
+
+#FUNCTION clean text
+def clean_text(srch_text:str, srch_field:str, node:Tree)-> list:
+    """String cleaning routine for cosine similarities.  Removes stopwords and numerics.
+
+    Args:
+        srch_text (str): Input query
+        srch_field (_type_): What field you're looking in
+        node (_type_): Node of the tree
+
+    Returns:
+        tuple (list, list): returns the fields and paper names
+    """ 
+    data_fields = []
+    paper_names = []
+    # Alias for mlconf papers using "name" and search uses "title"
+    search_keys = ["title", "name"] if srch_field.lower() == "title" else [srch_field.lower()]
+    # Case-insensitive data extraction
+    for x in node.children:
+        paper_names.append(x.label.plain.strip("{}").strip())
+        if isinstance(x.data, dict):
+            val = next((str(v) for k, v in x.data.items() if k.lower() in search_keys), "")
+            data_fields.append(val)
+        else:
+            data_fields.append("")
+    # stopwords source:
+    # stopwords_list = requests.get("https://gist.githubusercontent.com/rg089/35e00abf8941d72d419224cfd5b5925d/raw/12d899b70156fd0041fa9778d657330b024b959c/stopwords.txt").text
+    with open(f"{DATA_DIR}/stopwords.txt", "r") as f:
+        stopwords_list = f.read()
+    stopwords = set(stopwords_list.splitlines())
+    
+    data_fields.insert(0, srch_text)
+    paper_names.insert(0, "papernames")
+
+    # Only remove stopwords if we are searching abstracts 
+    remove_stopwords = (srch_field.lower() == "abstract")
+
+    for idx, text_val in enumerate(data_fields):
+        if text_val and isinstance(text_val, str):
+            re_txt = re.sub(r'[\W_]+', ' ', text_val)
+            l_txt = re_txt.lower().split()
+            if remove_stopwords:
+                s_txt = [word for word in l_txt if word not in stopwords and not word.isnumeric()]
+                data_fields[idx] = " ".join(s_txt)
+            else:
+                data_fields[idx] = " ".join(l_txt)
+        else:
+            data_fields[idx] = ""
+            
+    return data_fields, paper_names
+
+#FUNCTION TFIDF Vectorizer
+def tfidf(data_fields:list, paper_names:list):
+    #L1 normlization
+    base_params = {
+        "binary":False, 
+        "norm":"l1",
+        "use_idf":False, 
+        "smooth_idf":False,
+        "lowercase":True, 
+        "stop_words":"english",
+        "min_df":1, 
+        "max_df":1.0, 
+        "max_features":None,  
+        "ngram_range":(1, 1)
+    }
+    model = TfidfVectorizer(**base_params)
+    tsfrm = model.fit_transform(data_fields)
+    feats = model.get_feature_names_out()
+    tsfrm_df = pd.DataFrame(
+        tsfrm.toarray(),
+        columns=feats,
+        index=paper_names
+    )
+    return tsfrm_df, paper_names
+
+#FUNCTION Cosine Sim
+def cosine_similarity(tsfrm, ts_type:str):
+    """Function that allows you to use either sklearns, or scipy's cosine similarity
+    Inputs are already in a sparse array format.  Scipy uses np.arrays, but the code 
+    below will handle that. 
+
+    Args:
+        tsfrm (sparse array): Sparse Matrix of Documents
+        ts_type (str): Version of Cosine Similarity you want
+
+    Raises:
+        ValueError: If you don't specify "scipy" or "sklearn", it throws an error.
+
+    Returns:
+        float: Cosine similarity
+    """	
+    
+    if ts_type == "sklearn":
+        sims = sklearn_cos(tsfrm[0], tsfrm)
+        return sims.flatten()
+    
+    elif ts_type == "scipy":
+        sims = []
+        X = tsfrm.iloc[0]
+        for row in range(tsfrm.shape[0]):
+            y = tsfrm.iloc[row]
+            sims.append(1 - scipy_cos(X, y))
+        return sims
+    else:
+        raise ValueError (f"{ts_type} not an available cosine transform. Check spelling for scipy or sklearn")
+
+#FUNCTION Embedded cosine sim
+def embedding_cos_sim(query:str, compare:str):
+    """Manual cosine similarity calculation
+
+    Args:
+        query (str): query text
+        compare (str): text to compare
+
+    Returns:
+        _type_: cosine similarity (-1 to 1)
+    """    
+    return np.dot(query, compare) / (np.linalg.norm(query) * np.linalg.norm(compare))
+
+#FUNCTION Word2Vec model
+def word2vec():
+    """Loads the standard spacy pipeline
+
+    Raises:
+        ValueError: _description_
+
+    Returns:
+        _type_: _description_
+    """    
+
+def word2vec():
+    model_name = "en_core_web_md"
+    try:
+        return spacy.load(model_name)
+    except OSError:
+        logger.info(f"{model_name} not found. Downloading...")
+        subprocess.check_call([sys.executable, "-m", "spacy", "download", model_name])
+        return spacy.load(model_name)
+
+#FUNCTION Sbert Model
+def sbert(model_name:str):
+    """Loads up either of the Bidirectional Sentence Bert models for comparison. 
+
+    Args:
+        model_name (str): Which Sbert model you want
+
+    Raises:
+        ValueError: If the library isn't installed, it reminds you to do so
+
+    Returns:
+        model: Returns a loaded version of the model you want to run.  Models are loaded through the library sentence-transformers
+    """    
+    try:
+        gpu_count = torch.cuda.device_count()
+        if gpu_count > 1:
+            device = "cuda:0" if torch.cuda.is_available() else "cpu"
+        else:
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+        
+        #Trained on a bunch of bing queries
+        if model_name == "Marco": #Polooooooo.
+            model_path = f"{DATA_DIR}/models/marco/"
+            model_id = "msmarco-MiniLM-L6-v3"
+            if path.exists(model_path):
+                model = SentenceTransformer(model_path, device = device)
+                logger.info("Model loaded locally")
+
+        # trained on finding similar papers.  Works better with abstracts but suffers from long runtimes
+        elif model_name == "Specter":
+            model_id = "allenai-specter"
+            model_path = f"{DATA_DIR}/models/specter"
+            if path.exists(model_path):
+                model = SentenceTransformer(model_path, device = device)
+                logger.info("Model loaded locally")                
+
+        else:
+            # Automatically download model from HuggingFace on first use and cache locally
+            model = SentenceTransformer(model_id, device=device)
+            model_path.mkdir(parents=True, exist_ok=True)
+            model.save_pretrained(str(model_path))
+            logger.info(f"{model_id} loaded and saved dynamically")
+                
+        return model, device
+        
+    except Exception as e:
+        raise ValueError(f"error:{e}\nYou probably to install sentence-transformers for model {model_name}")
