@@ -2,14 +2,16 @@ import re
 import json
 import requests
 import argparse
+import datetime
 import numpy as np
-import xml.etree.ElementTree as ET
-from bs4 import BeautifulSoup
+from pathlib import Path
 from itertools import cycle
+from bs4 import BeautifulSoup
+import xml.etree.ElementTree as ET
 from .support import (
     console, logger, log_time, 
     save_conference, mainspinner, add_spin_subt,
-    download_conferences_bundle
+    download_conferences_bundle, CONF_DIR
     )
 
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
@@ -374,70 +376,146 @@ def cli():
     parser.add_argument(
         "--scrape",
         action="store_true",
-        help="Run live web crawler to re-scrape conference abstracts (takes longer).",
+        help="Run live web crawler to sync conference abstracts.",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Force re-scraping of conferences even if already cached locally.",
+    )
+    parser.add_argument(
+        "--year",
+        type=int,
+        default=None,
+        help="Target a specific year (default: current year).",
     )
 
     args = parser.parse_args()
-    
-    # Runs the full scrape_abstracts loop
+
     if args.scrape:
-        main()  
+        main(force=args.force, target_year=args.year)
     else:
-        # Default action: fast bundle download
         success = download_conferences_bundle()
         if not success:
             console.print("[yellow]Falling back to live scraper...[/yellow]")
-            main()
+            main(force=args.force, target_year=args.year)
+
+def is_historical_and_cached(conf: str, year: int, force: bool) -> bool:
+    """Historical years don't change. Skip them if they already exist on disk."""
+    if force:
+        return False
+    current_year = datetime.datetime.now().year
+    dest = CONF_DIR / f"{year}_{conf}.json"
+    return year < current_year and dest.exists()
+
 
 #NOTE START PROGRAM
 #FUNCTION main
 @log_time
-def main():
-    """Main driver code for program"""
-    years = range(2026, 2027)
-    logger.debug("searching PMLR")
-    PMLR = request_conf("PMLR", year=years.start)
+def main(force: bool = False, target_year: int | None = None):
+    """Main driver with delta/incremental sync."""
+    current_year = datetime.datetime.now().year
+    years = [target_year] if target_year else [current_year]
+    logger.debug("Searching PMLR index...")
+    PMLR = request_conf("PMLR", year=years[0])
     global prog, task
-    prog, task = mainspinner(console, len(MAIN_CONFERENCES)*len(years) + len(PMLR.keys())) 
-    subconf = False
-
+    prog, task = mainspinner(console, len(MAIN_CONFERENCES) * len(years) + len(PMLR.keys()))
+    subconf = True  # Enable subconferences
     with prog:
         try:
+            # ---------------------------------------------------------
+            # 1. Main Conferences (Bulk JSONs - fast)
+            # ---------------------------------------------------------
             for year in years:
-                #Search Main conferences
-                logger.debug(f"searching main conferences in {year}")
                 for conference in MAIN_CONFERENCES:
-                    logger.info(f"{conference:7s}:{year} searching")
+                    dest = CONF_DIR / f"{year}_{conference}.json"
+                    
+                    if is_historical_and_cached(conference, year, force):
+                        logger.info(f"{conference}:{year} already cached. Skipping.")
+                        prog.advance(task, 1)
+                        continue
+
+                    logger.info(f"{conference:7s}:{year} fetching bulk data")
                     prog.update(task_id=task, description=f"[green]{year}[/green]:[yellow]{conference}[/yellow]", advance=1)
+                    
                     result = request_conf(conference, year)
                     if result:
-                        save_conference(result, conference, year)		
+                        save_conference(result, conference, year)
                     else:
                         logger.warning(f"{conference:7s}:{year} not available.")
-                    add_spin_subt(prog, f"[purple]{next(FUN_STATUS_UPDATE)}[/purple]", np.random.randint(3, 6))
-            logger.warning(f"Main conferences from {years.start} to {years.stop} searched.")
-            if subconf:
-                #Search Sub conferences
+                    
+                    add_spin_subt(prog, f"[purple]{next(FUN_STATUS_UPDATE)}[/purple]", np.random.randint(2, 4))
+
+            # ---------------------------------------------------------
+            # 2. Minor Conferences (PMLR - individual paper scraping)
+            # ---------------------------------------------------------
+            if subconf and PMLR:
                 for conference, link in PMLR.items():
-                    year, conf = conference.split("_")
+                    year_str, conf = conference.split("_")
+                    year = int(year_str)
                     conf = conf.strip()
+
+                    if target_year and year != target_year:
+                        continue
+
+                    dest = CONF_DIR / f"{year}_{conf}.json"
+
+                    if is_historical_and_cached(conf, year, force):
+                        logger.info(f"{conf}:{year} is historical and cached. Skipping.")
+                        prog.advance(task, 1)
+                        continue
+
                     prog.update(task_id=task, description=f"[green]{year}[/green]:[yellow]{conf}[/yellow]", advance=1)
                     version = link.split("/")[-1]
-                    logger.info(f"{conf}:{year} searching")
-                    results = request_conf(link, version=version)
                     
-                    #Author / Git extraction
-                    for title, paperinfo in results.items():
-                        results[title] = request_paper(paperinfo, version)
-                        logger.info(f"parsing {title}")
-                        add_spin_subt(prog, f"[green]{title:<30s}[/green]", np.random.randint(1, 8))
+                    # 1 single request to get the PMLR conference paper list
+                    feed_results = request_conf(link, version=version)
+                    if not feed_results:
+                        continue
 
-                    save_conference(results, conf, year)
-                    add_spin_subt(prog, f"[yellow]{next(FUN_STATUS_UPDATE)}[/yellow]", np.random.randint(3, 6))
-                logger.warning(f"Sub conferences from {years.start} to {years.stop} searched.")
-                
+                    # Load existing data if available
+                    existing_data = {}
+                    if dest.exists() and not force:
+                        try:
+                            with open(dest, "r", encoding="utf-8") as f:
+                                existing_data = json.load(f)
+                        except Exception as e:
+                            logger.warning(f"Could not read existing {dest}: {e}")
+
+                    # Determine which papers actually need detail fetching
+                    papers_to_fetch = []
+                    for title_key, paper_stub in feed_results.items():
+                        # Fetch if:
+                        # 1. Not in existing local data
+                        # 2. Missing detail fields (like abstract or authors)
+                        if title_key not in existing_data:
+                            papers_to_fetch.append((title_key, paper_stub))
+                        elif not existing_data[title_key].get("abstract") or not existing_data[title_key].get("authors"):
+                            papers_to_fetch.append((title_key, paper_stub))
+                        else:
+                            # Keep cached version
+                            feed_results[title_key] = existing_data[title_key]
+
+                    # If everything is already cached and complete, skip the HTTP requests!
+                    if not papers_to_fetch:
+                        logger.info(f"{conf}:{year} is up-to-date ({len(existing_data)} papers). Skipping individual requests.")
+                        add_spin_subt(prog, f"[green]{conf} up to date[/green]", 1)
+                        continue
+
+                    logger.info(f"{conf}:{year} has {len(papers_to_fetch)} new/updated papers to fetch out of {len(feed_results)}.")
+
+                    # Only scrape details for new / incomplete papers
+                    for title_key, paper_stub in papers_to_fetch:
+                        detailed_paper = request_paper(paper_stub, version)
+                        feed_results[title_key] = detailed_paper
+                        logger.debug(f"Parsed {title_key}")
+                        add_spin_subt(prog, f"[green]{title_key[:30]}[/green]", np.random.randint(1, 3))
+
+                    save_conference(feed_results, conf, year)
+                    add_spin_subt(prog, f"[yellow]{next(FUN_STATUS_UPDATE)}[/yellow]", 2)
+
         except KeyboardInterrupt:
-            console.print("Sync Interrupted, saved datasets still in tact")
+            console.print("\n[yellow]Sync interrupted. Partial and completed datasets remain intact.[/yellow]")
 
 if __name__ == "__main__":
     cli()
