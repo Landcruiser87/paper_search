@@ -1,6 +1,6 @@
 [project]
 name = "paper_search"
-version = "0.3.5"
+version = "0.4.0"
 description = "For comparing ML papers from major ML conferences, Arxiv and Zotero"
 authors = [
     {name = "Landcruiser87",email = "andyheroy@gmail.com"}

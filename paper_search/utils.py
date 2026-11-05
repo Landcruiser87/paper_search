@@ -59,18 +59,6 @@ def load_stopwords() -> set[str]:
             return set(p.read_text(encoding="utf-8").splitlines())
     return set()
 
-def load_stopwords() -> set[str]:
-    # Look for bundled package stopwords first, fallback to user directory
-    candidates = [
-        PACKAGE_DIR / "data" / "stopwords.txt",
-        PACKAGE_DIR / "seed_data" / "stopwords.txt",
-        DATA_DIR / "stopwords.txt",
-    ]
-    for p in candidates:
-        if p.is_file():
-            return set(p.read_text(encoding="utf-8").splitlines())
-    return set()
-
 ################################# Classes #################################
 class GoogleScholar(object):
     #ISSUES with GScholar

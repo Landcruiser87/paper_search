@@ -4,7 +4,6 @@ import requests
 import argparse
 import datetime
 import numpy as np
-from pathlib import Path
 from itertools import cycle
 from bs4 import BeautifulSoup
 import xml.etree.ElementTree as ET

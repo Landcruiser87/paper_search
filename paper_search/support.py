@@ -374,10 +374,18 @@ def download_conferences_bundle(target_dir: Path | None = None) -> bool:
                 if member.is_dir():
                     continue
                 filename = Path(member.filename).name
-                if filename.endswith(".json"):
-                    target_file = dest_dir / filename
-                    with zip_file.open(member) as source, open(target_file, "wb") as target:
-                        shutil.copyfileobj(source, target)
+
+                # Route metadata/stopwords to ~/.paper_search/data/
+                if filename in ("stopwords.txt", "arxiv_cat.json"):
+                    target_file = DATA_DIR / filename
+                # Route conference datasets to ~/.paper_search/data/conferences/
+                elif filename.endswith(".json"):
+                    target_file = CONF_DIR / filename
+                else:
+                    continue
+
+                with zip_file.open(member) as source, open(target_file, "wb") as target:
+                    shutil.copyfileobj(source, target)
 
         console.print("[bold green]Success: Conference datasets downloaded and ready![/bold green]\n")
         return True
@@ -473,6 +481,7 @@ def load_taxonomy(search:bool=False):
         logger.warning(f"Arxiv Categories were not loaded properly: {e}")
         return {}
 
+   
 ################################# Rich Spinner Control ####################################
 
 #FUNCTION Progress bar
@@ -536,7 +545,7 @@ SECRET_DIR = DATA_DIR / "secrets"
 ########################## Global Init ##########################################
 def init_workspace():
     # Ensure all directories exist
-    for path in [DATA_DIR, LOG_DIR, MODEL_DIR, SCREEN_DIR, SECRET_DIR, CONF_DIR, SEARCH_DIR, LOG_DIR / "tui"]:
+    for path in [DATA_DIR, LOG_DIR, MODEL_DIR, SCREEN_DIR, SECRET_DIR, CONF_DIR, SEARCH_DIR]:
         path.mkdir(parents=True, exist_ok=True)
     
     # Copy seed data if conferences folder is empty
@@ -552,6 +561,10 @@ def init_workspace():
             taxonomy = seed_path / "arxiv_cat.json"
             if taxonomy.is_file():
                 shutil.copy2(taxonomy, DATA_DIR / "arxiv_cat.json")
+            stopwords = seed_path / "stopwords.txt"
+            if stopwords.is_file():
+                shutil.copy2(stopwords, DATA_DIR / "stopwords.txt")
+                
         except Exception:
             pass
 
@@ -563,7 +576,7 @@ console = Console(color_system="auto", stderr=True)
 logger = get_logger(console, log_dir = f"{DATA_DIR}/logs/{date_json}.log")
 chrome_version = np.random.randint(125, 152)
 
-# Confernces
+# Conferences
 MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
 SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ICCV"] 
 SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]
