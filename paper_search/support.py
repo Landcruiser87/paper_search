@@ -32,6 +32,25 @@ from rich.progress import (
     TimeElapsedColumn
 )
 
+
+########################## Global Variables for import ##########################################
+USER_DIR = Path.home() / ".paper_search"
+DATA_DIR = USER_DIR / "data"
+LOG_DIR = DATA_DIR / "logs"
+CONF_DIR = DATA_DIR / "conferences"
+MODEL_DIR = DATA_DIR / "models"
+SCREEN_DIR = DATA_DIR / "screenshots"
+SEARCH_DIR = DATA_DIR / "searches"
+SECRET_DIR = DATA_DIR / "secrets"
+
+# Conferences
+MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
+SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ICCV"] 
+SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]
+
+# Conf data
+BUNDLE_URL = "https://github.com/Landcruiser87/paper_search/releases/latest/download/conference_bundle.zip"
+
 ################################# Logger functions ####################################
 #FUNCTION Logging Futures
 def get_file_handler(log_dir:Path)->logging.FileHandler:
@@ -343,8 +362,9 @@ def download_conferences_bundle(target_dir: Path | None = None) -> bool:
     try:
         response = requests.get(BUNDLE_URL, stream=True, timeout=15)
         if response.status_code == 404:
-            logger.warning("[red]Download failed: conferences_bundle.zip not found on GitHub Releases.[/red]")
-            logger.warning("[dim]Make sure conferences_bundle.zip is attached to your latest GitHub release.[/dim]")
+            bundle_filename = BUNDLE_URL.split("/")[-1]
+            logger.warning(f"[red]Download failed: {bundle_filename} not found on GitHub Releases.[/red]")
+            logger.warning(f"[dim]Make sure {bundle_filename} is attached to your latest GitHub release.[/dim]")
             return False
         response.raise_for_status()
 
@@ -532,16 +552,6 @@ def add_spin_subt(prog:Progress, msg:str, howmanysleeps:int):
     #Hide secondary progress bar
     prog.update(liljob, visible=False)
 
-########################## Global Variables for import ##########################################
-USER_DIR = Path.home() / ".paper_search"
-DATA_DIR = USER_DIR / "data"
-LOG_DIR = DATA_DIR / "logs"
-CONF_DIR = DATA_DIR / "conferences"
-MODEL_DIR = DATA_DIR / "models"
-SCREEN_DIR = DATA_DIR / "screenshots"
-SEARCH_DIR = DATA_DIR / "searches"
-SECRET_DIR = DATA_DIR / "secrets"
-
 ########################## Global Init ##########################################
 def init_workspace():
     # Ensure all directories exist
@@ -576,13 +586,6 @@ console = Console(color_system="auto", stderr=True)
 logger = get_logger(console, log_dir = f"{DATA_DIR}/logs/{date_json}.log")
 chrome_version = np.random.randint(125, 152)
 
-# Conferences
-MAIN_CONFERENCES  = ["ICML", "ICLR", "NEURIPS"]
-SUB_CONFERENCES   =  ["COLT", "AISTATS", "AAAI", "CHIL", "ML4H", "ICCV"] 
-SEARCH_FIELDS = ["title", "keywords", "topic", "abstract"]
-
-# Conf data
-BUNDLE_URL = "https://github.com/Landcruiser87/paper_search/releases/latest/download/conference_bundle.zip"
 
 #Metrics for asymetric similarity search
 SEARCH_MODELS = ["Fuzzy", "Cosine", "Word2Vec", "Marco", "Specter"]

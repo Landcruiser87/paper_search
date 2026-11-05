@@ -887,10 +887,6 @@ class SemanticScholar(object):
         
         If missing, creates a template file and alerts the user with instructions.
 
-        Load global variable configs from ~/.paper_search/data/secrets/config.json.
-        
-        If missing, creates a template file and alerts the user with instructions.
-
         Returns:
             dict: Configuration dictionary containing API keys.
         """
@@ -899,9 +895,7 @@ class SemanticScholar(object):
         # If file does not exist, create a template and alert the user
         if not config_path.exists():
             config_path.parent.mkdir(parents=True, exist_ok=True)
-            template = {
-                "apikey": ""
-            }
+            template = {"apikey": ""}
             try:
                 with open(config_path, "w", encoding="utf-8") as f:
                     json.dump(template, f, indent=2)
@@ -930,13 +924,6 @@ class SemanticScholar(object):
                 )
 
             return config_data
-
-        except json.JSONDecodeError as e:
-            logger.warning(f"Malformed JSON in {config_path}: {e}. Running without API key.")
-            return {}
-        except Exception as e:
-            logger.warning(f"Error reading {config_path}: {e}")
-            return {}
 
         except json.JSONDecodeError as e:
             logger.warning(f"Malformed JSON in {config_path}: {e}. Running without API key.")
@@ -1226,8 +1213,6 @@ def word2vec():
     Returns:
         _type_: _description_
     """    
-
-def word2vec():
     model_name = "en_core_web_md"
     try:
         return spacy.load(model_name)
@@ -1266,22 +1251,11 @@ def sbert(model_name: str):
         if model_path.exists() and any(model_path.iterdir()):
             model = SentenceTransformer(str(model_path), device=device)
             logger.info(f"{model_name} loaded locally from {model_path}")
-            model_path = Path(DATA_DIR) / "models" / "specter"
         else:
-            raise ValueError(f"Unknown Sbert model: {model_name}")
-
-        # Load locally if cached, otherwise download and save
-        if model_path.exists() and any(model_path.iterdir()):
-            model = SentenceTransformer(str(model_path), device=device)
-            logger.info(f"{model_name} loaded locally from {model_path}")
-        else:
-            logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             logger.info(f"Downloading {model_id} from HuggingFace to {model_path}...")
             model = SentenceTransformer(model_id, device=device)
             model_path.mkdir(parents=True, exist_ok=True)
             model.save_pretrained(str(model_path))
-            logger.info(f"{model_id} downloaded and cached successfully")
-
             logger.info(f"{model_id} downloaded and cached successfully")
 
         return model, device
