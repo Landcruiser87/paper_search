@@ -100,7 +100,6 @@ paper-search-sync --scrape --force
 
 - When you first select **Word2Vec**, the application will automatically download and cache `en_core_web_md` via SpaCy.
 - When you first select **Marco** or **Specter**, the application will automatically pull the weights from HuggingFace and cache them locally in `~/.paper_search/models/`. If a compatible GPU is detected, it will utilize it automatically.
-
 ---
 
 ## 🛠️ Advanced GPU & VM Setup (GCP / Ubuntu)
