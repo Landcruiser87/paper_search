@@ -512,6 +512,9 @@ def main(force: bool = False, target_year: int | None = None):
 
                     save_conference(feed_results, conf, year)
                     add_spin_subt(prog, f"[yellow]{next(FUN_STATUS_UPDATE)}[/yellow]", 2)
+        
+        except Exception as e:
+            logger.warning(f"Error downloading {e}")
 
         except KeyboardInterrupt:
             console.print("\n[yellow]Sync interrupted. Partial and completed datasets remain intact.[/yellow]")

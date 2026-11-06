@@ -18,6 +18,7 @@ The two search parameters that work best are `title and abstract` as those have 
 
 ## Requirements
 - Python >= 3.11
+- pip | poetry
 
 ## Main Libraries used
 - numpy, pandas, scikit-learn, spacy, sentence-transformers, torch
@@ -30,38 +31,8 @@ The two search parameters that work best are `title and abstract` as those have 
 
 Because this is a packaged application, data, models, and logs are managed for you in your user home directory (`~/.paper_search/`). You no longer need to manually create directories or download base models!
 
-### Installing via Poetry (For Development)
-Clone the repository and install dependencies:
-```bash
-git clone https://www.github.com/Landcruiser87/paper_search.git
-cd paper_search
-poetry install
-```
-### Installing via Pip
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/Landcruiser87/paper_search.git
-cd paper_search
-
-# 2. Create and activate a virtual environment
-python -m venv .venv
-
-# Windows (Command Prompt / PowerShell)
-.venv\Scripts\activate
-
-# Linux / macOS
-source .venv/bin/activate
-
-# 3. Optional: Install GPU-accelerated PyTorch for your system
-python install_torch.py
-
-# 4. Install PaperSearch in editable mode
-pip install -e .
-```
-
-### 2. Poetry Setup
-Install Poetry (I recommend the official installer over pip):
+### Poetry Setup
+Install Poetry if you want (I recommend the official installer over pip):
 ```bash
 # Linux/Mac/Windows WSL
 curl -sSL https://install.python-poetry.org | python3 -
@@ -75,16 +46,82 @@ curl -sSL https://install.python-poetry.org | python3 -
 export PATH="/home/useremail/.local/bin:$PATH"
 ```
 
-Configure virtual environments to stay inside the project:
+Configure virtual environments to stay inside the project because we don't believe in one virtual environment to rule them all.  🧙🏼‍♂💍🌋
+
 ```bash
 poetry config virtualenvs.in-project true
+```
+
+### Installing via Poetry (For Development)
+Clone the repository and install dependencies:
+```bash
+git clone https://www.github.com/Landcruiser87/paper_search.git
+cd paper_search
+poetry install
+```
+### Installing via Pip
+
+```bash
+# Clone the repository
+git clone https://github.com/Landcruiser87/paper_search.git
+cd paper_search
+
+# Create and activate a virtual environment
+python -m venv .venv
+
+# Windows (Command Prompt / PowerShell)
+.venv\Scripts\activate
+
+# Linux / macOS
+source .venv/bin/activate
+
+# Optional: Install GPU-accelerated PyTorch for your system
+python install_torch.py
+
+# Install PaperSearch in editable mode
+pip install -e .
 ```
 
 ### Semantic Scholar API
 Due to obvious reasons of not wanting to version an API key into git, you will need to manually drop an API key into the `~.paper_search/data/secret` folder in order to use Semantic Scholar quickly.  The instructions for obtaining said key can be found here.  `https://www.semanticscholar.org/product/api#api-key`  If you have a .edu email, they will prioritize getting you a key quickly.  
 
----
+## 🛠️ Advanced GPU & VM Setup (GCP / Ubuntu)
 
+If you'd like to use GPU-accelerated searches (`Marco` and `Specter`) on a Linux VM (e.g., GCP instance with a Tesla T4), follow these steps to configure CUDA and PyTorch.
+
+### 1. System Dependencies
+```terminal
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y build-essential git python3.12 python3-pip python3-venv
+lspci | grep -i nvidia
+```
+### 2. CUDA Toolkit Installation
+Check available drivers on the [Nvidia Developer page](https://developer.nvidia.com/cuda-downloads). Keep your PyTorch version *below* your max installed CUDA version.
+
+```bash
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin
+sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
+wget https://developer.download.nvidia.com/compute/cuda/13.0.1/local_installers/cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
+sudo cp /var/cuda-repo-ubuntu2404-13-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
+sudo apt-get update
+sudo apt-get -y install cuda-toolkit-13-0
+sudo apt-get install -y nvidia-open
+```
+*(Monitor your GPU temps with: `watch -n 1 nvidia-smi`)*
+
+### 3. GPU-Enabled PyTorch Installation
+Check your max CUDA version (`nvidia-smi`). In this example, we use CUDA 11.8. 
+
+Your `pyproject.toml` is already configured with the PyTorch explicit wheel source. Just install the dependencies:
+```bash
+poetry install
+```
+*(If you need a different CUDA version, modify the `[[tool.poetry.source]]` URL in `pyproject.toml` prior to running `poetry install`.)*
+
+
+
+---
 ## 💻 Usage & CLI Commands
 
 Once installed, you can run the application from anywhere on your system using the following commands:
@@ -137,41 +174,6 @@ paper-search-sync --scrape --force --year 2025
 - When you first select **Word2Vec**, the application will automatically download and cache `en_core_web_md` via SpaCy.
 - When you first select **Marco** or **Specter**, the application will automatically pull the weights from HuggingFace and cache them locally in `~/.paper_search/models/`. If a compatible GPU is detected, it will utilize it automatically.
 ---
-
-## 🛠️ Advanced GPU & VM Setup (GCP / Ubuntu)
-
-If you'd like to use GPU-accelerated searches (`Marco` and `Specter`) on a Linux VM (e.g., GCP instance with a Tesla T4), follow these steps to configure CUDA and PyTorch.
-
-### 1. System Dependencies
-```terminal
-sudo apt update && sudo apt upgrade -y
-sudo apt install -y build-essential git python3.12 python3-pip python3-venv
-lspci | grep -i nvidia
-```
-### 2. CUDA Toolkit Installation
-Check available drivers on the [Nvidia Developer page](https://developer.nvidia.com/cuda-downloads). Keep your PyTorch version *below* your max installed CUDA version.
-
-```bash
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2404/x86_64/cuda-ubuntu2404.pin
-sudo mv cuda-ubuntu2404.pin /etc/apt/preferences.d/cuda-repository-pin-600
-wget https://developer.download.nvidia.com/compute/cuda/13.0.1/local_installers/cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
-sudo dpkg -i cuda-repo-ubuntu2404-13-0-local_13.0.1-580.82.07-1_amd64.deb
-sudo cp /var/cuda-repo-ubuntu2404-13-0-local/cuda-*-keyring.gpg /usr/share/keyrings/
-sudo apt-get update
-sudo apt-get -y install cuda-toolkit-13-0
-sudo apt-get install -y nvidia-open
-```
-*(Monitor your GPU temps with: `watch -n 1 nvidia-smi`)*
-
-
-### 3. GPU-Enabled PyTorch Installation
-Check your max CUDA version (`nvidia-smi`). In this example, we use CUDA 11.8. 
-
-Your `pyproject.toml` is already configured with the PyTorch explicit wheel source. Just install the dependencies:
-```bash
-poetry install
-```
-*(If you need a different CUDA version, modify the `[[tool.poetry.source]]` URL in `pyproject.toml` prior to running `poetry install`.)*
 
 
 ---
