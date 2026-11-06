@@ -591,7 +591,7 @@ chrome_version = np.random.randint(125, 152)
 SEARCH_MODELS = ["Fuzzy", "Cosine", "Word2Vec", "Marco", "Specter"]
 MODEL_DESC = [
     "Fuzzy matching like regex.  Warning: Very slow when run against the abstract field", 
-    "Very fast and good for basic retrieval.  Uses TF-IDF with L1 regularization", 
+    "Very fast and good for basic retrieval.  Uses TF-IDF with L1 regularization",  
     "Using the standard spacy pipeline, calculates a cosine sim with more detailed embeddings", 
     "Good for Asymetric Semantic Search.  Slower than above, but more accurate. Available for GPU",
     "Meant for comparing scientific papers.   Runs quite slowly on abstracts. Available for GPU"
@@ -605,7 +605,7 @@ ARXIV_AREAS = load_taxonomy()
 XARXIV_FIELDS = ["Title", "Abstract", "Author(s)", "Abstract|Title", "Text|Abstract|Title"]  
 XARXIV_SOURCES = ["bioRxiv", "medRxiv"]
 XARXIV_SORT = ["Best match", "Oldest first", "Newest first", "Popularity"]
-BIOARXIV_SUBJECTS =[
+BIOARXIV_SUBJECTS = [
     "Animal Behavior and Cognition", "Biochemistry", "Bioengineering",
     "Bioinformatics", "Biophysics", "Cancer Biology", "Cell Biology",
     "Clinical Trials", "Developmental Biology", "Ecology", "Epidemiology",
@@ -615,7 +615,7 @@ BIOARXIV_SUBJECTS =[
     "Scientific Communication and Education", "Synthetic Biology", "Systems Biology", "Zoology"
 ]
 
-MEDARXIV_SUBJECTS= [
+MEDARXIV_SUBJECTS = [
     "Addiction Medicine", "Allergy and Immunology", "Anesthesia",
     "Cardiovascular Medicine", "Dentistry and Oral Medicine", "Dermatology",
     "Emergency Medicine", "Endocrinology (including Diabetes Mellitus and Metabolic Disease)", 

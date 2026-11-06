@@ -9,10 +9,10 @@ import asyncio
 import numpy as np
 import re
 from time import sleep
-from typing import TYPE_CHECKING, List, Tuple, Dict, Any 
-from pathlib import Path, PurePath
 from collections import deque
 from torch.cuda import empty_cache
+from pathlib import Path, PurePath
+from typing import TYPE_CHECKING, List, Tuple, Dict, Any 
 #Textual Imports
 from textual import on, work
 from textual.binding import Binding
@@ -47,15 +47,14 @@ from .support import (
     ARXIV_FIELDS, ARXIV_SUBJECTS, ARXIV_DATES, ARXIV_AREAS, #arXiv vars
     XARXIV_SOURCES, XARXIV_FIELDS, XARXIV_SORT, BIOARXIV_SUBJECTS, MEDARXIV_SUBJECTS, #xRxiv vars
     SEMANTIC_SUBJECTS, SEMANTIC_PUBS, # Semantic Vars
-    DATA_DIR, MODEL_DIR, LOG_DIR, SCREEN_DIR # directory Vars
+    DATA_DIR # data directory var
 )
 from . import __prog_name__, __version__
 
 if TYPE_CHECKING:
     from io import TextIOWrapper
 
-
-#CLASS - Load Data
+# CLASS - Load Data
 class PaperSearch(App):
     TITLE = __prog_name__
     SUB_TITLE = f"A JSON exploration tool for influential Machine Learning Papers ({__version__})"
