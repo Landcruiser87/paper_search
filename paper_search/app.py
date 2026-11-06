@@ -36,7 +36,7 @@ from .widgets import (
     TreeView,SearchProgress
 )
 from .utils import (
-    ArxivSearch, bioRxiv, medRxiv, SemanticScholar,
+    ArxivSearch, bioRxiv, medRxiv, SemanticScholar, PapersWithCode,
     cosine_similarity, sbert, word2vec, 
     tfidf, get_c_time,clean_text, clean_string_values
 )
@@ -220,6 +220,28 @@ class PaperSearch(App):
                             yield Input("Year Range", id="input-s2-year", tooltip="Format: YYYY or YYYY-YYYY", type="text")
                             yield Input("Venue", id="input-s2-venue", tooltip="e.g., Nature, New England Journal Medicine", type="text")
                             yield Button("Search", id="search-s2")
+                
+                # Tab 7 - Papers with Code Search
+                with TabPane("Papers with Code", id="pwc-tab"):
+                    with Container(id="srch-pwc-container"):
+                        yield Input("Filter keywords (optional)", id="input-pwc", tooltip="Filter trending papers by topic, title, or keywords")
+                        
+                        yield Static("Timeframe", id="hdr-pwc-time", classes="header")
+                        yield Static("Sort Metric", id="hdr-pwc-sort", classes="header")
+                        yield Static("Limits & Actions", id="hdr-pwc-limit", classes="header")
+                        
+                        with RadioSet(id="radio-pwc-time", classes="header"):
+                            yield RadioButton("Daily", value=True)
+                            yield RadioButton("Weekly")
+                            yield RadioButton("Monthly")
+                            
+                        with RadioSet(id="radio-pwc-sort", classes="header"):
+                            yield RadioButton("GitHub Stars", value=True)
+                            yield RadioButton("Upvotes")
+                            
+                        with Vertical(id="sub-pwc-limit"):
+                            yield Input("50", id="input-pwc-limit", type="integer", tooltip="Max number of papers to return")
+                            yield Button("Fetch Papers", id="search-pwc")
 
     #FUNCTION - onmount
     def on_mount(self) -> None:
@@ -371,6 +393,109 @@ class PaperSearch(App):
     @on(Button.Pressed, "#search-s2")
     def s2_button_event(self):
         self.search_s2()
+    
+    @on(Button.Pressed, "#search-pwc")
+    def pwc_button_event(self):
+        self.search_pwc()
+
+    def search_pwc(self):
+        srch_text = self.query_one("#input-pwc", Input).value.strip()
+        if srch_text == "Filter keywords (optional)":
+            srch_text = ""
+
+        # Read timeframe radio selection
+        time_radio = self.query_one("#radio-pwc-time", RadioSet)
+        time_btn = time_radio.pressed_button
+        timeframe = time_btn.label.plain.lower() if time_btn else "daily"
+
+        # Read sort radio selection
+        sort_radio = self.query_one("#radio-pwc-sort", RadioSet)
+        sort_btn = sort_radio.pressed_button
+        sort_by = "stars" if sort_btn and "Stars" in sort_btn.label.plain else "upvotes"
+
+        # Read and validate result limit
+        limit_val = self.query_one("#input-pwc-limit", Input).value.strip()
+        limit = int(limit_val) if self.is_numeric_string(limit_val) else 50
+
+        variables = {
+            "query": srch_text,
+            "timeframe": timeframe,
+            "sort_by": sort_by,
+            "limit": limit
+        }
+
+        # Filename labeled by day/week/month, sort choice, and current timestamp
+        tag = f"_{'-'.join(srch_text.lower().split())}" if srch_text else ""
+        root_name = f"pwc_{timeframe}_{sort_by}{tag}_{get_c_time()}"
+
+        try:
+            tree_view: TreeView = self.query_one("#tree-container", TreeView)
+            tree: Tree = tree_view.query_one(Tree)
+
+            searchbar = SearchProgress(count=0, total=1)
+            self.search_container = Container(searchbar, id="loading-container")
+            self.mount(self.search_container)
+
+            self._search_pwc_worker(variables, root_name, tree)
+        except Exception as e:
+            logger.error(f"Failed to initialize PapersWithCode search: {e}")
+
+    @work(thread=True, exclusive=True, group="pwc_searching")
+    async def _search_pwc_worker(
+        self,
+        variables: dict,
+        root_name: str,
+        tree: Tree
+    ):
+        def update_progress_ui(current_count: int):
+            if self.search_container and self.search_container.is_mounted:
+                try:
+                    progress_bar = self.search_container.query_one(SearchProgress)
+                    progress_bar.count = current_count
+                    progress_bar.advance(1)
+                    progress_bar.refresh()
+                except Exception as e:
+                    logger.error(f"Failed to update search progress bar: {e}")
+
+        worker = get_current_worker()
+        pwc = PapersWithCode(variables)
+
+        try:
+            json_data, error_message = pwc.request_papers()
+
+            if json_data:
+                self.app.call_from_thread(update_progress_ui, 1)
+                num_papers = len(json_data) - 1 if "search_params" in json_data else len(json_data)
+                self.app.call_from_thread(self.notify, f"{num_papers} papers retrieved from Papers with Code")
+
+                await asyncio.sleep(0.1)
+                if not worker.is_cancelled:
+                    try:
+                        self.app.call_from_thread(self.load_data, tree, root_name, json_data)
+                        save_data(root_name, json_data)
+                        self.app.call_from_thread(self.notify, f"Saved search to searches/{root_name}.json")
+                    except Exception as e:
+                        logger.error(f"Failed to save PwC search results: {e}")
+            elif error_message:
+                self.app.call_from_thread(self.notify, f"No results:\n{error_message}", severity="warning")
+                logger.warning(f"No PwC results: {error_message}")
+
+        except Exception as e:
+            logger.error(f"Error during PwC worker run: {e}")
+            self.app.call_from_thread(self.notify, f"Search failed on Papers with Code:\n{e}", severity="error", timeout=2)
+
+        finally:
+            def remove_progress_ui():
+                if self.search_container and self.search_container.is_mounted:
+                    try:
+                        self.search_container.remove()
+                    except Exception as e:
+                        logger.error(f"Error removing search progress container: {e}")
+                self.search_container = None
+
+            self.app.call_from_thread(remove_progress_ui)
+            # Reload datasets so the new search file appears in the selection list
+            self.reload_datasets()
 
     #FUNCTION - Load Data
     def load_data(self, json_tree: TreeView, root_name:str, json_data:dict|str):

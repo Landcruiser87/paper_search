@@ -40,6 +40,7 @@ class Paper:
     doi     : str = ""
     score   : float = 0
     github_url     : str = ""
+    license        : str = ""  # Repository license (e.g., MIT, Apache-2.0)
     supplemental   : str = ""  #general comments
     date_published : str = ""  #mm-dd-yyyy
     conference_info: str = ""  #e.g. arxiv
@@ -1008,7 +1009,7 @@ class SemanticScholar(object):
             paper = Paper()
             # Change this to use the title and slice it so it doesn't break the UI if it's too long
             title_str = result.get("title", "Unknown Title")
-            paper.id = f"{idx}_s2_{title_str[:50]}" 
+            paper.id = f"{idx}_s2_{title_str}" #[:50]
             paper.title = title_str
             paper.abstract = result.get("abstract", "")
             
@@ -1031,7 +1032,94 @@ class SemanticScholar(object):
             paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
             
         return paper_dict
-    
+
+class PapersWithCode(object):
+    def __init__(self, variables: dict):
+        self.params: dict = variables
+
+    def request_papers(self) -> tuple[dict|None, str|None]:
+        timeframe = self.params.get("timeframe", "daily")
+        sort_by = self.params.get("sort_by", "stars")
+        limit = self.params.get("limit", 50)
+        query = self.params.get("query", "").lower()
+
+        baseurl = "https://huggingface.co/api/daily_papers"
+        headers = {
+            "accept": "application/json",
+            "user-agent": f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36"
+        }
+
+        # Request sufficient entries to filter and rank accurately
+        params = {"limit": max(limit * 2, 100)}
+
+        try:
+            response = cf.requests.get(baseurl, headers=headers, params=params, impersonate="chrome")
+            if response.status_code == 200:
+                raw_data = response.json()
+                return self.parse_feed(raw_data, timeframe, sort_by, query, limit), None
+            return None, f"Status Code {response.status_code}: {response.reason}"
+        
+        except Exception as e:
+            logger.warning(f"PapersWithCode API error: {e}")
+            return None, str(e)
+
+    def parse_feed(self, results, timeframe: str, sort_by: str, query: str, limit: int) -> dict:
+        items = results if isinstance(results, list) else results.get("data", [])
+        extracted_papers = []
+
+        for idx, item in enumerate(items):
+            title = item.get("title", "")
+            abstract = item["paper"].get("summary", "")
+
+            # Apply keyword filter if present
+            if query and query not in title.lower() and query not in abstract.lower():
+                continue
+
+            paper = Paper()
+            paper.title = title
+            clean_title = "".join(x for x in paper.title if x.isalnum() or x.isspace()).replace(" ", "_")
+            paper.id = f"{idx}_pwc_{clean_title}"
+            paper.abstract = abstract
+            paper.date_published = str(item.get("publishedAt", ""))[:10]
+            paper.url = f"https://paperswithcode.co/paper/{item["paper"].get("id")}"
+
+            # Extract metrics and license
+            upvotes = item["paper"].get("upvotes", 0) or 0
+            github_stars = item["paper"].get("githubStars", 0)
+            repo_license = (
+                item.get("license")
+                or item.get("repo_license")
+                or (item.get("repository", {}).get("license") if isinstance(item.get("repository"), dict) else "")
+                or ""
+            )
+
+            paper.score = github_stars if sort_by == "stars" else upvotes
+            paper.github_url = item["paper"].get("githubRepo", "")
+            paper.license = repo_license
+            paper.conference_info = f"PapersWithCode ({timeframe})"
+            authors = item["paper"].get("authors", [])
+            if authors:
+                paper.authors = {
+                    f"{a_idx}_{a['name'] if isinstance(a, dict) else a}": (a['name'] if isinstance(a, dict) else a)
+                    for a_idx, a in enumerate(authors)
+                }
+
+            paper_record = {field.name: getattr(paper, field.name) for field in fields(paper)}
+            paper_record["github_stars"] = github_stars
+            paper_record["upvotes"] = upvotes
+            paper_record["license"] = repo_license
+            extracted_papers.append(paper_record)
+
+        # Sort descending by the requested metric
+        sort_key = "github_stars" if sort_by == "stars" else "upvotes"
+        extracted_papers.sort(key=lambda p: p.get(sort_key, 0), reverse=True)
+
+        final_results = {"search_params": self.params}
+        for paper_data in extracted_papers[:limit]:
+            final_results[paper_data["id"]] = paper_data
+
+        return final_results
+
 ###############################  Date Functions ########################################
 #FUNCTION Date Check
 def is_a_date(datetext:str) -> bool:
