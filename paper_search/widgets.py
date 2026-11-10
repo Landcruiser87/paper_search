@@ -44,7 +44,7 @@ class JSONTree(Tree[JSONNodeData]):
                 new_node.data = value
 
         elif isinstance(data, list):
-            node.set_label = Text(f"[] {name}")
+            node.set_label(f"[] {name}")
             for index, value in enumerate(data):
                 new_node = node.add("")
                 self.add_node(str(index), new_node, value)
