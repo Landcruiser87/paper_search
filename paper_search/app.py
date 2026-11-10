@@ -370,37 +370,6 @@ class PaperSearch(App):
                 self._populate_pwc_table(current_area)
         except Exception:
             pass
-    # @on(DataTable.RowSelected, "#dt-pwc-subjects")
-    # def on_pwc_row_selected(self, event: DataTable.RowSelected) -> None:
-    #     """Toggles the selected task filter when a row is clicked or Enter is pressed."""
-    #     task_id = str(event.row_key.value)
-    #     table = self.query_one("#dt-pwc-subjects", DataTable)
-    #     task_name = str(table.get_cell(event.row_key, "subject"))
-
-    #     # Clicking an already-selected row clears it
-    #     if self.selected_pwc_task == task_id:
-    #         self.clear_pwc_task_selection()
-    #         self.notify("Task filter deselected (broad search mode)")
-    #     else:
-    #         self.selected_pwc_task = task_id
-    #         self.selected_pwc_task_name = task_name
-    #         hdr = self.query_one("#hdr-pwc-subject", Static)
-    #         hdr.update(f"[bold cyan]Selected:[/] {task_name[:24]}")
-    #         self.notify(f"Selected task: {task_name}")
-    
-    # def on_resize(self, event: events.Resize) -> None:
-    #     """Dynamically preserves the 70/30 ratio when the window or panel is resized."""
-    #     try:
-    #         table = self.query_one("#dt-pwc-subjects", DataTable)
-    #         usable_width = max(table.size.width - 4, 30)
-            
-    #         if "subject" in table.columns and "count" in table.columns:
-    #             table.columns["subject"].width = int(usable_width * 0.70)
-    #             table.columns["count"].width = int(usable_width * 0.30)
-    #             table.refresh()
-    #     except Exception:
-    #         # Table is not mounted yet or not currently active
-    #         pass
 
     @on(SelectionList.SelectedChanged, "#datasets")
     def on_datasets_selection_changed(self, event: SelectionList.SelectedChanged) -> None:

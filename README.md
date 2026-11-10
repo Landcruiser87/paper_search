@@ -155,7 +155,7 @@ paper-search-sync
 Paper sync comes with a few new cli arguments that allow you to pull down papers in whatever fashion you deem fit. The arguments are below
 
 ```
-No arguments = Sync existing files to app
+No arguments = Sync existing JSONS to the current bundle on github
 --scrape = Run the web scraper on all conferences
 --force = Redownload conferences even if they're already cached
 --year = Target a specific year

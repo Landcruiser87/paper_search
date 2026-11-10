@@ -756,35 +756,17 @@ class xRxivBase(object):
             if post:
                 logger.debug(self.query_formatted)
                 response = cf.requests.post(self.query_formatted, impersonate="chrome")
-                # if self.params["source"] == "bioRxiv":
-                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
-                #     logger.info("Much Success!")
-
-                # elif self.params["source"] == "medRxiv":
-                #     # response = requests.post(self.query_formatted, headers=headers)
-                #     response = cf.requests.post(self.query_formatted, impersonate="chrome")
 
             #Individual paper request
             elif doi_url:
                 logger.debug(doi_url)
                 response = cf.requests.get(url=doi_url, impersonate="chrome")
-                #Old Code
-                # if self.params["source"] == "bioRxiv":
-                #     response = cf.requests.get(url=doi_url, impersonate="chrome")
-                # elif self.params["source"] == "medRxiv":
-                #     response = requests.get(doi_url, headers=headers)
 
             #Page Iteration
             elif cursor > 0:
                 url = self.query_formatted + f"?page={cursor}"
                 logger.debug(url)
                 response = cf.requests.post(url=url, impersonate="chrome")
-
-                # if self.params["source"] == "bioRxiv":
-                #     response = cf.requests.post(url=url, impersonate="chrome")
-                # elif self.params["source"] == "medRxiv":
-                #     # response = requests.post(url=url, headers=headers)
-                #     response = cf.requests.post(url=url, impersonate="chrome")
 
         except Exception as e:
             logger.warning(f"A general request error occured.  Check URL\n{e}")
