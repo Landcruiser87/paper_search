@@ -14,7 +14,7 @@ from torch.cuda import empty_cache
 from pathlib import Path, PurePath
 from typing import TYPE_CHECKING, List, Tuple, Dict, Any 
 #Textual Imports
-from textual import on, work
+from textual import events, on, work
 from textual.binding import Binding
 from textual.app import App, ComposeResult
 from textual.containers import Container, Horizontal, Vertical
@@ -22,18 +22,18 @@ from textual.fuzzy import Matcher
 from textual.worker import get_current_worker
 from textual.reactive import reactive, var
 from textual.widgets import (
-    Button,Footer,Header,
-    Input,Static,SelectionList,
-    RadioButton,RadioSet, 
-    TabbedContent,TabPane,Tree
+    Button, Footer, Header,
+    Input, Static, SelectionList,
+    RadioButton, RadioSet, 
+    TabbedContent, TabPane, Tree, DataTable
 )
 from textual.widgets.selection_list import Selection
 from textual.widgets.tree import TreeNode
 from sentence_transformers import util as st_utils
 #Custom Imports
 from .widgets import (
-    JSONDocumentView,JSONTree,
-    TreeView,SearchProgress
+    JSONDocumentView, JSONTree,
+    TreeView, SearchProgress
 )
 from .utils import (
     ArxivSearch, bioRxiv, medRxiv, SemanticScholar, PapersWithCode,
@@ -46,7 +46,8 @@ from .support import (
     SEARCH_FIELDS, SEARCH_MODELS, MODEL_DESC, #global vars
     ARXIV_FIELDS, ARXIV_SUBJECTS, ARXIV_DATES, ARXIV_AREAS, #arXiv vars
     XARXIV_SOURCES, XARXIV_FIELDS, XARXIV_SORT, BIOARXIV_SUBJECTS, MEDARXIV_SUBJECTS, #xRxiv vars
-    SEMANTIC_SUBJECTS, SEMANTIC_PUBS, # Semantic Vars
+    SEMANTIC_SUBJECTS, SEMANTIC_PUBS, # Semantic vars
+    PWC_AREAS, PWC_SUBJECTS, #Papers with Code vars
     DATA_DIR # data directory var
 )
 from . import __prog_name__, __version__
@@ -68,6 +69,8 @@ class PaperSearch(App):
     
     json_name: str = ""
     json_data: str = ""
+    selected_pwc_task: str = ""
+    selected_pwc_task_name: str = ""
     root_data_dir = var(Path(f"{DATA_DIR}/conferences"))
     srch_data_dir = var(Path(f"{DATA_DIR}/searches"))
     selected_node_data:  reactive[object | None] = reactive(None)
@@ -224,24 +227,33 @@ class PaperSearch(App):
                 # Tab 7 - Papers with Code Search
                 with TabPane("Papers with Code", id="pwc-tab"):
                     with Container(id="srch-pwc-container"):
-                        yield Input("Filter keywords (optional)", id="input-pwc", tooltip="Filter trending papers by topic, title, or keywords")
-                        
-                        yield Static("Timeframe", id="hdr-pwc-time", classes="header")
-                        yield Static("Sort Metric", id="hdr-pwc-sort", classes="header")
-                        yield Static("Limits & Actions", id="hdr-pwc-limit", classes="header")
-                        
-                        with RadioSet(id="radio-pwc-time", classes="header"):
-                            yield RadioButton("Daily", value=True)
-                            yield RadioButton("Weekly")
-                            yield RadioButton("Monthly")
-                            
-                        with RadioSet(id="radio-pwc-sort", classes="header"):
-                            yield RadioButton("GitHub Stars", value=True)
-                            yield RadioButton("Upvotes")
-                            
-                        with Vertical(id="sub-pwc-limit"):
-                            yield Input("50", id="input-pwc-limit", type="integer", tooltip="Max number of papers to return")
-                            yield Button("Fetch Papers", id="search-pwc")
+                        yield Input("Type search here", id="input-pwc", tooltip="Filter trending papers by topic, title, or keywords")
+                        yield Static("Main Area", id="hdr-pwc-area", classes="header")
+                        yield Static("Subject / Tasks", id="hdr-pwc-subject", classes="header")
+                        yield Static("Options & Filters", id="hdr-pwc-options", classes="header")
+
+                        # Column 1: Main Areas
+                        with RadioSet(id="radio-pwc-area", classes="header", tooltip ="Cannot Search individual main area's, select a Subject / Tasks if you want specialized search"):
+                            for idx, area in enumerate(PWC_AREAS):
+                                yield RadioButton(area, value=(idx == 0))
+
+                        # Column 2: 2-Column DataTable (80% Subject, 20% Paper Count)
+                        yield DataTable(id="dt-pwc-subjects")
+
+                        # Column 3: Stacked Options, Year Range, Limit, Button
+                        with Vertical(id="sub-pwc-right"):
+                            with RadioSet(id="radio-pwc-time", classes="header"):
+                                yield RadioButton("Last Week", value=True)
+                                yield RadioButton("Last Month")
+                                yield RadioButton("All Time")
+
+                            with RadioSet(id="radio-pwc-sort", classes="header"):
+                                yield RadioButton("GitHub Stars", value=True)
+                                yield RadioButton("Trend Score")
+
+                            yield Input("Result limit", id="input-pwc-limit", type="integer", tooltip="Max papers to return (default: 50)")
+                            yield Input("Year Range", id="input-pwc-year", tooltip="Format: YYYY or YYYY-YYYY", type="text")
+                            yield Button("Search", id="search-pwc")
 
     #FUNCTION - onmount
     def on_mount(self) -> None:
@@ -255,7 +267,140 @@ class PaperSearch(App):
         json_docview = self.query_one(JSONDocumentView)
         json_docview.update_document(json_data if self.json_name else "")
         self.reload_datasets()
+        self.call_after_refresh(self._setup_and_populate_pwc)
         tree.focus()
+
+    def _setup_and_populate_pwc(self) -> None:
+        """Configures the DataTable columns to 100% of usable width and loads Trending."""
+        self._setup_pwc_table()
+        self._populate_pwc_table("Trending")
+
+    def _setup_pwc_table(self) -> None:
+        """Sets up 70/30 columns spanning the full width of the middle column."""
+        table = self.query_one("#dt-pwc-subjects", DataTable)
+        table.cursor_type = "row"
+        table.clear(columns=True)
+        
+        # Pull actual width of the table widget (fallback to middle grid col width if 0)
+        table_width = table.size.width
+        if table_width <= 0:
+            container = self.query_one("#srch-pwc-container")
+            # 1.8fr out of (0.8 + 1.8 + 1.1 = 3.7fr)
+            table_width = int(container.size.width * (1.8 / 3.7)) if container.size.width > 0 else 80
+
+        usable_width = max(table_width - 3, 30)
+        col_subject_w = int(usable_width * 0.70)
+        col_count_w = max(usable_width - col_subject_w, 10)
+        
+        table.add_column("Task / Subject", width=col_subject_w, key="subject")
+        table.add_column("Papers", width=col_count_w, key="count")
+
+    def _populate_pwc_table(self, area_name: str) -> None:
+        table = self.query_one("#dt-pwc-subjects", DataTable)
+        table.clear() 
+        res = []
+        area_tasks = PWC_SUBJECTS.get(area_name, {})
+        for task_name, info in area_tasks.items():
+            count = info.get("count", 0) if isinstance(info, dict) else 0
+            task_id = info.get("id", task_name) if isinstance(info, dict) else task_name
+            res.append((task_name, count, task_id))
+        res = sorted(res, key=lambda x:-x[1])
+        for task_name, count, task_id in res:            
+            table.add_row(task_name, f"{count:,}", key=task_id)
+
+    @on(TabbedContent.TabActivated)
+    def on_tab_activated(self, event: TabbedContent.TabActivated) -> None:
+        """Recalculate column widths when switching to the Papers with Code tab."""
+        if event.pane.id == "pwc-tab":
+            area_radio = self.query_one("#radio-pwc-area", RadioSet)
+            area_btn = area_radio.pressed_button
+            current_area = area_btn.label.plain if area_btn else "Trending"
+            self._setup_pwc_table()
+            self._populate_pwc_table(current_area)
+
+    # Capture selection on BOTH RowSelected and CellSelected
+    @on(DataTable.RowSelected, "#dt-pwc-subjects")
+    @on(DataTable.CellSelected, "#dt-pwc-subjects")
+    def on_pwc_row_selected(self, event: DataTable.RowSelected | DataTable.CellSelected) -> None:
+        """Toggles the selected task filter when a row/cell is clicked or Enter is pressed."""
+        row_key = event.row_key if isinstance(event, DataTable.RowSelected) else event.cell_key.row_key
+        task_id = str(row_key.value)
+        table = self.query_one("#dt-pwc-subjects", DataTable)
+        task_name = str(table.get_cell(row_key, "subject"))
+
+        if self.selected_pwc_task == task_id:
+            self.clear_pwc_task_selection()
+            self.notify("Task filter deselected (broad search mode)")
+        else:
+            self.selected_pwc_task = task_id
+            self.selected_pwc_task_name = task_name
+            hdr = self.query_one("#hdr-pwc-subject", Static)
+            hdr.update(f"[bold cyan]Selected:[/] {task_name[:24]}")
+            self.notify(f"Selected task: {task_name}")
+
+    # Remove the duplicate on_radio_pwc_area_changed so clear_pwc_task_selection always runs
+    @on(RadioSet.Changed, "#radio-pwc-area")
+    def on_radio_pwc_area_changed(self, event: RadioSet.Changed) -> None:
+        pressed = getattr(event.pressed.label, '_text', None)
+        area_name = pressed[0] if pressed else str(event.pressed.label)
+        self.clear_pwc_task_selection()
+        self._populate_pwc_table(area_name)
+
+    
+    def clear_pwc_task_selection(self) -> None:
+        """Resets the task selection and updates the header text."""
+        self.selected_pwc_task = ""
+        self.selected_pwc_task_name = ""
+        try:
+            hdr = self.query_one("#hdr-pwc-subject", Static)
+            hdr.update("Subject / Tasks")
+        except Exception:
+            pass
+
+
+    def on_resize(self, event: events.Resize) -> None:
+        """Re-render table on terminal resize so it retains 70/30 across full width."""
+        try:
+            table = self.query_one("#dt-pwc-subjects", DataTable)
+            if table.is_mounted:
+                area_radio = self.query_one("#radio-pwc-area", RadioSet)
+                area_btn = area_radio.pressed_button
+                current_area = area_btn.label.plain if area_btn else "Trending"
+                self._setup_pwc_table()
+                self._populate_pwc_table(current_area)
+        except Exception:
+            pass
+    # @on(DataTable.RowSelected, "#dt-pwc-subjects")
+    # def on_pwc_row_selected(self, event: DataTable.RowSelected) -> None:
+    #     """Toggles the selected task filter when a row is clicked or Enter is pressed."""
+    #     task_id = str(event.row_key.value)
+    #     table = self.query_one("#dt-pwc-subjects", DataTable)
+    #     task_name = str(table.get_cell(event.row_key, "subject"))
+
+    #     # Clicking an already-selected row clears it
+    #     if self.selected_pwc_task == task_id:
+    #         self.clear_pwc_task_selection()
+    #         self.notify("Task filter deselected (broad search mode)")
+    #     else:
+    #         self.selected_pwc_task = task_id
+    #         self.selected_pwc_task_name = task_name
+    #         hdr = self.query_one("#hdr-pwc-subject", Static)
+    #         hdr.update(f"[bold cyan]Selected:[/] {task_name[:24]}")
+    #         self.notify(f"Selected task: {task_name}")
+    
+    # def on_resize(self, event: events.Resize) -> None:
+    #     """Dynamically preserves the 70/30 ratio when the window or panel is resized."""
+    #     try:
+    #         table = self.query_one("#dt-pwc-subjects", DataTable)
+    #         usable_width = max(table.size.width - 4, 30)
+            
+    #         if "subject" in table.columns and "count" in table.columns:
+    #             table.columns["subject"].width = int(usable_width * 0.70)
+    #             table.columns["count"].width = int(usable_width * 0.30)
+    #             table.refresh()
+    #     except Exception:
+    #         # Table is not mounted yet or not currently active
+    #         pass
 
     @on(SelectionList.SelectedChanged, "#datasets")
     def on_datasets_selection_changed(self, event: SelectionList.SelectedChanged) -> None:
@@ -298,7 +443,7 @@ class PaperSearch(App):
         datasets.add_options(
             [Selection(label, id) for label, id in filtered_options]
         )
-
+    
     @on(RadioSet.Changed, "#radio-models")
     def on_radio_models_changed(self, event: RadioSet.Changed) -> None:
         input_thres = self.query_one("#input-thres", Input)
@@ -355,8 +500,6 @@ class PaperSearch(App):
             codes = [Selection(y, x, False) for x, y in enumerate(BIOARXIV_SUBJECTS)]
         elif pressed == "medRxiv":
             codes = [Selection(y, x, False) for x, y in enumerate(MEDARXIV_SUBJECTS)]
-        # elif pressed == "both":
-        #     codes = [Selection("all", 0, True)]
         categories.add_options(codes)
 
     @on(SelectionList.SelectionHighlighted, "#sl-arx-categories")
@@ -393,40 +536,58 @@ class PaperSearch(App):
     @on(Button.Pressed, "#search-s2")
     def s2_button_event(self):
         self.search_s2()
-    
+
     @on(Button.Pressed, "#search-pwc")
     def pwc_button_event(self):
         self.search_pwc()
-
+    
     def search_pwc(self):
         srch_text = self.query_one("#input-pwc", Input).value.strip()
-        if srch_text == "Filter keywords (optional)":
+        if srch_text == "Type search here":
             srch_text = ""
 
-        # Read timeframe radio selection
+        # Capture the selected task filter
+        active_task_id = self.selected_pwc_task
+        active_task_name = self.selected_pwc_task_name
+
+        # Area selection
+        area_radio = self.query_one("#radio-pwc-area", RadioSet)
+        area_btn = area_radio.pressed_button
+        area = area_btn.label.plain if area_btn else "Trending"
+
+        # Right-column options
         time_radio = self.query_one("#radio-pwc-time", RadioSet)
         time_btn = time_radio.pressed_button
-        timeframe = time_btn.label.plain.lower() if time_btn else "daily"
+        timeframe = time_btn.label.plain.lower() if time_btn else "last week"
 
-        # Read sort radio selection
         sort_radio = self.query_one("#radio-pwc-sort", RadioSet)
         sort_btn = sort_radio.pressed_button
-        sort_by = "stars" if sort_btn and "Stars" in sort_btn.label.plain else "upvotes"
+        sort_by = "stars" if sort_btn and "Stars" in sort_btn.label.plain else "Trend Score"
 
-        # Read and validate result limit
         limit_val = self.query_one("#input-pwc-limit", Input).value.strip()
         limit = int(limit_val) if self.is_numeric_string(limit_val) else 50
 
+        year_val = self.query_one("#input-pwc-year", Input).value.strip()
+        year = "" if year_val == "Year Range" else year_val
+
+        # Pack search selection criteria
         variables = {
             "query": srch_text,
+            "area": area,
+            "task": active_task_id,
+            "task_name": active_task_name,
             "timeframe": timeframe,
             "sort_by": sort_by,
+            "year": year,
             "limit": limit
         }
 
-        # Filename labeled by day/week/month, sort choice, and current timestamp
-        tag = f"_{'-'.join(srch_text.lower().split())}" if srch_text else ""
-        root_name = f"pwc_{timeframe}_{sort_by}{tag}_{get_c_time()}"
+        task_label = f"_{active_task_id}" if active_task_id else ""
+        text_label = f"_{'-'.join(srch_text.lower().split())}" if srch_text else ""
+        root_name = f"pwc_{timeframe}_{sort_by}{task_label}{text_label}_{get_c_time()}"
+
+        # Clear selection immediately so subsequent searches run broader
+        self.clear_pwc_task_selection()
 
         try:
             tree_view: TreeView = self.query_one("#tree-container", TreeView)
@@ -438,15 +599,10 @@ class PaperSearch(App):
 
             self._search_pwc_worker(variables, root_name, tree)
         except Exception as e:
-            logger.error(f"Failed to initialize PapersWithCode search: {e}")
+            logger.error(f"Failed to run PapersWithCode search: {e}")
 
     @work(thread=True, exclusive=True, group="pwc_searching")
-    async def _search_pwc_worker(
-        self,
-        variables: dict,
-        root_name: str,
-        tree: Tree
-    ):
+    async def _search_pwc_worker(self, variables: dict, root_name: str, tree: Tree):
         def update_progress_ui(current_count: int):
             if self.search_container and self.search_container.is_mounted:
                 try:
@@ -455,46 +611,39 @@ class PaperSearch(App):
                     progress_bar.advance(1)
                     progress_bar.refresh()
                 except Exception as e:
-                    logger.error(f"Failed to update search progress bar: {e}")
+                    logger.error(f"Failed to update progress bar: {e}")
 
         worker = get_current_worker()
         pwc = PapersWithCode(variables)
 
         try:
             json_data, error_message = pwc.request_papers()
-
             if json_data:
                 self.app.call_from_thread(update_progress_ui, 1)
                 num_papers = len(json_data) - 1 if "search_params" in json_data else len(json_data)
-                self.app.call_from_thread(self.notify, f"{num_papers} papers retrieved from Papers with Code")
+                self.app.call_from_thread(self.notify, f"{num_papers} papers found on Papers with Code")
 
                 await asyncio.sleep(0.1)
                 if not worker.is_cancelled:
                     try:
                         self.app.call_from_thread(self.load_data, tree, root_name, json_data)
                         save_data(root_name, json_data)
-                        self.app.call_from_thread(self.notify, f"Saved search to searches/{root_name}.json")
                     except Exception as e:
-                        logger.error(f"Failed to save PwC search results: {e}")
+                        logger.error(f"Failed to save PwC results: {e}")
             elif error_message:
                 self.app.call_from_thread(self.notify, f"No results:\n{error_message}", severity="warning")
-                logger.warning(f"No PwC results: {error_message}")
-
         except Exception as e:
-            logger.error(f"Error during PwC worker run: {e}")
-            self.app.call_from_thread(self.notify, f"Search failed on Papers with Code:\n{e}", severity="error", timeout=2)
-
+            logger.error(f"Worker error: {e}")
+            self.app.call_from_thread(self.notify, f"Search failed: {e}", severity="error")
         finally:
             def remove_progress_ui():
                 if self.search_container and self.search_container.is_mounted:
                     try:
                         self.search_container.remove()
-                    except Exception as e:
-                        logger.error(f"Error removing search progress container: {e}")
+                    except Exception:
+                        pass
                 self.search_container = None
-
             self.app.call_from_thread(remove_progress_ui)
-            # Reload datasets so the new search file appears in the selection list
             self.reload_datasets()
 
     #FUNCTION - Load Data

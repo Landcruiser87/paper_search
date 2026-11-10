@@ -499,7 +499,7 @@ Button {
 #srch-pwc-container {
     layout: grid;
     grid-size: 3 3;
-    grid-columns: 1fr 1fr 1fr;
+    grid-columns: 0.8fr 1.8fr 1.1fr;
     grid-rows: 0.6fr 0.4fr 1.4fr;
     border: rebeccapurple;
     background: $panel;
@@ -510,7 +510,7 @@ Button {
     column-span: 3;
 }
 
-#hdr-pwc-time, #hdr-pwc-sort, #hdr-pwc-limit {
+#hdr-pwc-area, #hdr-pwc-subject, #hdr-pwc-options {
     tint: magenta 50%;
     content-align: center middle;
     height: 0.8fr;
@@ -519,18 +519,31 @@ Button {
     margin-right: 1;
 }
 
-#radio-pwc-time, #radio-pwc-sort {
+#radio-pwc-area {
     height: 1fr;
     width: 1fr;
 }
 
-#sub-pwc-limit {
-    background: $panel;
-    margin-right: 1;
+#dt-pwc-subjects {
     height: 1fr;
+    width: 100%;
+    background: $panel;
+    border: magenta 50%;
 }
 
-#input-pwc-limit {
+#sub-pwc-right {
+    background: $panel;
+    height: 1fr;
+    margin-right: 1;
+}
+
+#radio-pwc-time, #radio-pwc-sort {
+    height: auto;
+    width: 1fr;
+    margin-bottom: 1;
+}
+
+#input-pwc-limit, #input-pwc-year {
     border: magenta 50%;
     margin-right: 1;
     margin-left: 1;

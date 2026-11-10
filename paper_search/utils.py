@@ -40,7 +40,7 @@ class Paper:
     doi     : str = ""
     score   : float = 0
     github_url     : str = ""
-    license        : str = ""  # Repository license (e.g., MIT, Apache-2.0)
+    github_stars   : int = ""
     supplemental   : str = ""  #general comments
     date_published : str = ""  #mm-dd-yyyy
     conference_info: str = ""  #e.g. arxiv
@@ -1036,24 +1036,100 @@ class SemanticScholar(object):
 class PapersWithCode(object):
     def __init__(self, variables: dict):
         self.params: dict = variables
+        self.base_api: str = "https://paperswithcode.co/api/v1/"
 
+        #Save for if I add hugging face
+            # baseurl = "https://huggingface.co/api/daily_papers"
+            # params = {"limit": max(limit * 2, 100)}
+                
+    def _matches_year(self, pub_date: str, target_year: str) -> bool:
+        if not target_year or not pub_date:
+            return True
+        pub_year = str(pub_date)[:4]
+        if not pub_year.isdigit():
+            return True
+
+        if "-" in target_year:
+            parts = target_year.split("-")
+            start = int(parts[0]) if parts[0].isdigit() else 0
+            end = int(parts[1]) if len(parts) > 1 and parts[1].isdigit() else 9999
+            return start <= int(pub_year) <= end
+        elif target_year.isdigit():
+            return pub_year == target_year
+        return True
+    
+    def _matches_timeframe(self, pub_date: str, timeframe: str) -> bool:
+        """Applies PwC's Last Week, Last Month, or All Time filter window."""
+        tf = timeframe.lower().replace(" ", "_")
+        if tf in ("all_time", "all") or not pub_date:
+            return True
+
+        try:
+            paper_dt = datetime.datetime.strptime(pub_date[:10], "%Y-%m-%d").date()
+            days_ago = (datetime.date.today() - paper_dt).days
+            if tf in ("last_week", "weekly"):
+                return days_ago <= 7
+            elif tf in ("last_month", "monthly"):
+                return days_ago <= 30
+        except Exception:
+            return True
+        return True
+    
     def request_papers(self) -> tuple[dict|None, str|None]:
-        timeframe = self.params.get("timeframe", "daily")
+        timeframe = self.params.get("timeframe", "last week")
         sort_by = self.params.get("sort_by", "stars")
         limit = self.params.get("limit", 50)
         query = self.params.get("query", "").lower()
+        domain = self.params.get("task_name", "")
+        # Request sufficient entries to filter and rank accurately
+        params = {
+            "page": "1",
+            "page_size": limit,
+            "include_resources": "true",
+            "order_by": "trending",
+            "order_dir": "desc",
+            "latest_only": "true",
+        }
+        timespans = {
+            "last week": 7,
+            "last month": 30, 
+            "all time" : None
+        }
+        timespan = timespans.get(timeframe, "")
 
-        baseurl = "https://huggingface.co/api/daily_papers"
         headers = {
-            "accept": "application/json",
+            "accept": "*/*",
+            "accept-language": "en-US,en;q=0.9",
+            "cache-control": "max-age=0",
+            "priority": "u=1, i",
+            "referer": "https://paperswithcode.co/",
+            "sec-ch-ua": f'"Not:A-Brand";v="8", "Chromium";v="{chrome_version}", "Google Chrome";v="{chrome_version}"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "'Windows'",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin",
             "user-agent": f"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36"
         }
 
-        # Request sufficient entries to filter and rank accurately
-        params = {"limit": max(limit * 2, 100)}
+        if timeframe != "all time":
+            dt_finish, dt_start = get_timerange(timespan)
+            params["start_date"] = dt_start
+            params["end_date"] = dt_finish
+
+
+        if domain:
+            domain_name = "-".join(x.lower() for x in domain.split(" "))
+            if domain_name == "healthcare-&-medical-ai":
+                domain_name = "healthcare"
+            self.base_api += f"tasks/{domain_name}/papers"
+            params["has_code"] = "true"
+            params["has_hf_artifacts"] = "false"
+        else:
+            self.base_api += "papers"
 
         try:
-            response = cf.requests.get(baseurl, headers=headers, params=params, impersonate="chrome")
+            response = cf.requests.get(self.base_api, headers=headers, params=params, impersonate="chrome")
             if response.status_code == 200:
                 raw_data = response.json()
                 return self.parse_feed(raw_data, timeframe, sort_by, query, limit), None
@@ -1064,54 +1140,73 @@ class PapersWithCode(object):
             return None, str(e)
 
     def parse_feed(self, results, timeframe: str, sort_by: str, query: str, limit: int) -> dict:
-        items = results if isinstance(results, list) else results.get("data", [])
+        items = results if isinstance(results, list) else results.get("results", results.get("data", []))
         extracted_papers = []
+        year_filter = self.params.get("year", "")
 
         for idx, item in enumerate(items):
             title = item.get("title", "")
-            abstract = item["paper"].get("summary", "")
+            abstract = item.get("abstract", "")
+            pub_date = str(item.get("published", item.get("updated", "")))[:10]
 
-            # Apply keyword filter if present
+            # Text filter (if searching within a task)
             if query and query not in title.lower() and query not in abstract.lower():
+                continue
+
+            # Date windows
+            if not self._matches_year(pub_date, year_filter):
+                continue
+            if not self._matches_timeframe(pub_date, timeframe):
                 continue
 
             paper = Paper()
             paper.title = title
             clean_title = "".join(x for x in paper.title if x.isalnum() or x.isspace()).replace(" ", "_")
             paper.id = f"{idx}_pwc_{clean_title}"
+            paper.keywords = item.get("keywords", "")
             paper.abstract = abstract
-            paper.date_published = str(item.get("publishedAt", ""))[:10]
-            paper.url = f"https://paperswithcode.co/paper/{item["paper"].get("id")}"
+            paper.date_published = pub_date
 
-            # Extract metrics and license
-            upvotes = item["paper"].get("upvotes", 0) or 0
-            github_stars = item["paper"].get("githubStars", 0)
-            repo_license = (
-                item.get("license")
-                or item.get("repo_license")
-                or (item.get("repository", {}).get("license") if isinstance(item.get("repository"), dict) else "")
-                or ""
-            )
+            pwc_slug = item.get("id", "")
+            #This is wrong too.  Probably nested in a child node
+            paper.url = f"https://paperswithcode.co/paper/{pwc_slug}" if pwc_slug else item.get("url_abs", "")
+            paper.pdf = item.get("url_pdf", "")
+            conf_name = item.get("conference", "")
+            paper.conference_info = f"{conf_name} | {timeframe}" if conf_name else f"PWC ({timeframe})"
+            
+            # GitHub metrics and repository details
+            if item.get("repositories"):
+                paper.github_url = item["repositories"][0].get("url", "")
+                paper.github_stars = item["repositories"][0].get("num_stars", 0)
+                paper.score = item["repositories"][0].get("trending_score", 0)
+            else:
+                paper.github_stars = 0
+                paper.score = 0
 
-            paper.score = github_stars if sort_by == "stars" else upvotes
-            paper.github_url = item["paper"].get("githubRepo", "")
-            paper.license = repo_license
-            paper.conference_info = f"PapersWithCode ({timeframe})"
-            authors = item["paper"].get("authors", [])
+            #Category
+            categories = item.get("methods", "")
+            if categories:
+                paper.category = [x.get("name") for x in categories]
+            
+            #Keywords
+            keywords = item.get("tasks", "")
+            if keywords:
+                paper.keywords = [x.get("name") for x in keywords]            
+
+            authors = item.get("authors", [])
             if authors:
                 paper.authors = {
-                    f"{a_idx}_{a['name'] if isinstance(a, dict) else a}": (a['name'] if isinstance(a, dict) else a)
+                    f"{a_idx}_{a if isinstance(a, str) else a.get('name', '')}": (a if isinstance(a, str) else a.get('name', ''))
                     for a_idx, a in enumerate(authors)
                 }
 
             paper_record = {field.name: getattr(paper, field.name) for field in fields(paper)}
-            paper_record["github_stars"] = github_stars
-            paper_record["upvotes"] = upvotes
-            paper_record["license"] = repo_license
+            paper_record["github_stars"] = paper.github_stars
+            paper_record["score"] = paper.score
             extracted_papers.append(paper_record)
 
-        # Sort descending by the requested metric
-        sort_key = "github_stars" if sort_by == "stars" else "upvotes"
+        # Sort descending by target metric
+        sort_key = "github_stars" if sort_by == "stars" else "score"
         extracted_papers.sort(key=lambda p: p.get(sort_key, 0), reverse=True)
 
         final_results = {"search_params": self.params}
@@ -1147,6 +1242,17 @@ def get_c_time():
     """
     current_t_s = datetime.datetime.now().strftime("%m-%d-%Y-%H-%M-%S")
     return current_t_s
+
+#FUNCTION get time range
+def get_timerange(delta:int = 7):
+    """Function for getting a current date and time previous to that current date. 
+
+    Returns:
+        tuple: returns current date and date delta
+    """
+    current_t = datetime.datetime.now()
+    past_t = current_t - datetime.timedelta(days=delta)
+    return (current_t.strftime("%Y-%m-%d"), past_t.strftime("%Y-%m-%d"))
 
 #FUNCTION Clean String vals
 def clean_string_values(obj: dict|list|str) -> dict|list|str:

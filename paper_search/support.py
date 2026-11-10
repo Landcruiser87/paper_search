@@ -453,7 +453,6 @@ def get_categories(result:BeautifulSoup) -> dict:
 def rebuild_taxonomy() -> dict:
     url = "https://www.arxiv.org/category_taxonomy"
     referrer = "https://info.arxiv.org/"
-    chrome_version = np.random.randint(120, 137)
     headers = {
         'Upgrade-Insecure-Requests': '1',
         'User-Agent': f'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Mobile Safari/537.36',
@@ -501,7 +500,105 @@ def load_taxonomy(search:bool=False):
         logger.warning(f"Arxiv Categories were not loaded properly: {e}")
         return {}
 
-   
+def load_PWC_subjects(search:bool=False):
+    categories = {}
+    try:
+        if search:
+            categories = rebuild_PWC_subjects()
+            cat_json = json.dumps(categories, indent=2, cls=NumpyArrayEncoder)
+            with open(DATA_DIR / "pwc_cat.json", "w", encoding="utf-8") as outf:
+                outf.write(cat_json)
+        else:
+            path = DATA_DIR / "pwc_cat.json"
+            if path.exists():
+                categories = load_json(str(path)) or {}
+            else:
+                logger.warning("pwc_cat.json not found. Set search=True or fetch taxonomy.")
+        return categories
+    except Exception as e:
+        logger.warning(f"PWC Categories were not loaded properly: {e}")
+        return {}
+
+def rebuild_PWC_subjects() -> dict:
+    url = "https://paperswithcode.co/api/v1/areas/with-tasks/"
+    headers = {
+        'Accept': 'application/json',
+        'User-Agent': f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{chrome_version}.0.0.0 Safari/537.36',
+        'Referer': 'https://paperswithcode.co/tasks/'
+    }
+    try:
+        response = requests.get(url, headers=headers, timeout=12)
+        if response.status_code != 200:
+            logger.warning(f"Status code {response.status_code} fetching PWC areas: {response.reason}")
+            return {}
+
+        data = response.json()
+        areas_list = data if isinstance(data, list) else data.get("results", [])
+
+        # Categorize tasks into our PWC_AREAS
+        tax = {area: {} for area in PWC_AREAS}
+        all_tasks = []
+
+        area_mapping = {
+            "vision": "Vision",
+            "video": "Video",
+            "language": "Language",
+            "nlp": "Language",
+            "audio": "Audio",
+            "speech": "Audio",
+            "general": "General",
+            "method": "General"
+        }
+
+        for area_item in areas_list:
+            raw_name = area_item.get("name", "").strip()
+            raw_id = area_item.get("id", "").strip().lower()
+
+            target_area = "Other"
+            for kw, mapped in area_mapping.items():
+                if kw in raw_name.lower() or kw in raw_id:
+                    target_area = mapped
+                    break
+
+            for task in area_item.get("tasks", []):
+                t_name = task.get("name", "").strip()
+                t_id = task.get("id", "").strip()
+                p_count = task.get("paper_count") or task.get("num_papers") or 0
+                if t_name:
+                    entry = {"id": t_id, "count": int(p_count)}
+                    tax[target_area][t_name] = entry
+                    all_tasks.append((t_name, entry))
+
+        # Seed "Trending" with the top 40 tasks across all areas
+        top_trending = sorted(all_tasks, key=lambda x: x[1]["count"], reverse=True)[:40]
+        tax["Trending"] = {t_name: t_info for t_name, t_info in top_trending}
+
+        logger.debug("Successfully updated PWC tasks cache")
+        return tax
+
+    except Exception as e:
+        logger.warning(f"Error fetching PWC areas with tasks: {e}")
+        return {}
+
+def load_PWC_subjects(search: bool = False) -> dict:
+    target_file = DATA_DIR / "pwc_tasks.json"
+    try:
+        if search or not target_file.exists():
+            categories = rebuild_PWC_subjects()
+            if categories:
+                cat_json = json.dumps(categories, indent=2, cls=NumpyArrayEncoder)
+                with open(target_file, "w", encoding="utf-8") as outf:
+                    outf.write(cat_json)
+                return categories
+        
+        if target_file.exists():
+            return load_json(str(target_file)) or {area: {} for area in PWC_AREAS}
+        return {area: {} for area in PWC_AREAS}
+    except Exception as e:
+        logger.warning(f"PWC subjects failed to load: {e}")
+        return {area: {} for area in PWC_AREAS}
+
+
 ################################# Rich Spinner Control ####################################
 
 #FUNCTION Progress bar
@@ -643,3 +740,7 @@ SEMANTIC_SUBJECTS = ["Computer Science", "Medicine", "Chemistry", "Biology", "Ma
 SEMANTIC_PUBS = ["Review", "JournalArticle", "CaseReport", "ClinicalTrial", "Conference",
 "Dataset", "Editorial", "LettersAndComments", "MetaAnalysis", "News", "Study",
 "Book", "BookSection"]
+# In support.py
+
+PWC_AREAS = ["Trending", "General", "Vision", "Video", "Language", "Audio", "Other"]
+PWC_SUBJECTS = load_PWC_subjects()
