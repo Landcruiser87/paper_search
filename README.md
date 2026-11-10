@@ -204,6 +204,6 @@ https://github.com/user-attachments/assets/b20b32c9-55f0-4e3b-a436-5571a47f9700
 - [x] Add Semantic Scholar API
 - [x] Add Nature? (https://dev.springernature.com/docs/quick-start/api-access/)
   - Included in Semantic
-- [ ] Add Papers with Code - API 
+- [x] Add Papers with Code  
 - [ ] Add Google Scholar
 - [ ] Add Pubmed
