@@ -924,9 +924,9 @@ class SemanticScholar(object):
         parameters = {
             'query': self.params["query"],
             'limit': self.params.get("limit", 20),
-            'fields': 'title,authors,abstract,url,year,citationCount,openAccessPdf'
+            'fields': 'title,authors,abstract,url,year,citationCount,openAccessPdf,publicationTypes,publicationDate,journal'
         }
-        
+        #Check for extra fields here.  https://api.semanticscholar.org/api-docs/#tag/Paper-Data/operation/get_graph_paper_relevance_search
         # Add the optional filters if they are provided
         if self.params.get("year"):
             parameters['year'] = self.params["year"]
@@ -994,22 +994,23 @@ class SemanticScholar(object):
             paper.id = f"{idx}_s2_{title_str}" #[:50]
             paper.title = title_str
             paper.abstract = result.get("abstract", "")
-            
+            pub_date = str(result.get("publicationDate", result.get("updated", "")))
+            paper.date_published = pub_date
             # Use openAccessPdf if available, else general url
             if result.get("openAccessPdf"):
                 paper.pdf = result["openAccessPdf"].get("url", "")
-                paper.url = paper.pdf
-            else:
-                paper.url = result.get("url", "")
-                
+                paper.pdf = paper.pdf
+
+            paper.url = result.get("url", "")
             paper.score = result.get("citationCount", 0)
+
             if result.get("authors"):
                 paper.authors = {f"{idx}_{a['name']}": a['name'] for idx, a in enumerate(result['authors'])}
                 
             if result.get("year"):
                 paper.date_published = str(result["year"])
                 
-            paper.conference_info = result.get("venue", "semantic")
+            paper.conference_info = result.get("journal", "semantic")
 
             paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
             
