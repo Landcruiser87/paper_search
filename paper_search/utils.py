@@ -1011,7 +1011,6 @@ class SemanticScholar(object):
                 paper.date_published = str(result["year"])
                 
             paper.conference_info = result.get("journal", "semantic")
-
             paper_dict[paper.id] = {field.name: getattr(paper, field.name) for field in fields(paper)}
             
         return paper_dict
@@ -1115,7 +1114,11 @@ class PapersWithCode(object):
             response = cf.requests.get(self.base_api, headers=headers, params=params, impersonate="chrome")
             if response.status_code == 200:
                 raw_data = response.json()
-                return self.parse_feed(raw_data, timeframe, sort_by, query, limit), None
+                results = self.parse_feed(raw_data, timeframe, sort_by, query, limit)
+                if len(results) > 1:
+                    return results, None    
+                else:
+                    return None, f"No papers found for {self.params['query']}"
             return None, f"Status Code {response.status_code}: {response.reason}"
         
         except Exception as e:
